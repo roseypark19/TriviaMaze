@@ -13,8 +13,8 @@ import javax.imageio.ImageIO;
 public class Player {
 	
 	private static final int VELOCITY = 8;
+	private static final int CENTER_OFFSET = 4;
 	private static final int MOVE_DISTANCE = 48;
-	private final Map<Movement, BufferedImage[]> myMovementMap;
 	private int myVelX;
 	private int myVelY;
 	private int myX;
@@ -22,11 +22,14 @@ public class Player {
 	private int myDistance;
 	private int myMovementIndex;
 	private Movement myMovement;
-	private BufferedImage mySprite;	
+	private BufferedImage mySprite;
+	private MazeTile myMazeTile;
+	private final Map<Movement, BufferedImage[]> myMovementMap;
 	
-	public Player(final int theX, final int theY) {
-		myX = theX;
-		myY = theY;
+	public Player(final MazeTile theTile) {
+		myX = (int) (theTile.getX() + CENTER_OFFSET);
+		myY = (int) (theTile.getY() + CENTER_OFFSET);
+		myMazeTile = theTile;
 		myMovementMap = new HashMap<>();
 		fillSprites();
 		myMovementIndex = 0;
@@ -82,8 +85,16 @@ public class Player {
 		return myY;
 	}
 	
+	public MazeTile getCurrentTile() {
+		return myMazeTile;
+	}
+	
 	public void setMovement(final Movement theMove) {
 		myMovement = theMove;
+	}
+	
+	public void setCurrentTile(final MazeTile theTile) {
+		myMazeTile = theTile;
 	}
 	
 	public void move() {

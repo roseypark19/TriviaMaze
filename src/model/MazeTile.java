@@ -4,19 +4,20 @@ import java.awt.Color;
 import java.awt.Point;
 import java.awt.geom.Rectangle2D;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 
 public class MazeTile extends Rectangle2D.Double {
 
 	public static final Color COLOR = Color.LIGHT_GRAY;
 	public static final int SIZE = 48;
+	private static int uniqueID;
+	private int myID;
 	private final Map<Movement, MazeTile> myNeighbors;
 	
-	public MazeTile(final double theX, final double theY) {
-		super(theX, theY, SIZE, SIZE);
+	public MazeTile(final Point thePoint) {
+		super(thePoint.getX(), thePoint.getY(), SIZE, SIZE);
 		myNeighbors = new HashMap<>();
+		myID = uniqueID++;
 	}
 	
 	public Point getPointForMovement(final Movement theMove) {
@@ -48,6 +49,14 @@ public class MazeTile extends Rectangle2D.Double {
 //	protected MazeTile getNeighborForMovement(final Movement theMove) {
 //		return myNeighbors.get(theMove);
 //	}
+	
+	public int getID() {
+		return myID;
+	}
+	
+	public Point getPoint() {
+		return new Point((int) getX(), (int) getY());
+	}
 	
 	public boolean hasNeighborForMovement(final Movement theMove) {
 		return myNeighbors.containsKey(theMove);
