@@ -67,18 +67,12 @@ public class GamePanel extends JPanel {
 	}
 	
 	private void addKeyButtons() {
-		final KeyPadButton w = new KeyPadButton(this, Movement.UP);
-		add(w);
-		myKeyButtons.add(w);
-		final KeyPadButton a = new KeyPadButton(this, Movement.LEFT);
-		add(a);
-		myKeyButtons.add(a);
-		final KeyPadButton s = new KeyPadButton(this, Movement.DOWN);
-		add(s);
-		myKeyButtons.add(s);
-		final KeyPadButton d = new KeyPadButton(this, Movement.RIGHT);
-		add(d);
-		myKeyButtons.add(d);
+		for (final Movement move : Movement.values()) {
+			final KeyPadButton b = new KeyPadButton(move);
+			add(b);
+			myKeyButtons.add(b);
+			b.addActionListener(theEvent -> initializeAdvancement(b.getMovement()));
+		}
 	}
 	
 	private void advancePlayer() {

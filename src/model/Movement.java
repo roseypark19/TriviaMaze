@@ -2,13 +2,13 @@ package model;
 
 public enum Movement {
 	
-	RIGHT('D'),
+	UP('W'),
 	
 	LEFT('A'),
 	
-	UP('W'),
+	DOWN('S'),
 	
-	DOWN('S');
+	RIGHT('D');
 	
 	private final char myLetter;
 	
