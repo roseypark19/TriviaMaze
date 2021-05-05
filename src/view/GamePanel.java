@@ -69,9 +69,9 @@ public class GamePanel extends JPanel {
 	private void addKeyButtons() {
 		for (final Movement move : Movement.values()) {
 			final KeyPadButton b = new KeyPadButton(move);
-			add(b);
 			myKeyButtons.add(b);
 			b.addActionListener(theEvent -> initializeAdvancement(b.getMovement()));
+			add(b);
 		}
 	}
 	
@@ -82,6 +82,7 @@ public class GamePanel extends JPanel {
 		if (myPlayer.isAdvanceComplete()) {
 			myTimer.stop();
 			updateKeyButtons();
+			grabFocus();
 		}
 	}
 	
