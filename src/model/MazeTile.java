@@ -42,14 +42,6 @@ public class MazeTile extends Rectangle2D.Double {
 		return p;
 	}
 	
-	protected void addNeighbor(final Movement theMove, final MazeTile theNeighbor) {
-		myNeighbors.put(theMove, theNeighbor);
-	}
-	
-//	protected MazeTile getNeighborForMovement(final Movement theMove) {
-//		return myNeighbors.get(theMove);
-//	}
-	
 	public int getID() {
 		return myID;
 	}

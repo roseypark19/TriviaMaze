@@ -21,14 +21,42 @@ import model.MazeTile;
 import model.Movement;
 
 public class MazeGenerator {
-	
-	private static final int MIN_TILES = 90;
-	private static final int MAX_TILES = 110;
+
 	private static final int SIZE = 15;
 	private static final Point START = new Point(24, 72);
-	private static final Point FINISH = new Point(696, 744);
 	private static final Point ENTRY = new Point(24, 24);
-	private static final Point EXIT = new Point(696, 792);
+	private static final Point EXIT = 
+			                   new Point((int) ENTRY.getX() + (SIZE - 1) * MazeTile.SIZE, 
+			                             (int) ENTRY.getY() + (SIZE + 1) * MazeTile.SIZE);
+	
+	public static Map<Point, MazeTile> getNewMaze() {
+		final Map<Point, MazeTile> maze = new HashMap<>();
+		final List<MazeTile> tiles = getTiles();
+		final Set<GraphEdge> chosenEdges = getFinalizedEdges();
+		for (final GraphEdge edge : chosenEdges) {
+			final MazeTile first = tiles.get(edge.getFirst());
+			final MazeTile last = tiles.get(edge.getSecond());
+			int shiftFactor = 1; // assumes tiles are in the same row
+			if (first.getID() / SIZE != last.getID() / SIZE) { // tiles are in same column
+				shiftFactor = SIZE;
+			} 
+			for (int id = first.getID(); id <= last.getID(); id += shiftFactor) {
+				final MazeTile toPut = tiles.get(id);
+				maze.put(toPut.getPoint(), toPut);
+			}
+		}
+		maze.put(ENTRY, new MazeTile(ENTRY));
+		maze.put(EXIT, new MazeTile(EXIT));
+		return maze;
+	}
+	
+	public static Point getEntryPoint() {
+		return new Point(ENTRY);
+	}
+	
+	public static Point getExitPoint() {
+		return new Point(EXIT);
+	}
 	
 	private static List<MazeTile> getTiles() {
 		final List<MazeTile> tiles = new ArrayList<>();
@@ -47,51 +75,8 @@ public class MazeGenerator {
 		return tiles;
 	}
 	
-	public static Point getEntryPoint() {
-		return new Point(ENTRY);
-	}
-	
-	public static Map<Point, MazeTile> getMaze() {
-		Map<Point, MazeTile> maze = new HashMap<>();
-		final Deque<Point> pointStack = new ArrayDeque<>();
-		final List<Movement> moves = new LinkedList<>();
-		for (final Movement move : Movement.values()) {
-			moves.add(move);
-		}
-		maze.put(ENTRY, new MazeTile(ENTRY));
-		Point curr = START;
-		while (curr.getX() != FINISH.getX() || curr.getY() != FINISH.getY()) {
-			maze.put(curr, new MazeTile(curr));
-			pointStack.push(curr);
-			Collections.shuffle(moves);
-			boolean moveComplete = false;
-			int tries = 0;
-			do {
-				final Movement nextMove = moves.remove(0);
-				final Point tryPoint = maze.get(curr).getPointForMovement(nextMove);
-				if (!maze.containsKey(tryPoint) && isValidPoint(tryPoint)) {
-					curr = tryPoint;
-					moveComplete = true;
-				} else {
-					tries++;
-				}
-				moves.add(nextMove);
-			} while (!moveComplete && tries < moves.size());
-			if (!moveComplete) {
-				pointStack.pop();
-				curr = pointStack.pop();
-			}
-		}
-		maze.put(curr, new MazeTile(curr));
-		maze.put(EXIT, new MazeTile(EXIT));
-		if (maze.size() < MIN_TILES || maze.size() > MAX_TILES) {
-			maze = getMaze();
-		}
-		return maze;
-	}
-	
 	private static Set<GraphEdge> getFinalizedEdges() {
-		return kruskalsAlgorithm(getEdges());
+		return kruskalMST(getEdges());
 	}
 	
 	private static List<GraphEdge> getEdges() {
@@ -116,7 +101,7 @@ public class MazeGenerator {
 		return edges;
 	}
 	
-	private static Set<GraphEdge> kruskalsAlgorithm(final List<GraphEdge> theEdges) {
+	private static Set<GraphEdge> kruskalMST(final List<GraphEdge> theEdges) {
 		final Queue<GraphEdge> edgeQueue = new PriorityQueue<>((theFirst, theSecond) -> {
 			return theFirst.getCost() - theSecond.getCost();
 		});
@@ -130,11 +115,10 @@ public class MazeGenerator {
 			final int second = edge.getSecond();
 			final int firstGroup = finder.find(vertexMapping.get(first));
 			final int secondGroup = finder.find(vertexMapping.get(second));
-			boolean isCycle = false;
+			boolean isCycle = true;
 			if (firstGroup != secondGroup) { // does not create a cycle
 				finder.unify(firstGroup, secondGroup);
-			} else {
-				isCycle = true;
+				isCycle = false;
 			}
 			if (!isCycle) {
 				mst.add(edge);
@@ -155,33 +139,5 @@ public class MazeGenerator {
 			}
 		}
 		return vertMap;
-	}
-		
-	private static boolean isValidPoint(final Point thePoint) {
-		return thePoint.getX() >= START.getX() && thePoint.getY() >= START.getY() &&
-			   thePoint.getX() <= FINISH.getX() && thePoint.getY() <= FINISH.getY();
-	}
-	
-	public static Map<Point, MazeTile> getNewMaze() {
-		final Map<Point, MazeTile> maze = new HashMap<>();
-		final List<MazeTile> tiles = getTiles();
-		final Set<GraphEdge> chosenEdges = getFinalizedEdges();
-		for (final GraphEdge edge : chosenEdges) {
-			final MazeTile first = tiles.get(edge.getFirst());
-			final MazeTile last = tiles.get(edge.getSecond());
-			int shiftFactor = 1; // assumes tiles are in the same row
-			if (first.getID() / SIZE != last.getID() / SIZE) { // tiles are in same column
-				shiftFactor = SIZE;
-			} 
-			for (int id = first.getID(); id <= last.getID(); id += shiftFactor) {
-				final MazeTile toPut = tiles.get(id);
-				maze.put(toPut.getPoint(), toPut);
-			}
-		}
-		maze.put(ENTRY, new MazeTile(ENTRY));
-		maze.put(EXIT, new MazeTile(EXIT));
-		return maze;
-	}
-	
-	
+	}	
 }

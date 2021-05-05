@@ -15,5 +15,10 @@ public enum Movement {
 	Movement(final char theLetter) {
 		myLetter = theLetter;
 	}
+	
+	@Override
+	public String toString() {
+		return String.valueOf(myLetter);
+	}
 
 }

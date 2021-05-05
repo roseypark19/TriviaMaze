@@ -5,7 +5,9 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import javax.swing.JPanel;
 import javax.swing.Timer;
@@ -25,6 +27,7 @@ public class GamePanel extends JPanel {
 	private static final int WIDTH = 1300;
 	private static final int HEIGHT = 865;
 	private final Map<Point, MazeTile> myMaze;
+	private final Set<KeyPadButton> myKeyButtons;
 	private Timer myTimer;
 	private Player myPlayer;
 
@@ -34,6 +37,9 @@ public class GamePanel extends JPanel {
 		requestFocus();
 		myMaze = MazeGenerator.getNewMaze();
 		myPlayer = new Player(myMaze.get(MazeGenerator.getEntryPoint()));
+		myKeyButtons = new HashSet<>();
+		addKeyButtons();
+		updateKeyButtons();
 		addKeyListener(new KeyboardHandler(this));
 		myTimer = new Timer(90, theEvent -> advancePlayer());
 		setBackground(Color.BLACK);
@@ -60,12 +66,37 @@ public class GamePanel extends JPanel {
 		}
 	}
 	
+	private void addKeyButtons() {
+		final KeyPadButton w = new KeyPadButton(this, Movement.UP);
+		add(w);
+		myKeyButtons.add(w);
+		final KeyPadButton a = new KeyPadButton(this, Movement.LEFT);
+		add(a);
+		myKeyButtons.add(a);
+		final KeyPadButton s = new KeyPadButton(this, Movement.DOWN);
+		add(s);
+		myKeyButtons.add(s);
+		final KeyPadButton d = new KeyPadButton(this, Movement.RIGHT);
+		add(d);
+		myKeyButtons.add(d);
+	}
+	
 	private void advancePlayer() {
 		myPlayer.move();
 		myPlayer.update();
 		repaint();
 		if (myPlayer.isAdvanceComplete()) {
 			myTimer.stop();
+			updateKeyButtons();
+		}
+	}
+	
+	private void updateKeyButtons() {
+		for (final KeyPadButton button : myKeyButtons) {
+			final Point testPoint = 
+					  myPlayer.getCurrentTile().getPointForMovement(button.getMovement());
+			final boolean enabled = myMaze.containsKey(testPoint) ? true : false;
+			button.setEnabled(enabled);
 		}
 	}
 }
