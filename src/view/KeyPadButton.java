@@ -13,8 +13,8 @@ public class KeyPadButton extends JButton {
 	
 	private static final ImageIcon DISABLED = new ImageIcon("redX.png");
 	private static final Color BUTTON_COLOR = new Color(217, 179, 130);
-	private static final Font BUTTON_FONT = new Font("ButtonFont", Font.BOLD, 27);
-	private static final int SIZE = 60;
+	private static final Font BUTTON_FONT = new Font("ButtonFont", Font.BOLD, 30);
+	private static final int SIZE = 70;
 	private final Movement myMovement;
 	
 	public KeyPadButton(final Movement theMove) {

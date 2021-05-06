@@ -122,12 +122,12 @@ public class MazePanel extends JPanel {
 		}
 		
 		private void configureSouthPanel() {
-			mySouthPanel.setPreferredSize(new Dimension(WIDTH, 200));
+			mySouthPanel.setPreferredSize(new Dimension(WIDTH, 225));
 			mySouthPanel.setBackground(TRANSPARENT);
 //			mySouthPanel.setBorder(BorderFactory.createLineBorder(Color.BLUE));
 			mySouthPanel.add(getKeyPanel());
 			updateKeyButtons();
-			mySouthPanel.add(Box.createHorizontalStrut(20));
+			mySouthPanel.add(Box.createHorizontalStrut(5));
 			addHearts();
 			updateHearts();
 		}
