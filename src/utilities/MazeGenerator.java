@@ -1,38 +1,29 @@
 package utilities;
 
 import java.awt.Point;
-import java.util.ArrayDeque;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Deque;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.PriorityQueue;
 import java.util.Queue;
 import java.util.Random;
 import java.util.Set;
-import java.util.TreeSet;
-
 import model.MazeTile;
-import model.Movement;
 
 public class MazeGenerator {
 
 	private static final int SIZE = 15;
-	private static final Point START = new Point(24, 72);
-	private static final Point ENTRY = new Point(24, 24);
-	private static final Point EXIT = 
-			                   new Point((int) ENTRY.getX() + (SIZE - 1) * MazeTile.SIZE, 
-			                             (int) ENTRY.getY() + (SIZE + 1) * MazeTile.SIZE);
+	private static final Point START = new Point(72, 120);
+	private static final Point ENTRY = new Point(72, 72);
+	private static final Point EXIT = new Point(72 + (SIZE - 1) * MazeTile.SIZE, 
+			                                    72 + (SIZE + 1) * MazeTile.SIZE);
 	
 	public static Map<Point, MazeTile> getNewMaze() {
 		final Map<Point, MazeTile> maze = new HashMap<>();
 		final List<MazeTile> tiles = getTiles();
-		final Set<GraphEdge> chosenEdges = getFinalizedEdges();
+		final Set<GraphEdge> chosenEdges = kruskalMST(getEdges());
 		for (final GraphEdge edge : chosenEdges) {
 			final MazeTile first = tiles.get(edge.getFirst());
 			final MazeTile last = tiles.get(edge.getSecond());
@@ -73,10 +64,6 @@ public class MazeGenerator {
 			currY += MazeTile.SIZE;
 		}
 		return tiles;
-	}
-	
-	private static Set<GraphEdge> getFinalizedEdges() {
-		return kruskalMST(getEdges());
 	}
 	
 	private static List<GraphEdge> getEdges() {

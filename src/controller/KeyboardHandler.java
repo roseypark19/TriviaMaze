@@ -4,13 +4,13 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
 import model.Movement;
-import view.GamePanel;
+import view.MazePanel;
 
 public class KeyboardHandler extends KeyAdapter {
 	
-	private final GamePanel myPanel;
+	private final MazePanel myPanel;
 	
-	public KeyboardHandler(final GamePanel thePanel) {
+	public KeyboardHandler(final MazePanel thePanel) {
 		myPanel = thePanel;
 	}
 

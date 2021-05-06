@@ -2,16 +2,16 @@ package model;
 
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.Map;
 
-import javax.imageio.ImageIO;
+import utilities.SpriteUtilities;
 
 public class Player {
 	
+	private static final Map<Movement, BufferedImage[]> SPRITE_MAP = 
+			                                           SpriteUtilities.getPlayerSprites();
+	public static final int MIN_HEALTH = 0;
+	public static final int MAX_HEALTH = 3;
 	private static final int VELOCITY = 8;
 	private static final int CENTER_OFFSET = 4;
 	private static final int MOVE_DISTANCE = 48;
@@ -21,39 +21,20 @@ public class Player {
 	private int myY;
 	private int myDistance;
 	private int myMovementIndex;
+	private int myHealth;
 	private Movement myMovement;
 	private BufferedImage mySprite;
 	private MazeTile myMazeTile;
-	private final Map<Movement, BufferedImage[]> myMovementMap;
 	
 	public Player(final MazeTile theTile) {
 		myX = (int) (theTile.getX() + CENTER_OFFSET);
 		myY = (int) (theTile.getY() + CENTER_OFFSET);
 		myMazeTile = theTile;
-		myMovementMap = new HashMap<>();
-		fillSprites();
 		myMovementIndex = 0;
 		myMovement = Movement.DOWN;
-		mySprite = myMovementMap.get(myMovement)[myMovementIndex];
+		mySprite = SPRITE_MAP.get(myMovement)[myMovementIndex];
 		myDistance = 0;
-	}
-	
-	private void fillSprites() {
-		try {
-			final BufferedImage[] sprites = new BufferedImage[16];
-			for (int i = 1; i <= sprites.length; i++) {
-				sprites[i-1] = ImageIO.read(new File(String.format("image%d.png", i)));
-			}
-			
-			myMovementMap.put(Movement.DOWN, Arrays.copyOfRange(sprites, 0, 4));
-			myMovementMap.put(Movement.UP, Arrays.copyOfRange(sprites, 4, 8));
-			myMovementMap.put(Movement.LEFT, Arrays.copyOfRange(sprites, 8, 12));
-			myMovementMap.put(Movement.RIGHT, Arrays.copyOfRange(sprites, 12, 16));
-			
-		} catch (final IOException ex) {
-			System.out.println("Could not load sprite image!");
-		}
-		
+		myHealth = MAX_HEALTH;
 	}
 	
 	private void setSprite(final BufferedImage theSprite) {
@@ -71,6 +52,18 @@ public class Player {
 		if (myDistance >= MOVE_DISTANCE) {
 			myDistance = 0;
 		}
+	}
+	
+	public void decrementHealth() {
+		myHealth = myHealth > MIN_HEALTH ? myHealth - 1 : myHealth;
+	}
+	
+	public void incrementHealth() {
+		myHealth = myHealth < MAX_HEALTH ? myHealth + 1 : myHealth;
+	}
+	
+	public int getHealth() {
+		return myHealth;
 	}
 	
 	public boolean isAdvanceComplete() {
@@ -120,7 +113,6 @@ public class Player {
 				myVelY = 0;
 				break;
 		}
-		
-		setSprite(myMovementMap.get(myMovement)[myMovementIndex]);
+		setSprite(SPRITE_MAP.get(myMovement)[myMovementIndex]);
 	}
 }
