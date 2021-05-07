@@ -12,7 +12,7 @@ public class GameFrame extends JFrame {
 	public GameFrame() {
 		setTitle("Maze Hops");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setContentPane(new GamePanel());
+		setContentPane(new MazePanel());
 		pack();
 		setLocationRelativeTo(null);
 		setResizable(false);
