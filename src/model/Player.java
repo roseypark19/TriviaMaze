@@ -1,9 +1,11 @@
 package model;
 
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.util.Map;
 
+import utilities.MazeGenerator;
 import utilities.SpriteUtilities;
 
 public class Player {
@@ -15,6 +17,7 @@ public class Player {
 	private static final int VELOCITY = 8;
 	private static final int CENTER_OFFSET = 4;
 	private static final int MOVE_DISTANCE = 48;
+	private static Player uniqueInstance = new Player();
 	private int myVelX;
 	private int myVelY;
 	private int myX;
@@ -24,12 +27,11 @@ public class Player {
 	private int myHealth;
 	private Movement myMovement;
 	private BufferedImage mySprite;
-	private MazeTile myMazeTile;
 	
-	public Player(final MazeTile theTile) {
-		myX = (int) (theTile.getX() + CENTER_OFFSET);
-		myY = (int) (theTile.getY() + CENTER_OFFSET);
-		myMazeTile = theTile;
+	private Player() {
+		final Point entry = MazeGenerator.getEntryPoint();
+		myX = (int) (entry.getX() + CENTER_OFFSET);
+		myY = (int) (entry.getY() + CENTER_OFFSET);
 		myMovementIndex = 0;
 		myMovement = Movement.DOWN;
 		mySprite = SPRITE_MAP.get(myMovement)[myMovementIndex];
@@ -37,15 +39,15 @@ public class Player {
 		myHealth = MAX_HEALTH;
 	}
 	
-	private void setSprite(final BufferedImage theSprite) {
-		mySprite = theSprite;
+	public static synchronized Player getInstance() {
+		return uniqueInstance;
 	}
 	
 	public void draw(final Graphics2D theGraphics) {
 		theGraphics.drawImage(mySprite, myX, myY, null);
 	}
 	
-	public void update() {
+	private void update() {
 		myX += myVelX;
 		myY += myVelY;
 		myDistance += Math.max(Math.abs(myVelX), Math.abs(myVelY));
@@ -78,16 +80,8 @@ public class Player {
 		return myY;
 	}
 	
-	public MazeTile getCurrentTile() {
-		return myMazeTile;
-	}
-	
 	public void setMovement(final Movement theMove) {
 		myMovement = theMove;
-	}
-	
-	public void setCurrentTile(final MazeTile theTile) {
-		myMazeTile = theTile;
 	}
 	
 	public void move() {
@@ -113,6 +107,7 @@ public class Player {
 				myVelY = 0;
 				break;
 		}
-		setSprite(SPRITE_MAP.get(myMovement)[myMovementIndex]);
+		mySprite = SPRITE_MAP.get(myMovement)[myMovementIndex];
+		update();
 	}
 }

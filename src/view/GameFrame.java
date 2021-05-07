@@ -1,5 +1,7 @@
 package view;
 
+import java.awt.BorderLayout;
+
 import javax.swing.JFrame;
 
 public class GameFrame extends JFrame {
@@ -12,7 +14,8 @@ public class GameFrame extends JFrame {
 	public GameFrame() {
 		setTitle("Maze Hops");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setContentPane(new MazePanel());
+		add(MazePanel.getInstance());
+		add(PlayPanel.getInstance(), BorderLayout.EAST);
 		pack();
 		setLocationRelativeTo(null);
 		setResizable(false);
