@@ -1,4 +1,4 @@
-package view;
+package components;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -8,24 +8,25 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 
 import model.Movement;
+import view.MazePanel;
 
 public class KeyPadButton extends JButton {
 	
 	private static final ImageIcon DISABLED = new ImageIcon("redX.png");
-	private static final Color BUTTON_COLOR = new Color(217, 179, 130);
-	private static final Font BUTTON_FONT = new Font("ButtonFont", Font.BOLD, 30);
+	private static final Font BUTTON_FONT = new Font(Font.MONOSPACED, Font.BOLD, 40);
 	private static final int SIZE = 70;
 	private final Movement myMovement;
 	
 	public KeyPadButton(final Movement theMove) {
-		super();
 		myMovement = theMove;
 		setPreferredSize(new Dimension(SIZE, SIZE));
 		setFont(BUTTON_FONT);
-		setBackground(BUTTON_COLOR);
+		setBackground(Color.LIGHT_GRAY);
 		setForeground(Color.BLACK);
 		setBorder(BorderFactory.createLineBorder(Color.BLACK, 4));
 		setFocusable(false);
+		addActionListener(theEvent -> 
+		                       MazePanel.getInstance().initializeAdvancement(myMovement));
 	}
 	
 	public void updateAppearance(final boolean theEnabled) {

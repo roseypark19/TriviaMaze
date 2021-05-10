@@ -1,6 +1,5 @@
 package view;
 
-import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -37,8 +36,6 @@ public class MazePanel extends JPanel {
 		myMazeTile = myMaze.get(MazeGenerator.getEntryPoint());
 		addKeyListener(new KeyboardHandler(this));
 		myTimer = new Timer(90, theEvent -> advancePlayer());
-		setLayout(new BorderLayout());
-//		setBorder(BorderFactory.createLineBorder(Color.YELLOW));
 		requestFocus();
 	}
 	
@@ -47,8 +44,8 @@ public class MazePanel extends JPanel {
 	}
 	
 	@Override
-	public void paint(final Graphics theGraphics) {
-		super.paint(theGraphics);
+	public void paintComponent(final Graphics theGraphics) {
+		super.paintComponent(theGraphics);
 		final Graphics2D g2d = (Graphics2D) theGraphics;
 		g2d.drawImage(GRASS, null, 0, 0);
 		for (final MazeTile tile : myMaze.values()) {
@@ -60,8 +57,7 @@ public class MazePanel extends JPanel {
 	
 	public void initializeAdvancement(final Movement theMove) {
 		final Point testPoint = myMazeTile.getPointForMovement(theMove);
-		if (!myTimer.isRunning() && Player.getInstance().isAdvanceComplete() 
-				                 && myMaze.containsKey(testPoint)) {
+		if (!myTimer.isRunning() && myMaze.containsKey(testPoint)) {
 			Player.getInstance().setMovement(theMove);
 			myMazeTile = myMaze.get(testPoint);
 			myTimer.start();
