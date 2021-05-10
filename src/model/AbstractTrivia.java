@@ -14,7 +14,7 @@ public abstract class AbstractTrivia {
      */
     final private String myPrompt;
 
-    public AbstractTrivia(final String theCorrectAnswer, final String thePrompt) {
+    protected AbstractTrivia(final String theCorrectAnswer, final String thePrompt) {
         myCorrectAnswer = theCorrectAnswer.toLowerCase().trim();
         myPrompt = thePrompt.trim();
     }
