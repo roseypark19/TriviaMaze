@@ -26,7 +26,7 @@ public class SpriteUtilities {
 			playerSprites.put(Movement.RIGHT, Arrays.copyOfRange(sprites, 12, 16));
 			
 		} catch (final IOException ex) {
-			System.out.println("Could not load sprite image!");
+			System.err.println("Could not load sprite image!");
 		}
 		return playerSprites;
 	}
@@ -36,9 +36,19 @@ public class SpriteUtilities {
 		try {
 			grass = ImageIO.read(new File("Grass.jpg"));
 		} catch (final IOException ex) {
-			System.out.println("Could not load grass image!");
+			System.err.println("Could not load grass image!");
 		}
 		return grass;
+	}
+	
+	public static BufferedImage getScroll() {
+		BufferedImage scroll = null;
+		try {
+			scroll = ImageIO.read(new File("scroll.png"));
+		} catch (final IOException ex) {
+			System.err.println("Could not load scroll image!");
+		}
+		return scroll;
 	}
 
 }
