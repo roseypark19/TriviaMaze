@@ -1,2 +1,10 @@
+<<<<<<< HEAD
 /view/
 /model/
+=======
+/controller/
+/model/
+/program/
+/utilities/
+/view/
+>>>>>>> master
