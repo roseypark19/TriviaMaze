@@ -14,7 +14,7 @@ public class GameFrame extends JFrame {
 	public GameFrame() {
 		setTitle("Maze Hops");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		add(MazePanel.getInstance());
+		add(MazePanel.getInstance(), BorderLayout.WEST);
 		add(PlayPanel.getInstance(), BorderLayout.EAST);
 		pack();
 		setLocationRelativeTo(null);
