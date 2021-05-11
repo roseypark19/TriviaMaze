@@ -1,8 +1,6 @@
 package model;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.Arrays;
 
 /**
  * Multiple choice trivia question.
@@ -11,21 +9,34 @@ import java.util.List;
  *
  */
 public class MultipleChoice extends AbstractTrivia {
+	
+	private static final String ANSWER_PROMPT = "Please select an option below.\n";
+	private final String[] myAnswers;
 
-    /**
-     * These are the incorrect answers. Will have typical labels such as A,B,C,D.
-     */
-    final private List<String> myWrongChoices = new ArrayList<>();
-
-    public MultipleChoice(final String theCorrectAnswer, final String thePrompt) {
-        super(theCorrectAnswer, thePrompt);
+    public MultipleChoice(final String theCorrectLetter, final String[] theAnswers,
+    													 final String theQuestion) {
+        super(theCorrectLetter, theQuestion, ANSWER_PROMPT, QuestionType.MULTICHOICE);
+    	final char firstChar = theCorrectLetter.charAt(0);
+        if (theCorrectLetter.isEmpty() || theCorrectLetter.length() > 1 || 
+        		                          firstChar < 'A' || firstChar > 'D') {
+        	throw new IllegalArgumentException("Invalid correct letter!");
+        }
+        myAnswers = Arrays.copyOf(theAnswers, theAnswers.length);
     }
 
-    public void addWrongChoice(final String theWrongChoice) {
-        myWrongChoices.add(theWrongChoice);
-    }
-
-    public List<String> getWrongChoices() {
-        return new ArrayList<String>(myWrongChoices);
-    }
+	@Override
+	public String getAnswers() {
+		final StringBuilder sb = new StringBuilder();
+		int index = 0;
+		for (char option = 'A'; option <= 'D'; option++) {
+			sb.append(String.format("%c. %s", myAnswers[index]));
+			if (index < myAnswers.length - 1) {
+				sb.append("\n");
+			}
+			index++;
+		}
+		return sb.toString();
+	}
+    
+    
 }
