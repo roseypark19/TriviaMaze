@@ -16,11 +16,11 @@ import model.Tavern;
 
 public class MazeGenerator {
 
-	private static final int SIZE = 15;
-	private static final Point START = new Point(72, 120);
-	private static final Point ENTRY = new Point(72, 72);
+	private static final int SIZE = 17;
+	private static final Point START = new Point(72, 72);
+	private static final Point ENTRY = new Point(72, 24);
 	private static final Point EXIT = new Point(72 + (SIZE - 1) * MazeTile.SIZE, 
-			                                    72 + (SIZE + 1) * MazeTile.SIZE);
+			                                    24 + (SIZE + 1) * MazeTile.SIZE);
 	private static final Point FLAG_POINT = new Point((int) EXIT.getX() - MazeTile.SIZE,
 													  (int) EXIT.getY());
 	
@@ -57,7 +57,7 @@ public class MazeGenerator {
 		final Random rand = new Random();
 		for (int row = 0; row < SIZE; row += 2) {
 			final List<Point> randPts = new ArrayList<>();
-			for (int count = 1; count <= 2; count++) {
+			for (int count = 1; count <= 3; count++) {
 				randPts.add(points.remove(rand.nextInt(points.size())));
 			}
 			for (final Point pt : randPts) {

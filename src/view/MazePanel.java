@@ -25,8 +25,12 @@ public class MazePanel extends JPanel {
 	 * 
 	 */
 	private static final long serialVersionUID = 2705364087445242453L;
+	private static final Point FLAG_POINT = 
+			                      new Point((int) MazeGenerator.getExitPoint().getX() + 1,
+			                    		    (int) MazeGenerator.getExitPoint().getY());
 	private static final BufferedImage GRASS = SpriteUtilities.getGrass();
-	public static final int WIDTH = 865;
+	private static final BufferedImage FLAGS = SpriteUtilities.getFlags();
+	public static final int WIDTH = 957;
 	public static final int HEIGHT = 950;
 	private static MazePanel uniqueInstance = new MazePanel();
 	private final Map<Point, MazeTile> myMaze;
@@ -57,6 +61,8 @@ public class MazePanel extends JPanel {
 		for (final MazeTile tile : myMaze.values()) {
 			tile.draw(g2d);
 		}
+		theGraphics.drawImage(FLAGS, (int) FLAG_POINT.getX(), 
+				                     (int) FLAG_POINT.getY(), null);
 		Player.getInstance().draw(g2d);
 		for (final Tavern tavern : myTaverns.values()) {
 			tavern.draw(g2d);
