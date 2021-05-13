@@ -6,28 +6,44 @@ package model;
  * @author Artem Potafiy
  *
  */
-public abstract class AbstractTrivia {
-    final private String myCorrectAnswer;
-    /**
-     * This is the prompt that is associated with the trivia question.
-     * 
-     */
-    final private String myPrompt;
-
-    protected AbstractTrivia(final String theCorrectAnswer, final String thePrompt) {
-        myCorrectAnswer = theCorrectAnswer.toLowerCase().trim();
-        myPrompt = thePrompt.trim();
+public abstract class AbstractTrivia implements Trivia {
+	
+    private final String myQuestion;
+    private final String myAnswerPrompt;
+    private final String myCorrectValue;
+    private final QuestionType myType;
+    private boolean myAnswered;
+    
+    protected AbstractTrivia(final String theCorrect, final String theQuestion, 
+    						 final String theAnswerPrompt, final QuestionType theType) {
+    	myQuestion = theQuestion;
+    	myAnswerPrompt = theAnswerPrompt;
+    	myCorrectValue = theCorrect;
+    	myType = theType;
     }
 
-    final public String getCorrectAnswer() {
-        return myCorrectAnswer;
+    public String getCorrectValue() {
+    	return myCorrectValue;
     }
 
-    final public String getPrompt() {
-        return myPrompt;
+    public String getQuestion() {
+        return myQuestion;
+    }
+    
+    public String getAnswerPrompt() {
+    	return myAnswerPrompt;
+    }
+    
+    public boolean isAnswered() {
+    	return myAnswered;
+    }
+    
+    public QuestionType getTriviaType() {
+    	return myType;
     }
 
-    final public boolean isCorrect(final String thePlayerChoice) {
-        return myCorrectAnswer.equals(thePlayerChoice.toLowerCase().trim());
+    public boolean isCorrect(final String theChoice) {
+    	myAnswered = theChoice.equalsIgnoreCase(myCorrectValue);
+    	return myAnswered;
     }
 }

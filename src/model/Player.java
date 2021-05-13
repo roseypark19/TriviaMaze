@@ -15,7 +15,7 @@ public class Player {
 	public static final int MIN_HEALTH = 0;
 	public static final int MAX_HEALTH = 3;
 	private static final int VELOCITY = 8;
-	private static final int CENTER_OFFSET = 4;
+	private static final int CENTER_OFFSET = 5;
 	private static final int MOVE_DISTANCE = 48;
 	private static Player uniqueInstance = new Player();
 	private int myVelX;
@@ -70,14 +70,6 @@ public class Player {
 	
 	public boolean isAdvanceComplete() {
 		return myDistance == 0;
-	}
-	
-	public int getX() {
-		return myX;
-	}
-	
-	public int getY() {
-		return myY;
 	}
 	
 	public void setMovement(final Movement theMove) {

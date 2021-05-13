@@ -6,31 +6,23 @@ package model;
  * @author Potafiy
  *
  */
-public class TrueFalse extends MultipleChoice {
+public class TrueFalse extends AbstractTrivia {
 
-    final private String TRUE = "true";
-    final private String FALSE = "false";
+	private static final String[] ANSWERS = {Boolean.TRUE.toString(), 
+			                                 Boolean.FALSE.toString()};
+	private static final String ANSWER_PROMPT = "Please select true or false below.";
 
-    public TrueFalse(String theCorrectAnswer, String thePrompt) {
-        super(theCorrectAnswer, thePrompt);
-        if (this.getCorrectAnswer().equals(TRUE) || this.getCorrectAnswer().equals(FALSE)) {
-            throw new IllegalArgumentException();
+    public TrueFalse(final String theCorrectBool, final String theQuestion) {
+        super(theCorrectBool, theQuestion, ANSWER_PROMPT, QuestionType.TRUEFALSE);
+        if (!theCorrectBool.equalsIgnoreCase(ANSWERS[0]) || 
+        	!theCorrectBool.equalsIgnoreCase(ANSWERS[1])) {
+        	throw new IllegalArgumentException("Invalid correct answer!");
         }
     }
 
-    public boolean getBooleanAnswer() {
-        if (this.getCorrectAnswer().equals(TRUE)) {
-            return true;
-        } else {
-            return false;
-        }
-    }
+	@Override
+	public String getAnswers() {
+		return ANSWERS[0] + "\n" + ANSWERS[1];
+	}
 
-    @Override
-    public void addWrongChoice(final String theWrongChoice) {
-        if (this.getWrongChoices().size() != 0) { // there can only be one wrong answer
-            throw new IllegalArgumentException("No more wrong choices can be added to TrueFalse trivia.");
-        }
-        this.addWrongChoice(theWrongChoice);
-    }
 }
