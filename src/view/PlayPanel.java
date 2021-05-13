@@ -100,18 +100,17 @@ public class PlayPanel extends JPanel {
 	private void populateAnswerMap() {
 		final JPanel multiChoice = new JPanel(new GridBagLayout());
 		multiChoice.setBackground(TRANSPARENT);
-		char letter = 'A';
-		for (int value = 1; value <= 4; value++) {
-			multiChoice.add(new MultiChoiceButton(letter++));
-			if (value < 4) {
-				multiChoice.add(Box.createHorizontalStrut(20));
+		for (char letter = 'A'; letter <= 'D'; letter++) {
+			multiChoice.add(new MultiChoiceButton(letter));
+			if (letter < 'D') {
+				multiChoice.add(Box.createHorizontalStrut(25));
 			}
 		}
 		myAnswerPanels.put(QuestionType.MULTICHOICE, multiChoice);
 		final JPanel trueFalse = new JPanel(new GridBagLayout());
 		trueFalse.setBackground(TRANSPARENT);
 		trueFalse.add(new TrueFalseButton(true));
-		trueFalse.add(Box.createHorizontalStrut(20));
+		trueFalse.add(Box.createHorizontalStrut(25));
 		trueFalse.add(new TrueFalseButton(false));
 		myAnswerPanels.put(QuestionType.TRUEFALSE, trueFalse);
 		final JPanel shortAns = new JPanel(new GridBagLayout());

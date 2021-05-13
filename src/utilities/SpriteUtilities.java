@@ -34,7 +34,7 @@ public class SpriteUtilities {
 	public static BufferedImage getGrass() {
 		BufferedImage grass = null;
 		try {
-			grass = ImageIO.read(new File("Grass.jpg"));
+			grass = ImageIO.read(new File("grass.png"));
 		} catch (final IOException ex) {
 			System.err.println("Could not load grass image!");
 		}
@@ -49,6 +49,38 @@ public class SpriteUtilities {
 			System.err.println("Could not load scroll image!");
 		}
 		return scroll;
+	}
+	
+	public static BufferedImage getTavern() {
+		BufferedImage tavern = null;
+		try {
+			tavern = ImageIO.read(new File("tavern.png"));
+		} catch (final IOException ex) {
+			System.err.println("Could not load tavern image!");
+		}
+		return tavern;
+	}
+	
+	public static BufferedImage getFlags() {
+		BufferedImage flag = null;
+		try {
+			flag = ImageIO.read(new File("flags.png"));
+		} catch (final IOException ex) {
+			System.err.println("Could not load tavern image!");
+		}
+		return flag;
+	}
+	
+	public static BufferedImage[] getMazeTiles() {
+		BufferedImage[] tiles = new BufferedImage[5];
+		try {
+			for (int i = 1; i <= tiles.length; i++) {
+				tiles[i - 1] = ImageIO.read(new File(String.format("mazetile%d.png", i)));
+			}
+		} catch (final IOException ex) {
+			System.err.println("Could not load tile image!");
+		}
+		return tiles;
 	}
 
 }
