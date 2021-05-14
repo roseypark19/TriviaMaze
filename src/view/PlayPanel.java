@@ -15,14 +15,16 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.swing.Box;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import components.AnswerField;
-import components.Heart;
 import components.KeyPadButton;
 import components.MultiChoiceButton;
 import components.QuestionField;
 import components.ShortAnswerField;
 import components.TrueFalseButton;
+import model.Maze;
 import model.Movement;
 import model.Player;
 import model.QuestionType;
@@ -31,6 +33,7 @@ public class PlayPanel extends JPanel {
 	
 	private static final int WIDTH = 530;
 	private static final int HEIGHT = MazePanel.HEIGHT;
+	private static final ImageIcon HEART = new ImageIcon("heart.png");
 	private static final Color BACKGROUND = new Color(217, 179, 130);
 	private static final Color TRANSPARENT = new Color(0, 0, 0, 0);
 	private static PlayPanel uniqueInstance = new PlayPanel();
@@ -38,7 +41,7 @@ public class PlayPanel extends JPanel {
 	private final QuestionField myQuestionField;
 	private final AnswerField myAnswerField;
 	private final Set<KeyPadButton> myKeyButtons;
-	private final List<Heart> myHearts;
+	private final List<JLabel> myHearts;
 	private final JPanel myNorthPanel;
 	private final JPanel myCenterPanel;
 	private final JPanel mySouthPanel;
@@ -145,7 +148,7 @@ public class PlayPanel extends JPanel {
 	
 	private void addHearts() {
 		for (int count = 1; count <= Player.MAX_HEALTH; count++) {
-			final Heart heart = new Heart();
+			final JLabel heart = new JLabel(HEART);
 			mySouthPanel.add(heart);
 			myHearts.add(heart);
 			if (count < Player.MAX_HEALTH) {
@@ -156,7 +159,7 @@ public class PlayPanel extends JPanel {
 	
 	public void updateKeyButtons() {
 		for (final KeyPadButton button : myKeyButtons) {
-			button.updateAppearance(MazePanel.getInstance().
+			button.updateAppearance(Maze.getInstance().
 					                isMovementLegal(button.getMovement()));
 		}
 	}

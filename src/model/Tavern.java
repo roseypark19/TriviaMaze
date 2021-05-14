@@ -8,7 +8,7 @@ import utilities.SpriteUtilities;
 
 public class Tavern {
 	
-	public static final int SIZE = 48;
+//	public static final int SIZE = 48;
 	private static final BufferedImage IMAGE = SpriteUtilities.getTavern();
 	private final Point myPoint;
 	
