@@ -82,5 +82,15 @@ public class SpriteUtilities {
 		}
 		return tiles;
 	}
+	
+	public static BufferedImage getWater() {
+		BufferedImage water = null;
+		try {
+			water = ImageIO.read(new File("water.png"));
+		} catch (final IOException ex) {
+			System.err.println("Could not load water image!");
+		}
+		return water;
+	}
 
 }
