@@ -1,18 +1,16 @@
 package model;
 
-public enum QuestionType {
+public enum TriviaType {
 	
 	MULTICHOICE("MC"),
 	
 	TRUEFALSE("TF"),
 	
-	NONE("N"),
-	
 	SHORTANSWER("SA");
 	
 	private final String myType;
 	
-	QuestionType(final String theType) {
+	TriviaType(final String theType) {
 		myType = theType;
 	}
 

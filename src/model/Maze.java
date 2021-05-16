@@ -49,6 +49,10 @@ public class Maze {
 		}
 	}
 	
+	public boolean hasTavern() {
+		return myTaverns.containsKey(myCurrTile.getPoint());
+	}
+	
 	public void draw(final Graphics2D theGraphics, final boolean theBaseFinished) {
 		if (!theBaseFinished) {
 			for (final MazeTile tile : myTiles.values()) {

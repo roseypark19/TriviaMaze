@@ -15,10 +15,9 @@ public class MultipleChoice extends AbstractTrivia {
 
     public MultipleChoice(final String theCorrectLetter, final String[] theAnswers,
     													 final String theQuestion) {
-        super(theCorrectLetter, theQuestion, ANSWER_PROMPT, QuestionType.MULTICHOICE);
-    	final char firstChar = theCorrectLetter.charAt(0);
-        if (theCorrectLetter.isEmpty() || theCorrectLetter.length() > 1 || 
-        		                          firstChar < 'A' || firstChar > 'D') {
+        super(theCorrectLetter, theQuestion, ANSWER_PROMPT, TriviaType.MULTICHOICE);
+        if (theCorrectLetter.length() != 1 || theCorrectLetter.charAt(0) < 'A' || 
+        		                              theCorrectLetter.charAt(0) > 'D') {
         	throw new IllegalArgumentException("Invalid correct letter!");
         }
         myAnswers = Arrays.copyOf(theAnswers, theAnswers.length);
