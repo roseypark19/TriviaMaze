@@ -27,7 +27,7 @@ public class MazePanel extends JPanel {
 	public static final int HEIGHT = 950;
 	private static MazePanel uniqueInstance = new MazePanel();
 	private final Timer myPlayerTimer;
-	private Timer myFadeTimer;
+	private final Timer myFadeTimer;
 	private int myFadeIndex;
 	private boolean myFaded;
 
