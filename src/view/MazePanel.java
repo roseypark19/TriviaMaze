@@ -89,7 +89,7 @@ public class MazePanel extends JPanel {
 //				Player.getInstance().incrementHealth();
 //				PlayPanel.getInstance().updateHearts();
 //			}
-//			PlayPanel.getInstance().updateKeyButtons();
+			PlayPanel.getInstance().updateKeyButtons();
 		}
 	}
 	
