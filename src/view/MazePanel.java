@@ -5,14 +5,15 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
-import java.util.Random;
-
 import javax.swing.JPanel;
 import javax.swing.Timer;
+
+import components.TriviaPanel;
 import controller.KeyboardHandler;
 import model.Maze;
 import model.Movement;
 import model.Player;
+import model.Trivia;
 import utilities.SpriteUtilities;
 
 public class MazePanel extends JPanel {
@@ -35,11 +36,12 @@ public class MazePanel extends JPanel {
 		setPreferredSize(new Dimension(WIDTH, HEIGHT));
 		setFocusable(true);
 		setBackground(Color.BLACK);
-		addKeyListener(new KeyboardHandler(this));
+		addKeyListener(new KeyboardHandler());
 		myPlayerTimer = new Timer(90, theEvent -> advancePlayer());
-		myFadeTimer = new Timer(150, theEvent -> executeFade()); 
+		myFadeTimer = new Timer(75, theEvent -> executeFade()); 
 		myFaded = false;
 		myFadeIndex = 0;
+		setFocusable(true);
 		requestFocus();
 	}
 	
@@ -63,11 +65,24 @@ public class MazePanel extends JPanel {
 	}
 	
 	public void initializeAdvancement(final Movement theMove) {
-		if (!myPlayerTimer.isRunning() && Maze.getInstance().isMovementLegal(theMove)) {
+		final boolean reqs = !myPlayerTimer.isRunning() && 
+				             Maze.getInstance().isMovementLegal(theMove) &&
+				             !TriviaPanel.getInstance().isAsking();
+		if (reqs) {
 			Player.getInstance().setMovement(theMove);
 			Maze.getInstance().advanceCurrentTile(theMove);
 			myPlayerTimer.start();
 		}
+	}
+	
+	public void restoreVisibility(final boolean theAnsweredCorrectly) {
+		myFadeTimer.start();
+		if (!theAnsweredCorrectly) {
+			myPlayerTimer.setInitialDelay(800);
+			initializeAdvancement(Player.getInstance().getCurrentMovement().getOpposite());
+		}
+		myFadeTimer.setInitialDelay(0);
+		myPlayerTimer.setInitialDelay(0);
 	}
 	
 	private void advancePlayer() {
@@ -75,6 +90,19 @@ public class MazePanel extends JPanel {
 		repaint();
 		if (Player.getInstance().isAdvanceComplete()) {
 			myPlayerTimer.stop();
+			PlayPanel.getInstance().updateKeyButtons();
+			if (Maze.getInstance().hasTavern()) {
+				final Trivia triv = Maze.getInstance().getTavernTrivia();
+				if (!triv.isAnswered()) {
+					myFadeTimer.start();
+//					myFadeTimer.setInitialDelay(1000);
+					TriviaPanel.getInstance().setupNewTrivia(triv);
+				}
+			} else if (Maze.getInstance().hasWater()) {
+				Player.getInstance().incrementHealth();
+				PlayPanel.getInstance().updateHearts();
+				Maze.getInstance().removeWater();
+			}
 			// THESE FUNCTIONALITIES ARE ONLY HERE FOR TESTING AND WILL NOT BE IMPLEMENTED HERE!
 			// UNCOMMENT THESE TO TEST OUT FADE FEATURES AND HEART BEATS.
 //			if (Maze.getInstance().hasTavern()) {
@@ -89,7 +117,6 @@ public class MazePanel extends JPanel {
 //				Player.getInstance().incrementHealth();
 //				PlayPanel.getInstance().updateHearts();
 //			}
-			PlayPanel.getInstance().updateKeyButtons();
 		}
 	}
 	

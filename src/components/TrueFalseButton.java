@@ -28,7 +28,8 @@ public class TrueFalseButton extends JButton {
 		setFont(FONT);
 		setBorder(BorderFactory.createLineBorder(Color.BLACK, BORDER_WIDTH));
 		setFocusable(false);
-		// action listener to be added once QA functionality is implemented
+		addActionListener(theEvent -> 
+		               TriviaPanel.getInstance().processResponse(String.valueOf(myBool)));
 	}
 
 }

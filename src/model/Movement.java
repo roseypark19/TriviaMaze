@@ -39,5 +39,16 @@ public enum Movement {
 		}
 		return opposite;
 	}
+	
+	public static Movement valueof(final char theChar) {
+		Movement move = DOWN;
+		for (final Movement movement : Movement.values()) {
+			if (movement.myLetter == theChar) {
+				move = movement;
+				break;
+			}
+		}
+		return move;
+	}
 
 }

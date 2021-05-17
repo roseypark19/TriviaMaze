@@ -45,7 +45,7 @@ public class PlayPanel extends JPanel {
 	private static final Color TRANSPARENT = new Color(0, 0, 0, 0);
 	private static PlayPanel uniqueInstance = new PlayPanel();
 	private final Map<TriviaType, JPanel> myAnswerPanels;
-	private final TriviaPanel myQuestionPanel;
+//	private final TriviaPanel myQuestionPanel;
 	private final Set<KeyPadButton> myKeyButtons;
 	private final List<JLabel> myHearts;
 	private final JPanel myNorthPanel;
@@ -61,7 +61,7 @@ public class PlayPanel extends JPanel {
 		setBackground(BACKGROUND);
 		setLayout(new BorderLayout());
 		myNorthPanel = new JPanel(new GridBagLayout());
-		myQuestionPanel = new TriviaPanel();
+//		myQuestionPanel = new TriviaPanel();
 		myAnswerPanels = new HashMap<>();
 		myNoTriviaPanel = new JPanel();
 		configureNorthPanel();
@@ -88,7 +88,7 @@ public class PlayPanel extends JPanel {
 	private void configureNorthPanel() {
 		myNorthPanel.setPreferredSize(new Dimension(WIDTH, 750));
 		myNorthPanel.setBackground(TRANSPARENT);
-		myNorthPanel.add(myQuestionPanel);
+		myNorthPanel.add(TriviaPanel.getInstance());
 		populateAnswerMap();
 		clearAnswerPanel();
 	}
@@ -181,6 +181,7 @@ public class PlayPanel extends JPanel {
 		}
 		myAnswerPanel = myAnswerPanels.get(theType);
 		myNorthPanel.add(myAnswerPanel, GB_CONSTRAINTS);
+		repaint();
 	}
 	
 	public void clearAnswerPanel() {
@@ -192,6 +193,7 @@ public class PlayPanel extends JPanel {
 		}
 		myAnswerPanel = myNoTriviaPanel;
 		myNorthPanel.add(myAnswerPanel, GB_CONSTRAINTS);
+		repaint();
 	}
 	
 	public void initializeHeartBeat() {

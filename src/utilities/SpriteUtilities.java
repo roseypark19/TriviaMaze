@@ -32,7 +32,7 @@ public class SpriteUtilities {
 	}
 	
 	public static BufferedImage[] getFades() {
-		BufferedImage[] fades = new BufferedImage[5];
+		BufferedImage[] fades = new BufferedImage[4];
 		try {
 			for (int i = 1; i <= fades.length; i++) {
 				fades[i - 1] = ImageIO.read(new File(String.format("%d.png", i * 10)));

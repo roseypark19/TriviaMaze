@@ -53,6 +53,31 @@ public class Maze {
 		return myTaverns.containsKey(myCurrTile.getPoint());
 	}
 	
+	public boolean hasWater() {
+		return myWaters.contains(myCurrTile.getPoint());
+	}
+	
+	public void removeTavern() {
+		if (!myTaverns.containsKey(myCurrTile.getPoint())) {
+			throw new IllegalArgumentException("No tavern on this maze tile!");
+		}
+		myTaverns.remove(myCurrTile.getPoint());
+	}
+	
+	public void removeWater() {
+		if (!myWaters.contains(myCurrTile.getPoint())) {
+			throw new IllegalArgumentException("No water on this maze tile!");
+		}
+		myWaters.remove(myCurrTile.getPoint());
+	}
+	
+	public Trivia getTavernTrivia() {
+		if (!hasTavern()) {
+			throw new IllegalArgumentException("No tavern on this maze tile!");
+		}
+		return myTaverns.get(myCurrTile.getPoint()).getTrivia();
+	}
+	
 	public void draw(final Graphics2D theGraphics, final boolean theBaseFinished) {
 		if (!theBaseFinished) {
 			for (final MazeTile tile : myTiles.values()) {
@@ -72,6 +97,7 @@ public class Maze {
 	}
 	
 	private Map<Point, Tavern> getTavernMap() {
+		final Trivia mockTrivia = new TrueFalse(String.valueOf(Boolean.TRUE), "Is this a test?");
 		final Map<Point, Tavern> tavernMap = new HashMap<>();
 		final List<Point> points = getAlternatingFirstRow();
 		for (int row = 0; row < MazeGenerator.SIZE; row += 2) {
@@ -81,7 +107,7 @@ public class Maze {
 			}
 			for (final Point pt : randPts) {
 				final Point newPoint = new Point(pt);
-				tavernMap.put(newPoint, new Tavern(newPoint));
+				tavernMap.put(newPoint, new Tavern(newPoint, mockTrivia));
 				points.add(pt);
 			}
 			for (final Point pt : points) {
