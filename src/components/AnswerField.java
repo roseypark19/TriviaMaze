@@ -10,6 +10,10 @@ import javax.swing.SwingConstants;
 
 public class AnswerField extends JTextField {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -2610360058701219697L;
 	private static final int WIDTH = 475;
 	private static final int HEIGHT = 250;
 	private static final int BORDER_WIDTH = 4;

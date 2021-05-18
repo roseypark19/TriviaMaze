@@ -106,12 +106,8 @@ public class MazeGenerator {
 			final int second = edge.getSecond();
 			final int firstGroup = finder.find(vertexMapping.get(first));
 			final int secondGroup = finder.find(vertexMapping.get(second));
-			boolean isCycle = true;
 			if (firstGroup != secondGroup) { // does not create a cycle
 				finder.unify(firstGroup, secondGroup);
-				isCycle = false;
-			}
-			if (!isCycle) {
 				mst.add(edge);
 			}
 		}

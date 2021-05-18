@@ -10,15 +10,13 @@ import java.util.Arrays;
  */
 public class MultipleChoice extends AbstractTrivia {
 	
-	private static final String ANSWER_PROMPT = "Please select an option below.\n";
 	private final String[] myAnswers;
 
     public MultipleChoice(final String theCorrectLetter, final String[] theAnswers,
     													 final String theQuestion) {
-        super(theCorrectLetter, theQuestion, ANSWER_PROMPT, QuestionType.MULTICHOICE);
-    	final char firstChar = theCorrectLetter.charAt(0);
-        if (theCorrectLetter.isEmpty() || theCorrectLetter.length() > 1 || 
-        		                          firstChar < 'A' || firstChar > 'D') {
+        super(theCorrectLetter, theQuestion, TriviaType.MULTICHOICE);
+        if (theCorrectLetter.length() != 1 || theCorrectLetter.charAt(0) < 'A' || 
+        		                              theCorrectLetter.charAt(0) > 'D') {
         	throw new IllegalArgumentException("Invalid correct letter!");
         }
         myAnswers = Arrays.copyOf(theAnswers, theAnswers.length);

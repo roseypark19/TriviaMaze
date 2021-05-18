@@ -10,11 +10,10 @@ public class TrueFalse extends AbstractTrivia {
 
 	private static final String[] ANSWERS = {Boolean.TRUE.toString(), 
 			                                 Boolean.FALSE.toString()};
-	private static final String ANSWER_PROMPT = "Please select true or false below.";
 
     public TrueFalse(final String theCorrectBool, final String theQuestion) {
-        super(theCorrectBool, theQuestion, ANSWER_PROMPT, QuestionType.TRUEFALSE);
-        if (!theCorrectBool.equalsIgnoreCase(ANSWERS[0]) || 
+        super(theCorrectBool, theQuestion, TriviaType.TRUEFALSE);
+        if (!theCorrectBool.equalsIgnoreCase(ANSWERS[0]) && 
         	!theCorrectBool.equalsIgnoreCase(ANSWERS[1])) {
         	throw new IllegalArgumentException("Invalid correct answer!");
         }
