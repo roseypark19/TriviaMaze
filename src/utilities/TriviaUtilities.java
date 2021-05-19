@@ -16,7 +16,9 @@ import model.TriviaType;
 
 public class TriviaUtilities {
 
-    private static List<Trivia> triviaList = new LinkedList<>();
+    final private static List<Trivia> triviaList = new LinkedList<>();
+
+    final private static TriviaFactory triviaFactory = new TriviaFactory();
 
 //    public static void main(String[] args) {
 //        var s = getTriviaList();
@@ -72,7 +74,7 @@ public class TriviaUtilities {
         while (theSet.next()) {
             final String question = theSet.getString(queryQuestion);
             final String correct = theSet.getString(queryCorrect);
-            triviaList.add(TriviaFactory.createTrivia(correct, question, TriviaType.SHORTANSWER, null));
+            triviaList.add(triviaFactory.createTrivia(correct, question, TriviaType.SHORTANSWER, null));
         }
     }
 
@@ -91,7 +93,7 @@ public class TriviaUtilities {
             final String correct = theSet.getString(queryCorrectLetter);
             final String answers = theSet.getString(queryAnswers);
             final String[] parsedAnswers = parseMultiChoiceAnswers(answers);
-            triviaList.add(TriviaFactory.createTrivia(correct, question, TriviaType.MULTICHOICE, parsedAnswers));
+            triviaList.add(triviaFactory.createTrivia(correct, question, TriviaType.MULTICHOICE, parsedAnswers));
         }
     }
 
@@ -107,7 +109,7 @@ public class TriviaUtilities {
         while (theSet.next()) {
             final String question = theSet.getString(queryQuestion);
             final String correct = theSet.getString(queryCorrect);
-            triviaList.add(TriviaFactory.createTrivia(correct, question, TriviaType.TRUEFALSE, null));
+            triviaList.add(triviaFactory.createTrivia(correct, question, TriviaType.TRUEFALSE, null));
         }
     }
 

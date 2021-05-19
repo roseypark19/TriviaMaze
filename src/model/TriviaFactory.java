@@ -11,7 +11,7 @@ public class TriviaFactory {
      *                    choice]
      * @return
      */
-    public static Trivia createTrivia(final String theCorrect, final String theQuestion, final TriviaType theType,
+    public Trivia createTrivia(final String theCorrect, final String theQuestion, final TriviaType theType,
             final String[] theAnswers) {
         Trivia trivia = null;
 
