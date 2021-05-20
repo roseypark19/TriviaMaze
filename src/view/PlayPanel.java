@@ -37,15 +37,14 @@ public class PlayPanel extends JPanel {
 	 */
 	private static final long serialVersionUID = 2115518979921196291L;
 	private static final GridBagConstraints GB_CONSTRAINTS = new GridBagConstraints();
-	private static final int WIDTH = 530;
-	private static final int HEIGHT = MazePanel.HEIGHT;
+	public static final int WIDTH = 530;
+	public static final int HEIGHT = MazePanel.HEIGHT;
 	private static final int MAX_BEATS = 5;
 	private static final ImageIcon HEART = new ImageIcon("heart.png");
 	private static final Color BACKGROUND = new Color(217, 179, 130);
 	private static final Color TRANSPARENT = new Color(0, 0, 0, 0);
 	private static PlayPanel uniqueInstance = new PlayPanel();
 	private final Map<TriviaType, JPanel> myAnswerPanels;
-//	private final TriviaPanel myQuestionPanel;
 	private final Set<KeyPadButton> myKeyButtons;
 	private final List<JLabel> myHearts;
 	private final JPanel myNorthPanel;
@@ -61,7 +60,6 @@ public class PlayPanel extends JPanel {
 		setBackground(BACKGROUND);
 		setLayout(new BorderLayout());
 		myNorthPanel = new JPanel(new GridBagLayout());
-//		myQuestionPanel = new TriviaPanel();
 		myAnswerPanels = new HashMap<>();
 		myNoTriviaPanel = new JPanel();
 		configureNorthPanel();

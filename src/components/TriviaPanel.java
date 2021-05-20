@@ -7,6 +7,7 @@ import java.awt.Font;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.JPanel;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.Timer;
 
@@ -24,22 +25,21 @@ public class TriviaPanel extends JPanel {
 	private static final long serialVersionUID = 1600296983489784055L;
 	// images to be added later
 	private static final String CORRECT = "Correct! Great job!";
-	private static final String INCORRECT = "Argh... not quite! Better luck next time!";
-	private static final Color BUBBLE_COLOR = new Color(237, 224, 234);
-	private static final Font FONT = new Font(Font.MONOSPACED, Font.PLAIN, 15);
+	private static final String INCORRECT = "Argh... not quite! Better luck next time.";
+	private static final Font FONT = new Font(Font.MONOSPACED, Font.BOLD, 20);
 	private static final int WIDTH = 475;
 	private static final int HEIGHT = 595;
 	private static final int BORDER_WIDTH = 4;
 	private static TriviaPanel uniqueInstance = new TriviaPanel();
 	private final Timer mySetupTimer;
 	private final Timer myTeardownTimer;
-	private JTextField myTriviaField;
+	private JTextArea myTriviaArea;
 	private Trivia myCurrentTrivia;
 	private boolean myDisplayingTrivia;
 	
 	private TriviaPanel() {
-		myTriviaField = new JTextField();
-		configureTriviaField();	
+		myTriviaArea = new JTextArea();
+		configureTriviaArea();	
 		myDisplayingTrivia = false;
 		mySetupTimer = new Timer(0, theEvent -> displayTrivia());
 		mySetupTimer.setInitialDelay(1000);
@@ -52,7 +52,7 @@ public class TriviaPanel extends JPanel {
 		setFocusable(false);
 		setBorder(BorderFactory.createLineBorder(Color.BLACK, BORDER_WIDTH));
 		add(Box.createRigidArea(new Dimension(WIDTH, 8)));
-		add(myTriviaField, FlowLayout.CENTER);
+		add(myTriviaArea, FlowLayout.CENTER);
 	}
 	
 	public static synchronized TriviaPanel getInstance() {
@@ -66,16 +66,16 @@ public class TriviaPanel extends JPanel {
 	public void setupNewTrivia(final Trivia theTrivia) {
 		myDisplayingTrivia = true;
 		myCurrentTrivia = theTrivia;
-		myTriviaField.setText(theTrivia.getQuestion());
+		myTriviaArea.setText(theTrivia.getQuestion());
 		mySetupTimer.start();
 	}
 	
 	public void processResponse(final String theResponse) {
 		if (myCurrentTrivia.isCorrect(theResponse)) {
-			myTriviaField.setText(CORRECT);
+			myTriviaArea.setText(CORRECT);
 			Maze.getInstance().removeTavern();
 		} else {
-			myTriviaField.setText(INCORRECT);
+			myTriviaArea.setText(INCORRECT);
 			PlayPanel.getInstance().initializeHeartBeat();
 			Player.getInstance().decrementHealth();
 		}
@@ -83,26 +83,28 @@ public class TriviaPanel extends JPanel {
 	}
 	
 	private void tearDownTrivia() {
-		myTriviaField.setVisible(false);
+		myTriviaArea.setVisible(false);
 		revalidate();
 		PlayPanel.getInstance().clearAnswerPanel();
 		myDisplayingTrivia = false;
 		MazePanel.getInstance().restoreVisibility(myCurrentTrivia.isAnswered());
 	}
 	
-	private void configureTriviaField() {
-		myTriviaField.setEditable(false);
-		myTriviaField.setPreferredSize(new Dimension(WIDTH - 40, HEIGHT / 3));
-		myTriviaField.setBorder(BorderFactory.createLineBorder(Color.BLACK, 3));
-		myTriviaField.setBackground(BUBBLE_COLOR);
-		myTriviaField.setFont(FONT);
-		myTriviaField.setEditable(false);
-		myTriviaField.setFocusable(false);
-		myTriviaField.setVisible(false);
+	private void configureTriviaArea() {
+		myTriviaArea.setEditable(false);
+		myTriviaArea.setPreferredSize(new Dimension(WIDTH - 40, HEIGHT / 3));
+		myTriviaArea.setBorder(BorderFactory.createLineBorder(Color.BLACK, 3));
+		myTriviaArea.setBackground(Color.WHITE);
+		myTriviaArea.setFont(FONT);
+		myTriviaArea.setLineWrap(true);
+		myTriviaArea.setWrapStyleWord(true);
+		myTriviaArea.setEditable(false);
+		myTriviaArea.setFocusable(false);
+		myTriviaArea.setVisible(false);
 	}
 	
 	private void displayTrivia() {
-		myTriviaField.setVisible(true);
+		myTriviaArea.setVisible(true);
 		revalidate();
 		PlayPanel.getInstance().updateAnswerPanel(myCurrentTrivia.getTriviaType());
 	}

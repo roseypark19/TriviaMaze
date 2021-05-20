@@ -66,7 +66,7 @@ public class MazePanel extends JPanel {
 	
 	public void initializeAdvancement(final Movement theMove) {
 		final boolean reqs = !myPlayerTimer.isRunning() && 
-				             Maze.getInstance().isMovementLegal(theMove) &&
+				             Maze.getInstance().isMovementLegal(theMove) && 
 				             !TriviaPanel.getInstance().isAsking();
 		if (reqs) {
 			Player.getInstance().setMovement(theMove);
@@ -95,7 +95,6 @@ public class MazePanel extends JPanel {
 				final Trivia triv = Maze.getInstance().getTavernTrivia();
 				if (!triv.isAnswered()) {
 					myFadeTimer.start();
-//					myFadeTimer.setInitialDelay(1000);
 					TriviaPanel.getInstance().setupNewTrivia(triv);
 				}
 			} else if (Maze.getInstance().hasWater()) {
@@ -103,20 +102,6 @@ public class MazePanel extends JPanel {
 				PlayPanel.getInstance().updateHearts();
 				Maze.getInstance().removeWater();
 			}
-			// THESE FUNCTIONALITIES ARE ONLY HERE FOR TESTING AND WILL NOT BE IMPLEMENTED HERE!
-			// UNCOMMENT THESE TO TEST OUT FADE FEATURES AND HEART BEATS.
-//			if (Maze.getInstance().hasTavern()) {
-//				myFadeTimer.start();
-//			}
-//			Random rand = new Random();
-//			int random = rand.nextInt(2);
-//			if (random == 0) {
-//				PlayPanel.getInstance().initializeHeartBeat();
-//				Player.getInstance().decrementHealth();
-//			} else {
-//				Player.getInstance().incrementHealth();
-//				PlayPanel.getInstance().updateHearts();
-//			}
 		}
 	}
 	
