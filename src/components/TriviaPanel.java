@@ -8,12 +8,12 @@ import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
-import javax.swing.JTextField;
 import javax.swing.Timer;
 
 import model.Maze;
 import model.Player;
 import model.Trivia;
+import model.TriviaType;
 import view.MazePanel;
 import view.PlayPanel;
 
@@ -66,11 +66,16 @@ public class TriviaPanel extends JPanel {
 	public void setupNewTrivia(final Trivia theTrivia) {
 		myDisplayingTrivia = true;
 		myCurrentTrivia = theTrivia;
-		myTriviaArea.setText(theTrivia.getQuestion());
+		String question = myCurrentTrivia.getQuestion();
+		if (myCurrentTrivia.getTriviaType() == TriviaType.MULTICHOICE) {
+			question += "\n" + myCurrentTrivia.getAnswers();
+		}
+		myTriviaArea.setText(question);
 		mySetupTimer.start();
 	}
 	
 	public void processResponse(final String theResponse) {
+		MazePanel.getInstance().grabFocus();
 		if (myCurrentTrivia.isCorrect(theResponse)) {
 			myTriviaArea.setText(CORRECT);
 			Maze.getInstance().removeTavern();

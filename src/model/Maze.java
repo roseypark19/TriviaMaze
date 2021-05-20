@@ -14,6 +14,7 @@ import java.util.Set;
 
 import utilities.MazeGenerator;
 import utilities.SpriteUtilities;
+import utilities.TriviaUtilities;
 
 public class Maze {
 	
@@ -97,7 +98,7 @@ public class Maze {
 	}
 	
 	private Map<Point, Tavern> getTavernMap() {
-		final Trivia mockTrivia = new TrueFalse(String.valueOf(Boolean.TRUE), "Is this a test?");
+		final List<Trivia> triviaList = TriviaUtilities.getTriviaList();
 		final Map<Point, Tavern> tavernMap = new HashMap<>();
 		final List<Point> points = getAlternatingFirstRow();
 		for (int row = 0; row < MazeGenerator.SIZE; row += 2) {
@@ -107,7 +108,7 @@ public class Maze {
 			}
 			for (final Point pt : randPts) {
 				final Point newPoint = new Point(pt);
-				tavernMap.put(newPoint, new Tavern(newPoint, mockTrivia));
+				tavernMap.put(newPoint, new Tavern(newPoint, triviaList.remove(0)));
 				points.add(pt);
 			}
 			for (final Point pt : points) {
