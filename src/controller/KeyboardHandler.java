@@ -7,11 +7,25 @@ import model.Movement;
 import view.MazePanel;
 
 public class KeyboardHandler extends KeyAdapter {
+	
+	private boolean myReleased;
+	
+	public KeyboardHandler() {
+		myReleased = true;
+	}
 
 	@Override
 	public void keyTyped(final KeyEvent theEvent) {
-		MazePanel.getInstance().initializeAdvancement(
-				          Movement.valueof(Character.toUpperCase(theEvent.getKeyChar())));
+		if (myReleased) {
+			MazePanel.getInstance().initializeAdvancement(
+			          Movement.valueof(Character.toUpperCase(theEvent.getKeyChar())));
+			myReleased = false;
+		}	
+	}
+	
+	@Override
+	public void keyReleased(final KeyEvent theEvent) {
+		myReleased = true;
 	}
 
 }

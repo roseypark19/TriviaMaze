@@ -5,7 +5,7 @@ import view.GameFrame;
 public class GameLauncher {
 	
 	public GameLauncher() {
-		new GameFrame();
+		GameFrame.getInstance();
 	}
 	
 	public static void main(final String[] theArgs) {

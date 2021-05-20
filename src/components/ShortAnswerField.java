@@ -25,6 +25,9 @@ public class ShortAnswerField extends JTextField {
 		setForeground(Color.BLACK);
 		setFont(FONT);
 		setBorder(BorderFactory.createLineBorder(Color.BLACK, BORDER_WIDTH));
-		// action listener to be added once QA functionality is implemented
+		addActionListener(theEvent -> {
+			TriviaPanel.getInstance().processResponse(getText());
+			setText(null);
+		});
 	}
 }
