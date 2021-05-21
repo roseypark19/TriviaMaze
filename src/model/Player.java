@@ -17,7 +17,6 @@ public class Player {
 	private static final int VELOCITY = 8;
 	private static final int CENTER_OFFSET = 5;
 	private static final int MOVE_DISTANCE = 48;
-	private static Player uniqueInstance = new Player();
 	private int myVelX;
 	private int myVelY;
 	private int myX;
@@ -28,7 +27,7 @@ public class Player {
 	private Movement myMovement;
 	private BufferedImage mySprite;
 	
-	private Player() {
+	public Player() {
 		final Point entry = MazeGenerator.getEntryPoint();
 		myX = (int) (entry.getX() + CENTER_OFFSET);
 		myY = (int) (entry.getY() + CENTER_OFFSET);
@@ -37,10 +36,6 @@ public class Player {
 		mySprite = SPRITE_MAP.get(myMovement)[myMovementIndex];
 		myDistance = 0;
 		myHealth = MAX_HEALTH;
-	}
-	
-	public static synchronized Player getInstance() {
-		return uniqueInstance;
 	}
 	
 	public void draw(final Graphics2D theGraphics) {

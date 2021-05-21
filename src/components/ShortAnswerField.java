@@ -7,6 +7,8 @@ import java.awt.Font;
 import javax.swing.BorderFactory;
 import javax.swing.JTextField;
 
+import view.TriviaPanel;
+
 public class ShortAnswerField extends JTextField {
 
 	/**
@@ -18,15 +20,16 @@ public class ShortAnswerField extends JTextField {
 	private static final Font FONT = new Font(Font.MONOSPACED, Font.PLAIN, 30);
 	private static final int BORDER_WIDTH = 3;
 	
-	public ShortAnswerField() {
+	public ShortAnswerField(final TriviaPanel theTrivPan) {
 		setPreferredSize(new Dimension(WIDTH, HEIGHT));
 		setFocusable(true);
 		setEditable(true);
 		setForeground(Color.BLACK);
 		setFont(FONT);
 		setBorder(BorderFactory.createLineBorder(Color.BLACK, BORDER_WIDTH));
+		setHorizontalAlignment(JTextField.CENTER);
 		addActionListener(theEvent -> {
-			TriviaPanel.getInstance().processResponse(getText());
+			theTrivPan.processResponse(getText());
 			setText(null);
 		});
 	}

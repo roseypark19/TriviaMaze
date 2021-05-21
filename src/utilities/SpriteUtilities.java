@@ -104,5 +104,15 @@ public class SpriteUtilities {
 		}
 		return water;
 	}
+	
+	public static BufferedImage getTriviaBackground() {
+		BufferedImage insideTav = null;
+		try {
+			insideTav = ImageIO.read(new File("insideTavern.png"));
+		} catch (final IOException ex) {
+			System.err.println("Could not load trivia panel image!");
+		}
+		return insideTav;
+	}
 
 }
