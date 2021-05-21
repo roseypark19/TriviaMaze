@@ -7,6 +7,8 @@ import java.awt.Font;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 
+import view.TriviaPanel;
+
 public class MultiChoiceButton extends JButton {
 	
 	/**
@@ -19,7 +21,7 @@ public class MultiChoiceButton extends JButton {
 	private static final Font FONT = new Font(Font.MONOSPACED, Font.BOLD, 40);
 	private final char myChoice;
 	
-	public MultiChoiceButton(final char theChoice) {
+	public MultiChoiceButton(final char theChoice, final TriviaPanel theTrivPan) {
 		super(String.valueOf(theChoice));
 		myChoice = theChoice;
 		setPreferredSize(new Dimension(WIDTH, HEIGHT));
@@ -28,8 +30,7 @@ public class MultiChoiceButton extends JButton {
 		setFont(FONT);
 		setBorder(BorderFactory.createLineBorder(Color.BLACK, BORDER_WIDTH));
 		setFocusable(false);
-		addActionListener(theEvent -> 
-		             TriviaPanel.getInstance().processResponse(String.valueOf(myChoice)));
+		addActionListener(theEvent -> theTrivPan.processResponse(String.valueOf(myChoice)));
 	}
 
 }

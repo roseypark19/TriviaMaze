@@ -4,12 +4,12 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
-import components.TriviaPanel;
-import controller.KeyboardHandler;
 import model.Maze;
 import model.Movement;
 import model.Player;
@@ -26,17 +26,22 @@ public class MazePanel extends JPanel {
 	private static final BufferedImage GRASS = SpriteUtilities.getGrass();
 	public static final int WIDTH = 957;
 	public static final int HEIGHT = 950;
-	private static MazePanel uniqueInstance = new MazePanel();
 	private final Timer myPlayerTimer;
 	private final Timer myFadeTimer;
+	private final Player myPlayer;
+	private final Maze myMaze;
+	private PlayPanel myPlayPanel;
+	private TriviaPanel myTriviaPanel;
 	private int myFadeIndex;
 	private boolean myFaded;
 
-	private MazePanel() {
+	public MazePanel(final Player thePlayer, final Maze theMaze) {
 		setPreferredSize(new Dimension(WIDTH, HEIGHT));
 		setFocusable(true);
 		setBackground(Color.BLACK);
-		addKeyListener(new KeyboardHandler());
+		addKeyListener(new KeyboardListener());
+		myPlayer = thePlayer;
+		myMaze = theMaze;
 		myPlayerTimer = new Timer(90, theEvent -> advancePlayer());
 		myFadeTimer = new Timer(75, theEvent -> executeFade()); 
 		myFaded = false;
@@ -45,8 +50,12 @@ public class MazePanel extends JPanel {
 		requestFocus();
 	}
 	
-	public static synchronized MazePanel getInstance() {
-		return uniqueInstance;
+	public void connectPanels(final PlayPanel thePlayPan, final TriviaPanel theTrivPan) {
+		if (myPlayPanel != null || myTriviaPanel != null) {
+			throw new IllegalStateException("Panel connections have already been made!");
+		}
+		myPlayPanel = thePlayPan;
+		myTriviaPanel = theTrivPan;
 	}
 	
 	@Override
@@ -54,9 +63,9 @@ public class MazePanel extends JPanel {
 		super.paintComponent(theGraphics);
 		final Graphics2D g2d = (Graphics2D) theGraphics;
 		g2d.drawImage(GRASS, null, 0, 0);
-		Maze.getInstance().draw(g2d, false);
-		Player.getInstance().draw(g2d);
-		Maze.getInstance().draw(g2d, true);
+		myMaze.draw(g2d, false);
+		myPlayer.draw(g2d);
+		myMaze.draw(g2d, true);
 		if (myFadeTimer.isRunning()) {
 			for (int index = 0; index <= myFadeIndex; index++) {
 				g2d.drawImage(FADES[index], null, 0, 0);
@@ -66,11 +75,11 @@ public class MazePanel extends JPanel {
 	
 	public void initializeAdvancement(final Movement theMove) {
 		final boolean reqs = !myPlayerTimer.isRunning() && 
-				             Maze.getInstance().isMovementLegal(theMove) && 
-				             !TriviaPanel.getInstance().isAsking();
+				             myMaze.isMovementLegal(theMove) && 
+				             !myTriviaPanel.isAsking();
 		if (reqs) {
-			Player.getInstance().setMovement(theMove);
-			Maze.getInstance().advanceCurrentTile(theMove);
+			myPlayer.setMovement(theMove);
+			myMaze.advanceCurrentTile(theMove);
 			myPlayerTimer.start();
 		}
 	}
@@ -79,28 +88,28 @@ public class MazePanel extends JPanel {
 		myFadeTimer.start();
 		if (!theAnsweredCorrectly) {
 			myPlayerTimer.setInitialDelay(800);
-			initializeAdvancement(Player.getInstance().getCurrentMovement().getOpposite());
+			initializeAdvancement(myPlayer.getCurrentMovement().getOpposite());
 		}
 		myFadeTimer.setInitialDelay(0);
 		myPlayerTimer.setInitialDelay(0);
 	}
 	
 	private void advancePlayer() {
-		Player.getInstance().move();
+		myPlayer.move();
 		repaint();
-		if (Player.getInstance().isAdvanceComplete()) {
+		if (myPlayer.isAdvanceComplete()) {
 			myPlayerTimer.stop();
-			PlayPanel.getInstance().updateKeyButtons();
-			if (Maze.getInstance().hasTavern()) {
-				final Trivia triv = Maze.getInstance().getTavernTrivia();
+			myPlayPanel.updateKeyButtons();
+			if (myMaze.hasTavern()) {
+				final Trivia triv = myMaze.getTavernTrivia();
 				if (!triv.isAnswered()) {
 					myFadeTimer.start();
-					TriviaPanel.getInstance().setupNewTrivia(triv);
+					myTriviaPanel.setupNewTrivia(triv);
 				}
-			} else if (Maze.getInstance().hasWater()) {
-				Player.getInstance().incrementHealth();
-				PlayPanel.getInstance().updateHearts();
-				Maze.getInstance().removeWater();
+			} else if (myMaze.hasWater()) {
+				myPlayer.incrementHealth();
+				myPlayPanel.updateHearts();
+				myMaze.removeWater();
 			}
 		}
 	}
@@ -117,6 +126,29 @@ public class MazePanel extends JPanel {
 			myFadeTimer.stop();
 			myFaded = !myFaded;
 			myFadeIndex = myFaded ? FADES.length - 1 : 0;
+		}
+	}
+	
+	private class KeyboardListener extends KeyAdapter {
+		
+		private boolean myReleased;
+		
+		public KeyboardListener() {
+			myReleased = true;
+		}
+
+		@Override
+		public void keyTyped(final KeyEvent theEvent) {
+			if (myReleased) {
+				initializeAdvancement(Movement.valueof(Character.toUpperCase(
+													   theEvent.getKeyChar())));
+				myReleased = false;
+			}	
+		}
+		
+		@Override
+		public void keyReleased(final KeyEvent theEvent) {
+			myReleased = true;
 		}
 	}
 	

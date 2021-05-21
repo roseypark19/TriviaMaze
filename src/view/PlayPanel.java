@@ -23,7 +23,6 @@ import javax.swing.Timer;
 import components.KeyPadButton;
 import components.MultiChoiceButton;
 import components.ShortAnswerField;
-import components.TriviaPanel;
 import components.TrueFalseButton;
 import model.Maze;
 import model.Movement;
@@ -43,39 +42,44 @@ public class PlayPanel extends JPanel {
 	private static final ImageIcon HEART = new ImageIcon("heart.png");
 	private static final Color BACKGROUND = new Color(217, 179, 130);
 	private static final Color TRANSPARENT = new Color(0, 0, 0, 0);
-	private static PlayPanel uniqueInstance = new PlayPanel();
 	private final Map<TriviaType, JPanel> myAnswerPanels;
 	private final Set<KeyPadButton> myKeyButtons;
 	private final List<JLabel> myHearts;
 	private final JPanel myNorthPanel;
 	private final JPanel mySouthPanel;
 	private final JPanel myNoTriviaPanel;
-	private JPanel myAnswerPanel;
 	private final Timer myHeartTimer;
+	private final Player myPlayer;
+	private final Maze myMaze;
+	private JPanel myAnswerPanel;
 	private int myHeartIndex;
 	private int myBeatCount;
 	
-	private PlayPanel() {
+	public PlayPanel(final Player thePlayer, final Maze theMaze) {
 		setPreferredSize(new Dimension(WIDTH, HEIGHT));
 		setBackground(BACKGROUND);
 		setLayout(new BorderLayout());
+		myPlayer = thePlayer;
+		myMaze = theMaze;
 		myNorthPanel = new JPanel(new GridBagLayout());
 		myAnswerPanels = new HashMap<>();
 		myNoTriviaPanel = new JPanel();
-		configureNorthPanel();
 		add(myNorthPanel, BorderLayout.NORTH);
 		mySouthPanel = new JPanel(new GridBagLayout());
 		myKeyButtons = new HashSet<>();
 		myHearts = new ArrayList<>();
-		configureSouthPanel();
 		add(mySouthPanel, BorderLayout.SOUTH);
 		myHeartTimer = new Timer(200, theEvent -> toggleHeartBeat());
 		myHeartIndex = myHearts.size() - 1;
 		myBeatCount = 0;
 	}
-	
-	public static synchronized PlayPanel getInstance() {
-		return uniqueInstance;
+
+	public void connectPanels(final MazePanel theMazePan, final TriviaPanel theTrivPan) {
+		if (myNorthPanel.getComponentCount() != 0) {
+			throw new IllegalStateException("Panel connections have already been made!");
+		}
+		configureNorthPanel(theTrivPan);
+		configureSouthPanel(theMazePan);
 	}
 	
 	@Override
@@ -83,29 +87,29 @@ public class PlayPanel extends JPanel {
 		super.paintComponent(theGraphics);
 	}
 	
-	private void configureNorthPanel() {
+	private void configureNorthPanel(final TriviaPanel theTrivPan) {
 		myNorthPanel.setPreferredSize(new Dimension(WIDTH, 750));
 		myNorthPanel.setBackground(TRANSPARENT);
-		myNorthPanel.add(TriviaPanel.getInstance());
-		populateAnswerMap();
+		myNorthPanel.add(theTrivPan);
+		populateAnswerMap(theTrivPan);
 		clearAnswerPanel();
 	}
 	
-	private void configureSouthPanel() {
+	private void configureSouthPanel(final MazePanel theMazePan) {
 		mySouthPanel.setPreferredSize(new Dimension(WIDTH, 200));
 		mySouthPanel.setBackground(TRANSPARENT);
-		mySouthPanel.add(getKeyPanel());
+		mySouthPanel.add(getKeyPanel(theMazePan));
 		updateKeyButtons();
 		mySouthPanel.add(Box.createHorizontalStrut(50));
 		addHearts();
 		updateHearts();
 	}
 	
-	private void populateAnswerMap() {
+	private void populateAnswerMap(final TriviaPanel theTrivPan) {
 		final JPanel multiChoice = new JPanel(new GridBagLayout());
 		multiChoice.setBackground(TRANSPARENT);
 		for (char letter = 'A'; letter <= 'D'; letter++) {
-			multiChoice.add(new MultiChoiceButton(letter));
+			multiChoice.add(new MultiChoiceButton(letter, theTrivPan));
 			if (letter < 'D') {
 				multiChoice.add(Box.createHorizontalStrut(40));
 			}
@@ -113,19 +117,19 @@ public class PlayPanel extends JPanel {
 		myAnswerPanels.put(TriviaType.MULTICHOICE, multiChoice);
 		final JPanel trueFalse = new JPanel(new GridBagLayout());
 		trueFalse.setBackground(TRANSPARENT);
-		trueFalse.add(new TrueFalseButton(true));
+		trueFalse.add(new TrueFalseButton(true, theTrivPan));
 		trueFalse.add(Box.createHorizontalStrut(40));
-		trueFalse.add(new TrueFalseButton(false));
+		trueFalse.add(new TrueFalseButton(false, theTrivPan));
 		myAnswerPanels.put(TriviaType.TRUEFALSE, trueFalse);
 		final JPanel shortAns = new JPanel(new GridBagLayout());
-		shortAns.add(new ShortAnswerField());
+		shortAns.add(new ShortAnswerField(theTrivPan));
 		myAnswerPanels.put(TriviaType.SHORTANSWER, shortAns);
 		myNoTriviaPanel.setBackground(TRANSPARENT);
 		myNoTriviaPanel.setPreferredSize(new Dimension(0, 55));
 		myNoTriviaPanel.setFocusable(false);
 	}
 	
-	private JPanel getKeyPanel() {
+	private JPanel getKeyPanel(final MazePanel theMazePan) {
 		final JPanel buttonPanel = new JPanel(new GridBagLayout());
 		buttonPanel.setBackground(TRANSPARENT);
 		final int[] gridXs = new int[] {1, 0, 1, 2};
@@ -133,7 +137,7 @@ public class PlayPanel extends JPanel {
 		GB_CONSTRAINTS.insets = new Insets(3, 3, 3, 3);
 		int index = 0;
 		for (final Movement move : Movement.values()) {
-			final KeyPadButton b = new KeyPadButton(move);
+			final KeyPadButton b = new KeyPadButton(move, theMazePan);
 			myKeyButtons.add(b);
 			GB_CONSTRAINTS.gridx = gridXs[index];
 			GB_CONSTRAINTS.gridy = gridYs[index];
@@ -156,13 +160,12 @@ public class PlayPanel extends JPanel {
 	
 	public void updateKeyButtons() {
 		for (final KeyPadButton button : myKeyButtons) {
-			button.updateAppearance(Maze.getInstance().
-					                isMovementLegal(button.getMovement()));
+			button.updateAppearance(myMaze.isMovementLegal(button.getMovement()));
 		}
 	}
 	
 	public void updateHearts() {
-		final int hp = Player.getInstance().getHealth();
+		final int hp = myPlayer.getHealth();
 		for (int index = 0; index < Player.MAX_HEALTH; index++) {
 			final boolean enabled = index + 1 <= hp ? true : false;
 			myHearts.get(index).setEnabled(enabled);
@@ -196,7 +199,7 @@ public class PlayPanel extends JPanel {
 	
 	public void initializeHeartBeat() {
 		if (!myHeartTimer.isRunning()) {
-			myHeartIndex = Math.max(0, Player.getInstance().getHealth() - 1);
+			myHeartIndex = Math.max(0, myPlayer.getHealth() - 1);
 			myHeartTimer.start();
 		}
 	}

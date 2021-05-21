@@ -21,21 +21,16 @@ public class Maze {
 	private static final BufferedImage FLAGS = SpriteUtilities.getFlags();
 	private static final BufferedImage WATER = SpriteUtilities.getWater();
 	private static final Random RAND = new Random();
-	private static Maze uniqueInstance = new Maze();
 	private final Map<Point, MazeTile> myTiles;
 	private final Map<Point, Tavern> myTaverns;
 	private final Set<Point> myWaters;
 	private MazeTile myCurrTile;
 	
-	private Maze() {
+	public Maze() {
 		myTiles = MazeGenerator.generateTileMap();
 		myTaverns = getTavernMap();
 		myWaters = getWaterSet();
 		myCurrTile = myTiles.get(MazeGenerator.getEntryPoint());
-	}
-	
-	public static synchronized Maze getInstance() {
-		return uniqueInstance;
 	}
 	
 	public boolean isMovementLegal(final Movement theMove) {
