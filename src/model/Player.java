@@ -47,6 +47,10 @@ public class Player {
 		theGraphics.drawImage(mySprite, myX, myY, null);
 	}
 	
+	public Movement getCurrentMovement() {
+		return myMovement;
+	}
+	
 	private void update() {
 		myX += myVelX;
 		myY += myVelY;
