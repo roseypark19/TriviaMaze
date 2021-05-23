@@ -18,10 +18,7 @@ public class Tavern {
 	}
 	
 	public void draw(final Graphics2D theGraphics) {
-		if (!myTrivia.isAnswered()) {
-			theGraphics.drawImage(IMAGE, (int) myPoint.getX() + 1, 
-                    					 (int) myPoint.getY(), null);
-		}
+		theGraphics.drawImage(IMAGE, (int) myPoint.getX() + 1, (int) myPoint.getY(), null);
 	}
 	
 	public Trivia getTrivia() {

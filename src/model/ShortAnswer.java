@@ -20,5 +20,10 @@ public class ShortAnswer extends AbstractTrivia {
 	public String getAnswers() {
 		return getCorrectValue();
 	}
+	
+	@Override
+	public Trivia copy() {
+		return new ShortAnswer(getCorrectValue(), getQuestion());
+	}
 
 }

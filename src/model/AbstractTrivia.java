@@ -40,4 +40,5 @@ public abstract class AbstractTrivia implements Trivia {
     	myAnswered = theChoice.equalsIgnoreCase(myCorrectValue);
     	return myAnswered;
     }
+
 }
