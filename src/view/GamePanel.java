@@ -8,7 +8,7 @@ import javax.swing.JPanel;
 import model.Maze;
 import model.Player;
 
-public class GamePanel extends JPanel implements PropertyChangeListener {//implements Observer {
+public class GamePanel extends JPanel implements PropertyChangeListener {
 
 	/**
 	 * 
