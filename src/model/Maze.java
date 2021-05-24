@@ -5,6 +5,7 @@ import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -15,6 +16,11 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
+
+import utilities.SoundFX;
+import utilities.SoundPlayer;
 import utilities.MazeGenerator;
 import utilities.SpriteUtilities;
 import utilities.TriviaUtilities;
@@ -34,13 +40,16 @@ public class Maze implements Serializable {
 	private final Map<Point, Tavern> myTaverns;
 	private final Set<Point> myWaters;
 	private MazeTile myCurrTile;
+	private SoundPlayer mySoundPlayer = new SoundPlayer();
 	
-	public Maze() {
+	public Maze() throws UnsupportedAudioFileException, IOException, LineUnavailableException {
 		myTiles = MazeGenerator.generateTileMap();
 		myTaverns = getTavernMap();
 		myWaters = getWaterSet();
 		myCurrTile = myTiles.get(MazeGenerator.getEntryPoint());
 		myPcs = new PropertyChangeSupport(this);
+		mySoundPlayer.setFile("LoopMusic.wav");
+		mySoundPlayer.play();
 	}
 	
 	public void addPropertyChangeListener(final String theType,
@@ -81,11 +90,13 @@ public class Maze implements Serializable {
 		myTaverns.remove(myCurrTile.getPoint());
 	}
 	
-	public void removeWater() {
+	public void removeWater() throws UnsupportedAudioFileException, IOException, LineUnavailableException {
 		if (!myWaters.contains(myCurrTile.getPoint())) {
 			throw new IllegalArgumentException("No water on this maze tile!");
 		}
 		myWaters.remove(myCurrTile.getPoint());
+		mySoundPlayer.setFile("water.wav");
+		mySoundPlayer.play();
 	}
 	
 	public Trivia getTavernTrivia() {

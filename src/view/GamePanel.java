@@ -5,6 +5,10 @@ import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.io.IOException;
+
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.JPanel;
 
 import model.Maze;
@@ -19,7 +23,7 @@ public class GamePanel extends JPanel implements PropertyChangeListener {
 	private boolean myGameOver;
 	private boolean myGameWon;
 	
-	public GamePanel() {
+	public GamePanel() throws UnsupportedAudioFileException, IOException, LineUnavailableException {
 		myGameOver = false;
 		myGameWon = false;
 		setLayout(new BorderLayout());

@@ -7,6 +7,10 @@ import java.awt.Graphics2D;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
+
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
@@ -42,7 +46,20 @@ public class MazePanel extends JPanel {
 		addKeyListener(new KeyboardListener());
 		myPlayer = thePlayer;
 		myMaze = theMaze;
-		myPlayerTimer = new Timer(90, theEvent -> advancePlayer());
+		myPlayerTimer = new Timer(90, theEvent -> {
+			try {
+				advancePlayer();
+			} catch (UnsupportedAudioFileException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (LineUnavailableException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		});
 		myFadeTimer = new Timer(75, theEvent -> executeFade()); 
 		myFaded = false;
 		myFadeIndex = 0;
@@ -94,7 +111,7 @@ public class MazePanel extends JPanel {
 		myPlayerTimer.setInitialDelay(0);
 	}
 	
-	private void advancePlayer() {
+	private void advancePlayer() throws UnsupportedAudioFileException, IOException, LineUnavailableException {
 		myPlayer.move();
 		repaint();
 		if (myPlayer.isAdvanceComplete()) {

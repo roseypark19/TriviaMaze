@@ -15,6 +15,8 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.Box;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -66,7 +68,7 @@ public class GameFrame extends JFrame implements PropertyChangeListener {
 		}
 	}
 	
-	private void newGame() {
+	private void newGame() throws UnsupportedAudioFileException, IOException, LineUnavailableException {
 		remove(myCurrentPanel);
 		myGamePanel = new GamePanel();
 		myGamePanel.addPropertyChangeListener(Player.NO_HP, this);
@@ -168,7 +170,20 @@ public class GameFrame extends JFrame implements PropertyChangeListener {
 			setLayout(new FlowLayout(FlowLayout.CENTER, 75, 0));
 			add(Box.createRigidArea(new Dimension(1487, 620)));
 			myNewButton = new JButton(NEW_GRASS);
-			myNewButton.addActionListener(theEvent -> newGame());
+			myNewButton.addActionListener(theEvent -> {
+				try {
+					newGame();
+				} catch (UnsupportedAudioFileException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (LineUnavailableException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			});
 			myNewButton.setPreferredSize(new Dimension(367, 82));
 			myNewButton.setFocusable(false);
 			myNewButton.setBorderPainted(false);
