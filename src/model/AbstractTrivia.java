@@ -9,15 +9,13 @@ package model;
 public abstract class AbstractTrivia implements Trivia {
 	
     private final String myQuestion;
-    private final String myAnswerPrompt;
     private final String myCorrectValue;
-    private final QuestionType myType;
+    private final TriviaType myType;
     private boolean myAnswered;
     
     protected AbstractTrivia(final String theCorrect, final String theQuestion, 
-    						 final String theAnswerPrompt, final QuestionType theType) {
+    						 						  final TriviaType theType) {
     	myQuestion = theQuestion;
-    	myAnswerPrompt = theAnswerPrompt;
     	myCorrectValue = theCorrect;
     	myType = theType;
     }
@@ -30,15 +28,11 @@ public abstract class AbstractTrivia implements Trivia {
         return myQuestion;
     }
     
-    public String getAnswerPrompt() {
-    	return myAnswerPrompt;
-    }
-    
     public boolean isAnswered() {
     	return myAnswered;
     }
     
-    public QuestionType getTriviaType() {
+    public TriviaType getTriviaType() {
     	return myType;
     }
 
@@ -46,4 +40,5 @@ public abstract class AbstractTrivia implements Trivia {
     	myAnswered = theChoice.equalsIgnoreCase(myCorrectValue);
     	return myAnswered;
     }
+
 }

@@ -12,12 +12,16 @@ import view.MazePanel;
 
 public class KeyPadButton extends JButton {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 6670444409184566253L;
 	private static final ImageIcon DISABLED = new ImageIcon("redX.png");
-	private static final Font BUTTON_FONT = new Font(Font.MONOSPACED, Font.BOLD, 40);
+	private static final Font BUTTON_FONT = new Font(Font.MONOSPACED, Font.BOLD, 45);
 	private static final int SIZE = 70;
 	private final Movement myMovement;
 	
-	public KeyPadButton(final Movement theMove) {
+	public KeyPadButton(final Movement theMove, final MazePanel theMazePan) {
 		myMovement = theMove;
 		setPreferredSize(new Dimension(SIZE, SIZE));
 		setFont(BUTTON_FONT);
@@ -25,8 +29,7 @@ public class KeyPadButton extends JButton {
 		setForeground(Color.BLACK);
 		setBorder(BorderFactory.createLineBorder(Color.BLACK, 4));
 		setFocusable(false);
-		addActionListener(theEvent -> 
-		                       MazePanel.getInstance().initializeAdvancement(myMovement));
+		addActionListener(theEvent -> theMazePan.initializeAdvancement(myMovement));
 	}
 	
 	public void updateAppearance(final boolean theEnabled) {

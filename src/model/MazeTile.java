@@ -3,14 +3,18 @@ package model;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.image.BufferedImage;
+import java.io.Serializable;
 import java.util.Random;
 
+import utilities.MazeGenerator;
 import utilities.SpriteUtilities;
 
-public class MazeTile {
+public class MazeTile implements Serializable {
 
-//	public static final Color COLOR = new Color(181, 101, 29);
-//	private static final BufferedImage IMAGE = SpriteUtilities.getMazeTile();
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -1423349819693002944L;
 	private static final BufferedImage[] IMAGES = SpriteUtilities.getMazeTiles();
 	private static final Random RAND = new Random();
 	public static final int SIZE = 48;
@@ -22,7 +26,8 @@ public class MazeTile {
 	public MazeTile(final Point thePoint) {
 		myPoint = new Point(thePoint);
 		myImage = IMAGES[RAND.nextInt(IMAGES.length)];
-		myID = uniqueID++;
+		myID = uniqueID++ % ((MazeGenerator.SIZE * MazeGenerator.SIZE) + 2);
+		// the extra + 2 is to account for the addition of the entry and exit tiles
 	}
 	
 	public Point getPointForMovement(final Movement theMove) {

@@ -4,7 +4,6 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.PriorityQueue;
@@ -12,19 +11,16 @@ import java.util.Queue;
 import java.util.Random;
 import java.util.Set;
 import model.MazeTile;
-import model.Tavern;
 
 public class MazeGenerator {
 
-	private static final int SIZE = 17;
+	public static final int SIZE = 17;
 	private static final Point START = new Point(72, 72);
 	private static final Point ENTRY = new Point(72, 24);
 	private static final Point EXIT = new Point(72 + (SIZE - 1) * MazeTile.SIZE, 
 			                                    24 + (SIZE + 1) * MazeTile.SIZE);
-	private static final Point FLAG_POINT = new Point((int) EXIT.getX() - MazeTile.SIZE,
-													  (int) EXIT.getY());
 	
-	public static Map<Point, MazeTile> getNewMaze() {
+	public static Map<Point, MazeTile> generateTileMap() {
 		final Map<Point, MazeTile> maze = new HashMap<>();
 		final List<MazeTile> tiles = getTiles();
 		final Set<GraphEdge> chosenEdges = kruskalMST(getEdges());
@@ -44,32 +40,9 @@ public class MazeGenerator {
 		maze.put(EXIT, new MazeTile(EXIT));
 		return maze;
 	}
-	
-	public static Map<Point, Tavern> getTaverns() {
-		final Map<Point, Tavern> tavernMap = new HashMap<>();
-		final List<Point> points = new LinkedList<>();
-		points.add(START);
-		for (int count = 1; count <= SIZE / 2; count++) {
-			final Point prevPt = points.get(points.size() - 1);
-			points.add(new Point((int) prevPt.getX() + 2 * Tavern.SIZE, 
-					                                                (int) prevPt.getY()));
-		}
-		final Random rand = new Random();
-		for (int row = 0; row < SIZE; row += 2) {
-			final List<Point> randPts = new ArrayList<>();
-			for (int count = 1; count <= 3; count++) {
-				randPts.add(points.remove(rand.nextInt(points.size())));
-			}
-			for (final Point pt : randPts) {
-				final Point newPoint = new Point(pt);
-				tavernMap.put(newPoint, new Tavern(newPoint));
-				points.add(pt);
-			}
-			for (final Point pt : points) {
-				pt.setLocation(pt.getX(), pt.getY() + 2 * Tavern.SIZE);
-			}
-		}
-		return tavernMap;
+
+	public static Point getStartPoint() {
+		return new Point(START);
 	}
 	
 	public static Point getEntryPoint() {
@@ -78,10 +51,6 @@ public class MazeGenerator {
 	
 	public static Point getExitPoint() {
 		return new Point(EXIT);
-	}
-	
-	public static Point getFlagPoint() {
-		return new Point(FLAG_POINT);
 	}
 	
 	private static List<MazeTile> getTiles() {
@@ -137,12 +106,8 @@ public class MazeGenerator {
 			final int second = edge.getSecond();
 			final int firstGroup = finder.find(vertexMapping.get(first));
 			final int secondGroup = finder.find(vertexMapping.get(second));
-			boolean isCycle = true;
 			if (firstGroup != secondGroup) { // does not create a cycle
 				finder.unify(firstGroup, secondGroup);
-				isCycle = false;
-			}
-			if (!isCycle) {
 				mst.add(edge);
 			}
 		}
@@ -162,4 +127,5 @@ public class MazeGenerator {
 		}
 		return vertMap;
 	}	
+	
 }

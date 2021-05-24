@@ -1,22 +1,19 @@
 package view;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Point;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
-import java.util.Map;
-import java.util.Random;
-
 import javax.swing.JPanel;
 import javax.swing.Timer;
-import controller.KeyboardHandler;
-import model.MazeTile;
+
+import model.Maze;
 import model.Movement;
 import model.Player;
-import model.QuestionType;
-import model.Tavern;
-import utilities.MazeGenerator;
+import model.Trivia;
 import utilities.SpriteUtilities;
 
 public class MazePanel extends JPanel {
@@ -25,32 +22,40 @@ public class MazePanel extends JPanel {
 	 * 
 	 */
 	private static final long serialVersionUID = 2705364087445242453L;
-	private static final Point FLAG_POINT = 
-			                      new Point((int) MazeGenerator.getExitPoint().getX() + 1,
-			                    		    (int) MazeGenerator.getExitPoint().getY());
+	private static final BufferedImage[] FADES = SpriteUtilities.getFades();
 	private static final BufferedImage GRASS = SpriteUtilities.getGrass();
-	private static final BufferedImage FLAGS = SpriteUtilities.getFlags();
 	public static final int WIDTH = 957;
 	public static final int HEIGHT = 950;
-	private static MazePanel uniqueInstance = new MazePanel();
-	private final Map<Point, MazeTile> myMaze;
-	private final Map<Point, Tavern> myTaverns;
-	private MazeTile myMazeTile;
-	private Timer myTimer;
+	private final Timer myPlayerTimer;
+	private final Timer myFadeTimer;
+	private final Player myPlayer;
+	private final Maze myMaze;
+	private PlayPanel myPlayPanel;
+	private TriviaPanel myTriviaPanel;
+	private int myFadeIndex;
+	private boolean myFaded;
 
-	private MazePanel() {
+	public MazePanel(final Player thePlayer, final Maze theMaze) {
 		setPreferredSize(new Dimension(WIDTH, HEIGHT));
 		setFocusable(true);
-		myMaze = MazeGenerator.getNewMaze();
-		myTaverns = MazeGenerator.getTaverns();
-		myMazeTile = myMaze.get(MazeGenerator.getEntryPoint());
-		addKeyListener(new KeyboardHandler(this));
-		myTimer = new Timer(90, theEvent -> advancePlayer());
+		setBackground(Color.BLACK);
+		addKeyListener(new KeyboardListener());
+		myPlayer = thePlayer;
+		myMaze = theMaze;
+		myPlayerTimer = new Timer(90, theEvent -> advancePlayer());
+		myFadeTimer = new Timer(75, theEvent -> executeFade()); 
+		myFaded = false;
+		myFadeIndex = 0;
+		setFocusable(true);
 		requestFocus();
 	}
 	
-	public static synchronized MazePanel getInstance() {
-		return uniqueInstance;
+	public void connectPanels(final PlayPanel thePlayPan, final TriviaPanel theTrivPan) {
+		if (myPlayPanel != null || myTriviaPanel != null) {
+			throw new IllegalStateException("Panel connections have already been made!");
+		}
+		myPlayPanel = thePlayPan;
+		myTriviaPanel = theTrivPan;
 	}
 	
 	@Override
@@ -58,45 +63,91 @@ public class MazePanel extends JPanel {
 		super.paintComponent(theGraphics);
 		final Graphics2D g2d = (Graphics2D) theGraphics;
 		g2d.drawImage(GRASS, null, 0, 0);
-		for (final MazeTile tile : myMaze.values()) {
-			tile.draw(g2d);
-		}
-		theGraphics.drawImage(FLAGS, (int) FLAG_POINT.getX(), 
-				                     (int) FLAG_POINT.getY(), null);
-		Player.getInstance().draw(g2d);
-		for (final Tavern tavern : myTaverns.values()) {
-			tavern.draw(g2d);
+		myMaze.draw(g2d, false);
+		myPlayer.draw(g2d);
+		myMaze.draw(g2d, true);
+		if (myFadeTimer.isRunning()) {
+			for (int index = 0; index <= myFadeIndex; index++) {
+				g2d.drawImage(FADES[index], null, 0, 0);
+			}
 		}
 	}
 	
 	public void initializeAdvancement(final Movement theMove) {
-		final Point testPoint = myMazeTile.getPointForMovement(theMove);
-		if (!myTimer.isRunning() && myMaze.containsKey(testPoint)) {
-			Player.getInstance().setMovement(theMove);
-			myMazeTile = myMaze.get(testPoint);
-			myTimer.start();
+		final boolean reqs = !myPlayerTimer.isRunning() && 
+				             myMaze.isMovementLegal(theMove) && 
+				             !myTriviaPanel.isAsking();
+		if (reqs) {
+			myPlayer.setMovement(theMove);
+			myMaze.advanceCurrentTile(theMove);
+			myPlayerTimer.start();
 		}
 	}
 	
-	public boolean isMovementLegal(final Movement theMove) {
-		return myMaze.containsKey(myMazeTile.getPointForMovement(theMove));
+	public void restoreVisibility(final boolean theAnsweredCorrectly) {
+		myFadeTimer.start();
+		if (!theAnsweredCorrectly) {
+			myPlayerTimer.setInitialDelay(800);
+			initializeAdvancement(myPlayer.getCurrentMovement().getOpposite());
+		}
+		myFadeTimer.setInitialDelay(0);
+		myPlayerTimer.setInitialDelay(0);
 	}
 	
 	private void advancePlayer() {
-		Player.getInstance().move();
+		myPlayer.move();
 		repaint();
-		if (Player.getInstance().isAdvanceComplete()) {
-			myTimer.stop();
-			Random rand = new Random();
-			PlayPanel.getInstance().updateAnswerPanel(QuestionType.values()[rand.nextInt(4)]);
-			int random = rand.nextInt(2);
-			if (random == 0) {
-				Player.getInstance().decrementHealth();
-			} else {
-				Player.getInstance().incrementHealth();
+		if (myPlayer.isAdvanceComplete()) {
+			myPlayerTimer.stop();
+			myPlayPanel.updateKeyButtons();
+			if (myMaze.hasTavern()) {
+				final Trivia triv = myMaze.getTavernTrivia();
+				myFadeTimer.start();
+				myTriviaPanel.setupNewTrivia(triv);
+			} else if (myMaze.hasWater()) {
+				myPlayer.incrementHealth();
+				myPlayPanel.updateHearts();
+				myMaze.removeWater();
 			}
-			PlayPanel.getInstance().updateKeyButtons();
-			PlayPanel.getInstance().updateHearts();
+			myMaze.checkEndReached();
+		}
+	}
+	
+	private void executeFade() {
+		final Graphics2D g2d = (Graphics2D) getGraphics();
+		if (myFaded) {
+			repaint();
+		} else {
+			g2d.drawImage(FADES[myFadeIndex], null, 0, 0);
+		}
+		myFadeIndex = myFaded ? myFadeIndex - 1 : myFadeIndex + 1;
+		if (myFadeIndex < 0 || myFadeIndex > FADES.length - 1) {
+			myFadeTimer.stop();
+			myFaded = !myFaded;
+			myFadeIndex = myFaded ? FADES.length - 1 : 0;
+		}
+	}
+	
+	private class KeyboardListener extends KeyAdapter {
+		
+		private boolean myReleased;
+		
+		public KeyboardListener() {
+			myReleased = true;
+		}
+
+		@Override
+		public void keyTyped(final KeyEvent theEvent) {
+			if (myReleased) {
+				initializeAdvancement(Movement.valueof(Character.toUpperCase(
+													   theEvent.getKeyChar())));
+				myReleased = false;
+			}	
+		}
+		
+		@Override
+		public void keyReleased(final KeyEvent theEvent) {
+			myReleased = true;
 		}
 	}
 	

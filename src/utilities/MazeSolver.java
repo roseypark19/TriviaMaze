@@ -14,7 +14,7 @@ import model.Movement;
 
 public class MazeSolver {
 	
-	public static boolean isSolveable(final Map<Point, MazeTile> theMaze) {
+	public static boolean isMazeSolveable(final Map<Point, MazeTile> theMaze) {
 		boolean solveable = true;
 		final Deque<Point> pointStack = new ArrayDeque<>();
 		final Set<Point> visited = new HashSet<>();

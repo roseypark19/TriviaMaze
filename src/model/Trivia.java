@@ -6,14 +6,14 @@ public interface Trivia {
 	
 	boolean isAnswered();
 	
-	QuestionType getTriviaType();
+	TriviaType getTriviaType();
 	
 	String getQuestion();
-	
-	String getAnswerPrompt();
 	
 	String getCorrectValue();
 	
 	String getAnswers();
+	
+	Trivia copy();
 
 }
