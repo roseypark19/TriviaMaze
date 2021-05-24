@@ -151,16 +151,6 @@ public class MazePanel extends JPanel {
 		}
 	}
 	
-	public int playerLoss() {
-		if (Player.getInstance().getHealth() == 0) return 0;
-		return 1;
-	}
-	
-	public int playerWin() {
-		if (Player.getInstance().getHealth() != 0 && myMazeTile == myMaze.get(MazeGenerator.getExitPoint())) return 2;
-		return 1;
-	}
-	
 	
 	
 }
