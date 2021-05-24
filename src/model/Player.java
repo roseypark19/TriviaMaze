@@ -5,14 +5,19 @@ import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.io.Serializable;
 import java.util.Map;
 import javax.swing.Timer;
 
 import utilities.MazeGenerator;
 import utilities.SpriteUtilities;
 
-public class Player {
+public class Player implements Serializable {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 2488188103432279121L;
 	private static final Map<Movement, BufferedImage[]> SPRITE_MAP = 
 			                                           SpriteUtilities.getPlayerSprites();
 	public static final int MIN_HEALTH = 0;
@@ -44,12 +49,13 @@ public class Player {
 		myHealth = MAX_HEALTH;
 		myNotificationTimer = new Timer(0, theEvent -> notifyNoHealth());
 		myNotificationTimer.setRepeats(false);
-		myNotificationTimer.setInitialDelay(2500);
+		myNotificationTimer.setInitialDelay(2700);
 		myPcs = new PropertyChangeSupport(this);
 	}
 	
-	public void addPropertyChangeListener(final PropertyChangeListener theListener) {
-		myPcs.addPropertyChangeListener(theListener);
+	public void addPropertyChangeListener(final String theType, 
+			                              final PropertyChangeListener theListener) {
+		myPcs.addPropertyChangeListener(theType, theListener);
 	}
 	
 	public void draw(final Graphics2D theGraphics) {

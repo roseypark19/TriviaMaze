@@ -1,6 +1,8 @@
 package view;
 
 import java.awt.BorderLayout;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import javax.swing.JPanel;
@@ -22,9 +24,9 @@ public class GamePanel extends JPanel implements PropertyChangeListener {
 		myGameWon = false;
 		setLayout(new BorderLayout());
 		final Player player = new Player();
-		player.addPropertyChangeListener(this);
+		player.addPropertyChangeListener(Player.NO_HP, this);
 		final Maze maze = new Maze();
-		maze.addPropertyChangeListener(this);
+		maze.addPropertyChangeListener(Maze.END_REACHED, this);
 		final MazePanel mazePan = new MazePanel(player, maze);
 		final PlayPanel playPan = new PlayPanel(player, maze);
 		final TriviaPanel trivPan = new TriviaPanel(player, maze);
@@ -33,6 +35,13 @@ public class GamePanel extends JPanel implements PropertyChangeListener {
 		trivPan.connectPanels(mazePan, playPan);
 		add(mazePan, BorderLayout.WEST);
 		add(playPan, BorderLayout.EAST);
+		addFocusListener(new FocusAdapter() {
+			
+			public void focusGained(final FocusEvent theEvent) {
+				mazePan.grabFocus();
+			}
+			
+		});
 	}
 	
 	public boolean isGameWon() {

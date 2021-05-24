@@ -5,6 +5,7 @@ import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -18,8 +19,12 @@ import utilities.MazeGenerator;
 import utilities.SpriteUtilities;
 import utilities.TriviaUtilities;
 
-public class Maze {
+public class Maze implements Serializable {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 309169416134584707L;
 	private static final BufferedImage FLAGS = SpriteUtilities.getFlags();
 	private static final BufferedImage WATER = SpriteUtilities.getWater();
 	public static final String END_REACHED = "end reached";
@@ -38,8 +43,9 @@ public class Maze {
 		myPcs = new PropertyChangeSupport(this);
 	}
 	
-	public void addPropertyChangeListener(final PropertyChangeListener theListener) {
-		myPcs.addPropertyChangeListener(theListener);
+	public void addPropertyChangeListener(final String theType,
+			                              final PropertyChangeListener theListener) {
+		myPcs.addPropertyChangeListener(theType, theListener);
 	}
 	
 	public boolean isMovementLegal(final Movement theMove) {
