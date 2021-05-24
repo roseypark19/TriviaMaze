@@ -46,7 +46,6 @@ public class PlayPanel extends JPanel {
 	private final List<JLabel> myHearts;
 	private final JPanel myNorthPanel;
 	private final JPanel mySouthPanel;
-	private final JPanel myNoTriviaPanel;
 	private final Timer myHeartTimer;
 	private final Player myPlayer;
 	private final Maze myMaze;
@@ -62,7 +61,6 @@ public class PlayPanel extends JPanel {
 		myMaze = theMaze;
 		myNorthPanel = new JPanel(new GridBagLayout());
 		myAnswerPanels = new HashMap<>();
-		myNoTriviaPanel = new JPanel();
 		add(myNorthPanel, BorderLayout.NORTH);
 		mySouthPanel = new JPanel(new GridBagLayout());
 		myKeyButtons = new HashSet<>();
@@ -123,9 +121,6 @@ public class PlayPanel extends JPanel {
 		final JPanel shortAns = new JPanel(new GridBagLayout());
 		shortAns.add(new ShortAnswerField(theTrivPan));
 		myAnswerPanels.put(TriviaType.SHORTANSWER, shortAns);
-		myNoTriviaPanel.setBackground(TRANSPARENT);
-		myNoTriviaPanel.setPreferredSize(new Dimension(0, 55));
-		myNoTriviaPanel.setFocusable(false);
 	}
 	
 	private JPanel getKeyPanel(final MazePanel theMazePan) {
@@ -185,14 +180,9 @@ public class PlayPanel extends JPanel {
 	}
 	
 	public void clearAnswerPanel() {
-		GB_CONSTRAINTS.gridx = 0;
-		GB_CONSTRAINTS.gridy = 1;
-		GB_CONSTRAINTS.insets = new Insets(50, 0, 0, 0);
 		if (myNorthPanel.getComponentCount() > 1) {
 			myNorthPanel.remove(myAnswerPanel);
 		}
-		myAnswerPanel = myNoTriviaPanel;
-		myNorthPanel.add(myAnswerPanel, GB_CONSTRAINTS);
 		repaint();
 	}
 	

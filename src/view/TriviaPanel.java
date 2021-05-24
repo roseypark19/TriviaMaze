@@ -33,7 +33,8 @@ public class TriviaPanel extends JPanel {
 	private static final String INCORRECT = "Argh... not quite! Better luck next time.";
 	private static final Font FONT = new Font(Font.MONOSPACED, Font.BOLD, 20);
 	private static final int WIDTH = 475;
-	private static final int HEIGHT = 595;
+	private static final int HEIGHT_ASKING = 595;
+	private static final int HEIGHT_NOT_ASKING = 695;
 	private static final int BORDER_WIDTH = 4;
 	private final Timer mySetupTimer;
 	private final Timer myTeardownTimer;
@@ -60,7 +61,7 @@ public class TriviaPanel extends JPanel {
 		myTeardownTimer = new Timer(0, theEvent -> tearDownTrivia());
 		myTeardownTimer.setInitialDelay(1200);
 		myTeardownTimer.setRepeats(false);
-		setPreferredSize(new Dimension(WIDTH, HEIGHT));
+		setPreferredSize(new Dimension(WIDTH, HEIGHT_NOT_ASKING));
 		setFocusable(false);
 		setBorder(BorderFactory.createLineBorder(Color.BLACK, BORDER_WIDTH));
 		add(Box.createRigidArea(new Dimension(WIDTH, 8)));
@@ -114,6 +115,7 @@ public class TriviaPanel extends JPanel {
 	
 	private void tearDownTrivia() {
 		myImage = null;
+		setPreferredSize(new Dimension(WIDTH, HEIGHT_NOT_ASKING));
 		myTriviaArea.setVisible(false);
 		myPlayPanel.clearAnswerPanel();
 		myDisplayingTrivia = false;
@@ -122,7 +124,7 @@ public class TriviaPanel extends JPanel {
 	
 	private void configureTriviaArea() {
 		myTriviaArea.setEditable(false);
-		myTriviaArea.setPreferredSize(new Dimension(WIDTH - 40, HEIGHT / 3));
+		myTriviaArea.setPreferredSize(new Dimension(WIDTH - 40, HEIGHT_ASKING / 3));
 		myTriviaArea.setMargin(new Insets(5, 5, 5, 5));
 		myTriviaArea.setBackground(Color.WHITE);
 		myTriviaArea.setFont(FONT);
@@ -134,6 +136,7 @@ public class TriviaPanel extends JPanel {
 	}
 	
 	private void displayTrivia() {
+		setPreferredSize(new Dimension(WIDTH, HEIGHT_ASKING));
 		myTriviaArea.setVisible(true);
 		myPlayPanel.updateAnswerPanel(myCurrentTrivia.getTriviaType());
 	}
