@@ -13,5 +13,7 @@ public interface Trivia {
 	String getCorrectValue();
 	
 	String getAnswers();
+	
+	Trivia copy();
 
 }

@@ -33,5 +33,10 @@ public class MultipleChoice extends AbstractTrivia {
         }
         return sb.toString();
     }
+    
+    @Override
+    public Trivia copy() {
+    	return new MultipleChoice(getCorrectValue(), myAnswers, getQuestion());
+    }
 
 }

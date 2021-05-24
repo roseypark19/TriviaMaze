@@ -23,5 +23,10 @@ public class TrueFalse extends AbstractTrivia {
 	public String getAnswers() {
 		return ANSWERS[0] + "\n" + ANSWERS[1];
 	}
+	
+	@Override
+	public Trivia copy() {
+		return new TrueFalse(getCorrectValue(), getQuestion());
+	}
 
 }

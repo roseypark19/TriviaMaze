@@ -102,15 +102,14 @@ public class MazePanel extends JPanel {
 			myPlayPanel.updateKeyButtons();
 			if (myMaze.hasTavern()) {
 				final Trivia triv = myMaze.getTavernTrivia();
-				if (!triv.isAnswered()) {
-					myFadeTimer.start();
-					myTriviaPanel.setupNewTrivia(triv);
-				}
+				myFadeTimer.start();
+				myTriviaPanel.setupNewTrivia(triv);
 			} else if (myMaze.hasWater()) {
 				myPlayer.incrementHealth();
 				myPlayPanel.updateHearts();
 				myMaze.removeWater();
 			}
+			myMaze.checkEndReached();
 		}
 	}
 	

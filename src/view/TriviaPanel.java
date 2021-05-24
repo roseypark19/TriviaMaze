@@ -100,6 +100,7 @@ public class TriviaPanel extends JPanel {
 			myTriviaArea.setText(INCORRECT);
 			myPlayPanel.initializeHeartBeat();
 			myPlayer.decrementHealth();
+			myPlayer.probeHealthState();
 		}
 		myTeardownTimer.start();
 	}
@@ -113,9 +114,7 @@ public class TriviaPanel extends JPanel {
 	
 	private void tearDownTrivia() {
 		myImage = null;
-		repaint();
 		myTriviaArea.setVisible(false);
-		revalidate();
 		myPlayPanel.clearAnswerPanel();
 		myDisplayingTrivia = false;
 		myMazePanel.restoreVisibility(myCurrentTrivia.isAnswered());
@@ -135,9 +134,7 @@ public class TriviaPanel extends JPanel {
 	}
 	
 	private void displayTrivia() {
-		repaint();
 		myTriviaArea.setVisible(true);
-		revalidate();
 		myPlayPanel.updateAnswerPanel(myCurrentTrivia.getTriviaType());
 	}
 	

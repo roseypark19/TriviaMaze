@@ -35,9 +35,18 @@ public class TriviaUtilities {
         if (triviaList.isEmpty()) {
             SQLiteDataSource dataSource = accessDataSource();
             addTriviaToList(dataSource);
-            Collections.shuffle(triviaList);
         }
-        return new LinkedList<>(triviaList);
+        final List<Trivia> trivCopy = getTriviaListCopy();
+        Collections.shuffle(trivCopy);
+        return trivCopy;
+    }
+    
+    private static List<Trivia> getTriviaListCopy() {
+    	final List<Trivia> copy = new LinkedList<>();
+    	for (final Trivia triv : triviaList) {
+    		copy.add(triv.copy());
+    	}
+    	return copy;
     }
 
     /**

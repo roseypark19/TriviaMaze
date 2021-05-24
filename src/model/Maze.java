@@ -3,6 +3,9 @@ package model;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.image.BufferedImage;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -16,11 +19,17 @@ import utilities.MazeGenerator;
 import utilities.SpriteUtilities;
 import utilities.TriviaUtilities;
 
-public class Maze {
+public class Maze implements Serializable {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 309169416134584707L;
 	private static final BufferedImage FLAGS = SpriteUtilities.getFlags();
 	private static final BufferedImage WATER = SpriteUtilities.getWater();
+	public static final String END_REACHED = "end reached";
 	private static final Random RAND = new Random();
+	private final PropertyChangeSupport myPcs;
 	private final Map<Point, MazeTile> myTiles;
 	private final Map<Point, Tavern> myTaverns;
 	private final Set<Point> myWaters;
@@ -31,6 +40,12 @@ public class Maze {
 		myTaverns = getTavernMap();
 		myWaters = getWaterSet();
 		myCurrTile = myTiles.get(MazeGenerator.getEntryPoint());
+		myPcs = new PropertyChangeSupport(this);
+	}
+	
+	public void addPropertyChangeListener(final String theType,
+			                              final PropertyChangeListener theListener) {
+		myPcs.addPropertyChangeListener(theType, theListener);
 	}
 	
 	public boolean isMovementLegal(final Movement theMove) {
@@ -51,6 +66,12 @@ public class Maze {
 	
 	public boolean hasWater() {
 		return myWaters.contains(myCurrTile.getPoint());
+	}
+	
+	public void checkEndReached() {
+		if (myCurrTile.getPoint().equals(MazeGenerator.getExitPoint())) {
+			myPcs.firePropertyChange(END_REACHED, false, true);
+		}
 	}
 	
 	public void removeTavern() {

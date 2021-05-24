@@ -37,7 +37,6 @@ public class PlayPanel extends JPanel {
 	private static final long serialVersionUID = 2115518979921196291L;
 	private static final GridBagConstraints GB_CONSTRAINTS = new GridBagConstraints();
 	public static final int WIDTH = 530;
-	public static final int HEIGHT = MazePanel.HEIGHT;
 	private static final int MAX_BEATS = 5;
 	private static final ImageIcon HEART = new ImageIcon("heart.png");
 	private static final Color BACKGROUND = new Color(217, 179, 130);
@@ -56,7 +55,7 @@ public class PlayPanel extends JPanel {
 	private int myBeatCount;
 	
 	public PlayPanel(final Player thePlayer, final Maze theMaze) {
-		setPreferredSize(new Dimension(WIDTH, HEIGHT));
+		setPreferredSize(new Dimension(WIDTH, MazePanel.HEIGHT));
 		setBackground(BACKGROUND);
 		setLayout(new BorderLayout());
 		myPlayer = thePlayer;
