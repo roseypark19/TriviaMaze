@@ -48,8 +48,8 @@ public class Maze implements Serializable {
 		myWaters = getWaterSet();
 		myCurrTile = myTiles.get(MazeGenerator.getEntryPoint());
 		myPcs = new PropertyChangeSupport(this);
-		mySoundPlayer.setFile("LoopMusic.wav");
-		mySoundPlayer.play();
+//		mySoundPlayer.setFile(SoundFX.GAME_MUSIC);
+//		mySoundPlayer.play();
 	}
 	
 	public void addPropertyChangeListener(final String theType,
@@ -88,6 +88,8 @@ public class Maze implements Serializable {
 			throw new IllegalArgumentException("No tavern on this maze tile!");
 		}
 		myTaverns.remove(myCurrTile.getPoint());
+		mySoundPlayer.setFile("correct.wav");
+		mySoundPlayer.play();
 	}
 	
 	public void removeWater() {

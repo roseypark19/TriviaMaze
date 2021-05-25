@@ -102,6 +102,7 @@ public class TriviaPanel extends JPanel {
 			myPlayPanel.initializeHeartBeat();
 			myPlayer.decrementHealth();
 			myPlayer.probeHealthState();
+			
 		}
 		myTeardownTimer.start();
 	}

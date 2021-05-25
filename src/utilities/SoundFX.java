@@ -2,12 +2,12 @@ package utilities;
 import javax.sound.sampled.*;
 import java.io.IOException;
 import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 import java.io.File;
 
 /**
- * 
  * @author Rebekah Parkhurst
- * adapted from https://gist.github.com/figengungor/5673813
  *
  */
 
@@ -20,8 +20,8 @@ public enum SoundFX {
 	WIN_GAME("/triviaMaze/wingame.wav");
 	
 	private final String mySFX;
-
-	SoundFX(String fileName) {
+	
+	private SoundFX(String fileName) {
 		mySFX = fileName;
 	}
 	
