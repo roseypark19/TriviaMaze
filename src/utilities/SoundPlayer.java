@@ -10,8 +10,7 @@ public class SoundPlayer {
 	private Clip clip;
 	private AudioInputStream audioInputStream;
 	
-	public void setFile(final String theSound) throws UnsupportedAudioFileException, 
-									IOException, LineUnavailableException {
+	public void setFile(final String theSound) {
 		try {
 			File file = new File(theSound);
 			audioInputStream = AudioSystem.getAudioInputStream(file);

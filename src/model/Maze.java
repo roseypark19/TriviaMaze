@@ -42,7 +42,7 @@ public class Maze implements Serializable {
 	private MazeTile myCurrTile;
 	private SoundPlayer mySoundPlayer = new SoundPlayer();
 	
-	public Maze() throws UnsupportedAudioFileException, IOException, LineUnavailableException {
+	public Maze() {
 		myTiles = MazeGenerator.generateTileMap();
 		myTaverns = getTavernMap();
 		myWaters = getWaterSet();
@@ -90,7 +90,7 @@ public class Maze implements Serializable {
 		myTaverns.remove(myCurrTile.getPoint());
 	}
 	
-	public void removeWater() throws UnsupportedAudioFileException, IOException, LineUnavailableException {
+	public void removeWater() {
 		if (!myWaters.contains(myCurrTile.getPoint())) {
 			throw new IllegalArgumentException("No water on this maze tile!");
 		}

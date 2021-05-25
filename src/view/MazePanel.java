@@ -46,20 +46,8 @@ public class MazePanel extends JPanel {
 		addKeyListener(new KeyboardListener());
 		myPlayer = thePlayer;
 		myMaze = theMaze;
-		myPlayerTimer = new Timer(90, theEvent -> {
-			try {
-				advancePlayer();
-			} catch (UnsupportedAudioFileException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (LineUnavailableException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		});
+		myPlayerTimer = new Timer(90, theEvent -> 
+				advancePlayer());
 		myFadeTimer = new Timer(75, theEvent -> executeFade()); 
 		myFaded = false;
 		myFadeIndex = 0;
@@ -111,7 +99,7 @@ public class MazePanel extends JPanel {
 		myPlayerTimer.setInitialDelay(0);
 	}
 	
-	private void advancePlayer() throws UnsupportedAudioFileException, IOException, LineUnavailableException {
+	private void advancePlayer() {
 		myPlayer.move();
 		repaint();
 		if (myPlayer.isAdvanceComplete()) {

@@ -23,7 +23,7 @@ public class GamePanel extends JPanel implements PropertyChangeListener {
 	private boolean myGameOver;
 	private boolean myGameWon;
 	
-	public GamePanel() throws UnsupportedAudioFileException, IOException, LineUnavailableException {
+	public GamePanel() {
 		myGameOver = false;
 		myGameWon = false;
 		setLayout(new BorderLayout());
