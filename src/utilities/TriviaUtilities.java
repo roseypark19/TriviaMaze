@@ -20,17 +20,6 @@ public class TriviaUtilities {
 
     final private static TriviaFactory triviaFactory = new TriviaFactory();
 
-//    public static void main(String[] args) {
-//        var s = getTriviaList();
-//        for (Trivia t : s) {
-//            System.out.println("Trivia Type: " + t.getTriviaType().toString());
-//            System.out.println("Question: " + t.getQuestion());
-//            System.out.println("Answers:\n" + t.getAnswers());
-//            System.out.println("Correct: " + t.getCorrectValue() + "\n");
-//        }
-//        System.out.println(s.size());
-//    }
-
     public static List<Trivia> getTriviaList() {
         if (triviaList.isEmpty()) {
             SQLiteDataSource dataSource = accessDataSource();

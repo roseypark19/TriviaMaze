@@ -47,6 +47,7 @@ public class GameFrame extends JFrame implements PropertyChangeListener {
 	private static final ImageIcon LOAD_SAND = new ImageIcon("loadGame_Over.png");
 
 	public GameFrame() {
+		setLoopingMusic(SoundType.TITLE);
 		setTitle("Maze Hops");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		mySelectorPanel = new SelectorPanel();
@@ -57,13 +58,13 @@ public class GameFrame extends JFrame implements PropertyChangeListener {
 		setLocationRelativeTo(null);
 		setResizable(false);
 		setVisible(true);
-		SoundUtilities.play(SoundType.TITLE);
 	}
 
 	@Override
 	public void propertyChange(final PropertyChangeEvent theEvent) {
 		if (theEvent.getPropertyName().equals(Player.NO_HP)) {
 			displaySelectorPanel(false);
+			// play lose sound
 		} else if (theEvent.getPropertyName().equals(Maze.END_REACHED)) {
 			displaySelectorPanel(true);
 			SoundUtilities.play(SoundType.WIN);
@@ -71,7 +72,13 @@ public class GameFrame extends JFrame implements PropertyChangeListener {
 	}
 	
 	private void setLoopingMusic(final SoundType theType) {
-		if (!SoundUtilities.isPlaying(theType)) {
+		if (SoundUtilities.isPlaying(SoundType.TITLE)) {
+			SoundUtilities.stop(SoundType.TITLE);
+			SoundUtilities.play(theType);
+		} else if (SoundUtilities.isPlaying(SoundType.BACKGROUND)) {
+			SoundUtilities.stop(SoundType.BACKGROUND);
+			SoundUtilities.play(theType);
+		} else {
 			SoundUtilities.play(theType);
 		}
 	}
@@ -85,7 +92,6 @@ public class GameFrame extends JFrame implements PropertyChangeListener {
 		add(myCurrentPanel);
 		revalidate();
 		myCurrentPanel.grabFocus();
-		SoundUtilities.stop(SoundType.TITLE);
 		setLoopingMusic(SoundType.BACKGROUND);
 	}
 	
@@ -98,6 +104,7 @@ public class GameFrame extends JFrame implements PropertyChangeListener {
 		mySelectorPanel.repaint();
 		revalidate();
 		myCurrentPanel.grabFocus();
+		setLoopingMusic(SoundType.TITLE);
 	}
 	
 	private void saveGame() {
