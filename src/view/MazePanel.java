@@ -13,7 +13,9 @@ import javax.swing.Timer;
 import model.Maze;
 import model.Movement;
 import model.Player;
+import model.SoundType;
 import model.Trivia;
+import utilities.SoundUtilities;
 import utilities.SpriteUtilities;
 
 public class MazePanel extends JPanel {
@@ -105,6 +107,7 @@ public class MazePanel extends JPanel {
 				myFadeTimer.start();
 				myTriviaPanel.setupNewTrivia(triv);
 			} else if (myMaze.hasWater()) {
+				SoundUtilities.play(SoundType.DRINK);
 				myPlayer.incrementHealth();
 				myPlayPanel.updateHearts();
 				myMaze.removeWater();

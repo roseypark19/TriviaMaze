@@ -24,6 +24,8 @@ import javax.swing.JPanel;
 
 import model.Maze;
 import model.Player;
+import model.SoundType;
+import utilities.SoundUtilities;
 import utilities.SpriteUtilities;
 
 public class GameFrame extends JFrame implements PropertyChangeListener {
@@ -54,7 +56,8 @@ public class GameFrame extends JFrame implements PropertyChangeListener {
 		pack();
 		setLocationRelativeTo(null);
 		setResizable(false);
-		setVisible(true);	
+		setVisible(true);
+		SoundUtilities.play(SoundType.TITLE);
 	}
 
 	@Override
@@ -63,6 +66,13 @@ public class GameFrame extends JFrame implements PropertyChangeListener {
 			displaySelectorPanel(false);
 		} else if (theEvent.getPropertyName().equals(Maze.END_REACHED)) {
 			displaySelectorPanel(true);
+			SoundUtilities.play(SoundType.WIN);
+		}
+	}
+	
+	private void setLoopingMusic(final SoundType theType) {
+		if (!SoundUtilities.isPlaying(theType)) {
+			SoundUtilities.play(theType);
 		}
 	}
 	
@@ -75,6 +85,8 @@ public class GameFrame extends JFrame implements PropertyChangeListener {
 		add(myCurrentPanel);
 		revalidate();
 		myCurrentPanel.grabFocus();
+		SoundUtilities.stop(SoundType.TITLE);
+		setLoopingMusic(SoundType.BACKGROUND);
 	}
 	
 	private void displaySelectorPanel(final boolean theWon) {

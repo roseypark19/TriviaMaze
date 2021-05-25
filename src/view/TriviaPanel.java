@@ -17,8 +17,10 @@ import javax.swing.Timer;
 
 import model.Maze;
 import model.Player;
+import model.SoundType;
 import model.Trivia;
 import model.TriviaType;
+import utilities.SoundUtilities;
 import utilities.SpriteUtilities;
 
 public class TriviaPanel extends JPanel {
@@ -95,9 +97,11 @@ public class TriviaPanel extends JPanel {
 	public void processResponse(final String theResponse) {
 		myMazePanel.grabFocus();
 		if (myCurrentTrivia.isCorrect(theResponse)) {
+			SoundUtilities.play(SoundType.CORRECT);
 			myTriviaArea.setText(CORRECT);
 			myMaze.removeTavern();
 		} else {
+			SoundUtilities.play(SoundType.INCORRECT);
 			myTriviaArea.setText(INCORRECT);
 			myPlayPanel.initializeHeartBeat();
 			myPlayer.decrementHealth();
