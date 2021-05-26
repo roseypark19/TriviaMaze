@@ -5,6 +5,8 @@ import java.awt.FileDialog;
 import java.awt.FlowLayout;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -21,8 +23,13 @@ import javax.swing.Box;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JSlider;
 
 import model.Maze;
 import model.Player;
@@ -47,11 +54,16 @@ public class GameFrame extends JFrame implements PropertyChangeListener {
 	private static final ImageIcon LOAD_GRASS = new ImageIcon("loadGame.png");
 	private static final ImageIcon NEW_SAND = new ImageIcon("newGame_Over.png");
 	private static final ImageIcon LOAD_SAND = new ImageIcon("loadGame_Over.png");
+	private static final int MAX_VOLUME = 100;
+	private static final int DEFAULT_VOLUME = 50;
 
 	public GameFrame() {
 		setLoopingMusic(SoundType.TITLE);
 		setTitle("Maze Hops");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		JMenuBar myMenu = new JMenuBar();
+		setupMenuBar(myMenu);
+		setJMenuBar(myMenu);
 		mySelectorPanel = new SelectorPanel();
 		myCurrentPanel = mySelectorPanel;
 		add(myCurrentPanel);
@@ -60,6 +72,59 @@ public class GameFrame extends JFrame implements PropertyChangeListener {
 		setLocationRelativeTo(null);
 		setResizable(false);
 		setVisible(true);
+	}
+
+	private void setupMenuBar(JMenuBar theMenu) {
+		JMenu fileMenu = new JMenu("File");
+		theMenu.add(fileMenu);
+		
+		JMenu aboutMenu = new JMenu("About");
+		theMenu.add(aboutMenu);
+		
+		JMenu optionsMenu = new JMenu("Options");
+		theMenu.add(optionsMenu);
+		
+		JMenu helpMenu = new JMenu("Help");
+		theMenu.add(helpMenu);
+		
+		/* File Menu */
+		JMenuItem newGame = new JMenuItem("New Game");
+		JMenuItem saveGame = new JMenuItem("Save Game");
+		JMenuItem loadGame = new JMenuItem("Load Game");
+		JMenuItem exitGame = new JMenuItem("Exit");
+		fileMenu.add(newGame);
+		fileMenu.add(saveGame);
+		fileMenu.add(loadGame);
+		fileMenu.addSeparator();
+		fileMenu.add(exitGame);
+		newGame.addActionListener(theEvent -> newGame());
+		saveGame.addActionListener(theEvent -> saveGame());
+		loadGame.addActionListener(theEvent -> loadGame());
+		exitGame.addActionListener(theEvent -> System.exit(0));
+		
+		/* About Menu */
+		JMenuItem aboutGame = new JMenuItem("About");
+		aboutMenu.add(aboutGame);
+		aboutGame.addActionListener(theEvent -> aboutMenu());
+		
+		/* Options Menu */
+		JLabel volumeLabel = new JLabel("Adjust Volume");
+		JSlider volumeSlider = new JSlider(0,MAX_VOLUME,DEFAULT_VOLUME);
+		volumeSlider.setPaintLabels(rootPaneCheckingEnabled);
+		volumeSlider.setPaintTicks(true);
+		volumeSlider.setPaintTrack(true);
+		volumeSlider.setMajorTickSpacing(25);
+		volumeSlider.setMinorTickSpacing(5);
+		optionsMenu.add(volumeLabel);
+		optionsMenu.add(volumeSlider);
+
+		/* Help Menu */
+		JMenuItem helpItem = new JMenuItem("Help");
+		helpMenu.add(helpItem);
+	}
+	
+	private void aboutMenu() {
+		
 	}
 
 	@Override
@@ -85,7 +150,7 @@ public class GameFrame extends JFrame implements PropertyChangeListener {
 		}
 	}
 	
-	private void newGame() throws UnsupportedAudioFileException, IOException, LineUnavailableException {
+	private void newGame() {
 		remove(myCurrentPanel);
 		myGamePanel = new GamePanel();
 		myGamePanel.addPropertyChangeListener(Player.NO_HP, this);
@@ -189,20 +254,7 @@ public class GameFrame extends JFrame implements PropertyChangeListener {
 			setLayout(new FlowLayout(FlowLayout.CENTER, 75, 0));
 			add(Box.createRigidArea(new Dimension(1487, 620)));
 			myNewButton = new JButton(NEW_GRASS);
-			myNewButton.addActionListener(theEvent -> {
-				try {
-					newGame();
-				} catch (UnsupportedAudioFileException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (LineUnavailableException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			});
+			myNewButton.addActionListener(theEvent -> newGame());
 			myNewButton.setPreferredSize(new Dimension(367, 82));
 			myNewButton.setFocusable(false);
 			myNewButton.setBorderPainted(false);
@@ -233,5 +285,7 @@ public class GameFrame extends JFrame implements PropertyChangeListener {
 			myLoadButton.setIcon(loadIcon);
 		}
 	}
+
+	
 
 }

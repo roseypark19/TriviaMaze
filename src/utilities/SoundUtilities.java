@@ -48,11 +48,12 @@ public class SoundUtilities {
 		return SOUNDS.get(theType).isActive();
 	}
 	
-	public void changeVolume(final float theNewVolume) {
+	public void changeVolume(final int theNewVolume) {
+		float newVolume = (float) theNewVolume / 100;
 		for (final SoundType sT : SOUNDS.keySet()) {
 			final Clip clip = SOUNDS.get(sT);
 			final FloatControl fC = (FloatControl) clip.getControl(FloatControl.Type.VOLUME);
-			fC.setValue(theNewVolume);
+			fC.setValue(newVolume);
 		}
 	}
 }

@@ -28,7 +28,6 @@ import model.Maze;
 import model.Movement;
 import model.Player;
 import model.TriviaType;
-import utilities.SoundFX;
 
 public class PlayPanel extends JPanel {
 	

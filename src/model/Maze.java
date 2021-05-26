@@ -19,8 +19,6 @@ import java.util.Set;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
-import utilities.SoundFX;
-import utilities.SoundPlayer;
 import utilities.MazeGenerator;
 import utilities.SpriteUtilities;
 import utilities.TriviaUtilities;
@@ -40,7 +38,6 @@ public class Maze implements Serializable {
 	private final Map<Point, Tavern> myTaverns;
 	private final Set<Point> myWaters;
 	private MazeTile myCurrTile;
-	private SoundPlayer mySoundPlayer = new SoundPlayer();
 	
 	public Maze() {
 		myTiles = MazeGenerator.generateTileMap();
@@ -88,8 +85,6 @@ public class Maze implements Serializable {
 			throw new IllegalArgumentException("No tavern on this maze tile!");
 		}
 		myTaverns.remove(myCurrTile.getPoint());
-		mySoundPlayer.setFile("correct.wav");
-		mySoundPlayer.play();
 	}
 	
 	public void removeWater() {
@@ -97,8 +92,6 @@ public class Maze implements Serializable {
 			throw new IllegalArgumentException("No water on this maze tile!");
 		}
 		myWaters.remove(myCurrTile.getPoint());
-		mySoundPlayer.setFile("water.wav");
-		mySoundPlayer.play();
 	}
 	
 	public Trivia getTavernTrivia() {
