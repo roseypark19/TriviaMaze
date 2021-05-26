@@ -74,7 +74,7 @@ public class GameFrame extends JFrame implements PropertyChangeListener {
 		setVisible(true);
 	}
 
-	private void setupMenuBar(JMenuBar theMenu) {
+	private void setupMenuBar(final JMenuBar theMenu) {
 		JMenu fileMenu = new JMenu("File");
 		theMenu.add(fileMenu);
 		
