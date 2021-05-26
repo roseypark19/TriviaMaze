@@ -91,6 +91,8 @@ public class MazePanel extends JPanel {
 		if (!theAnsweredCorrectly) {
 			myPlayerTimer.setInitialDelay(800);
 			initializeAdvancement(myPlayer.getCurrentMovement().getOpposite());
+		} else {
+			myPlayPanel.updateKeyButtons(false);
 		}
 		myFadeTimer.setInitialDelay(0);
 		myPlayerTimer.setInitialDelay(0);
@@ -101,8 +103,9 @@ public class MazePanel extends JPanel {
 		repaint();
 		if (myPlayer.isAdvanceComplete()) {
 			myPlayerTimer.stop();
-			myPlayPanel.updateKeyButtons();
+			boolean isTavern = false;
 			if (myMaze.hasTavern()) {
+				isTavern = true;
 				final Trivia triv = myMaze.getTavernTrivia();
 				myFadeTimer.start();
 				myTriviaPanel.setupNewTrivia(triv);
@@ -112,6 +115,7 @@ public class MazePanel extends JPanel {
 				myPlayPanel.updateHearts();
 				myMaze.removeWater();
 			}
+			myPlayPanel.updateKeyButtons(isTavern);
 			myMaze.checkEndReached();
 		}
 	}

@@ -2,6 +2,7 @@ package view;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.GridBagConstraints;
@@ -96,7 +97,7 @@ public class PlayPanel extends JPanel {
 		mySouthPanel.setPreferredSize(new Dimension(WIDTH, 200));
 		mySouthPanel.setBackground(TRANSPARENT);
 		mySouthPanel.add(getKeyPanel(theMazePan));
-		updateKeyButtons();
+		updateKeyButtons(false);
 		mySouthPanel.add(Box.createHorizontalStrut(50));
 		addHearts();
 		updateHearts();
@@ -152,9 +153,9 @@ public class PlayPanel extends JPanel {
 		}
 	}
 	
-	public void updateKeyButtons() {
+	public void updateKeyButtons(final boolean theAsking) {
 		for (final KeyPadButton button : myKeyButtons) {
-			button.updateAppearance(myMaze.isMovementLegal(button.getMovement()));
+			button.updateAppearance(myMaze.isMovementLegal(button.getMovement()) && !theAsking);
 		}
 	}
 	
@@ -190,6 +191,12 @@ public class PlayPanel extends JPanel {
 		if (!myHeartTimer.isRunning()) {
 			myHeartIndex = Math.max(0, myPlayer.getHealth() - 1);
 			myHeartTimer.start();
+		}
+	}
+	
+	public void setAnswerComponentsActivated(final boolean theActivated) {
+		for (final Component comp : myAnswerPanel.getComponents()) {
+			comp.setEnabled(theActivated);
 		}
 	}
 	

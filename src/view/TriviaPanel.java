@@ -95,6 +95,7 @@ public class TriviaPanel extends JPanel {
 	}
 	
 	public void processResponse(final String theResponse) {
+		myPlayPanel.setAnswerComponentsActivated(false);
 		myMazePanel.grabFocus();
 		if (myCurrentTrivia.isCorrect(theResponse)) {
 			SoundUtilities.play(SoundType.CORRECT);
@@ -105,7 +106,6 @@ public class TriviaPanel extends JPanel {
 			myTriviaArea.setText(INCORRECT);
 			myPlayPanel.initializeHeartBeat();
 			myPlayer.decrementHealth();
-//			myPlayer.probeHealthState();
 		}
 		myTeardownTimer.start();
 	}
@@ -143,6 +143,7 @@ public class TriviaPanel extends JPanel {
 		setPreferredSize(new Dimension(WIDTH, HEIGHT_ASKING));
 		myTriviaArea.setVisible(true);
 		myPlayPanel.updateAnswerPanel(myCurrentTrivia.getTriviaType());
+		myPlayPanel.setAnswerComponentsActivated(true);
 	}
 	
 }
