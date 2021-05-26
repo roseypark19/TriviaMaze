@@ -26,6 +26,8 @@ import javax.swing.JPanel;
 
 import model.Maze;
 import model.Player;
+import model.SoundType;
+import utilities.SoundUtilities;
 import utilities.SpriteUtilities;
 
 public class GameFrame extends JFrame implements PropertyChangeListener {
@@ -47,6 +49,7 @@ public class GameFrame extends JFrame implements PropertyChangeListener {
 	private static final ImageIcon LOAD_SAND = new ImageIcon("loadGame_Over.png");
 
 	public GameFrame() {
+		setLoopingMusic(SoundType.TITLE);
 		setTitle("Maze Hops");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		mySelectorPanel = new SelectorPanel();
@@ -56,15 +59,29 @@ public class GameFrame extends JFrame implements PropertyChangeListener {
 		pack();
 		setLocationRelativeTo(null);
 		setResizable(false);
-		setVisible(true);	
+		setVisible(true);
 	}
 
 	@Override
 	public void propertyChange(final PropertyChangeEvent theEvent) {
 		if (theEvent.getPropertyName().equals(Player.NO_HP)) {
 			displaySelectorPanel(false);
+			// play lose sound
 		} else if (theEvent.getPropertyName().equals(Maze.END_REACHED)) {
 			displaySelectorPanel(true);
+			SoundUtilities.play(SoundType.WIN);
+		}
+	}
+	
+	private void setLoopingMusic(final SoundType theType) {
+		if (SoundUtilities.isPlaying(SoundType.TITLE)) {
+			SoundUtilities.stop(SoundType.TITLE);
+			SoundUtilities.play(theType);
+		} else if (SoundUtilities.isPlaying(SoundType.BACKGROUND)) {
+			SoundUtilities.stop(SoundType.BACKGROUND);
+			SoundUtilities.play(theType);
+		} else {
+			SoundUtilities.play(theType);
 		}
 	}
 	
@@ -77,6 +94,7 @@ public class GameFrame extends JFrame implements PropertyChangeListener {
 		add(myCurrentPanel);
 		revalidate();
 		myCurrentPanel.grabFocus();
+		setLoopingMusic(SoundType.BACKGROUND);
 	}
 	
 	private void displaySelectorPanel(final boolean theWon) {
@@ -88,6 +106,7 @@ public class GameFrame extends JFrame implements PropertyChangeListener {
 		mySelectorPanel.repaint();
 		revalidate();
 		myCurrentPanel.grabFocus();
+		setLoopingMusic(SoundType.TITLE);
 	}
 	
 	private void saveGame() {
