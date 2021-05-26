@@ -77,6 +77,9 @@ public class Player implements Serializable {
 	
 	public void decrementHealth() {
 		myHealth = myHealth > MIN_HEALTH ? myHealth - 1 : myHealth;
+		if (myHealth == MIN_HEALTH) {
+			myNotificationTimer.start();
+		}
 	}
 	
 	public void incrementHealth() {
@@ -120,12 +123,6 @@ public class Player implements Serializable {
 		}
 		mySprite = SPRITE_MAP.get(myMovement)[myMovementIndex];
 		update();
-	}
-	
-	public void probeHealthState() {
-		if (myHealth == MIN_HEALTH) {
-			myNotificationTimer.start();
-		}
 	}
 	
 	private void notifyNoHealth() {
