@@ -41,10 +41,10 @@ public class GameFrame extends JFrame implements PropertyChangeListener {
 	private static final BufferedImage TITLE = SpriteUtilities.getTitleScreen();
 	private static final BufferedImage GAME_OVER = SpriteUtilities.getGameOverScreen();
 	private static final BufferedImage GAME_WON = SpriteUtilities.getGameWonScreen();
-	private static final ImageIcon NEW_GRASS = new ImageIcon("newGame.png");
-	private static final ImageIcon LOAD_GRASS = new ImageIcon("loadGame.png");
-	private static final ImageIcon NEW_SAND = new ImageIcon("newGame_Over.png");
-	private static final ImageIcon LOAD_SAND = new ImageIcon("loadGame_Over.png");
+	private static final ImageIcon NEW_GRASS = new ImageIcon("selectorpanel_sprites/newGame.png");
+	private static final ImageIcon LOAD_GRASS = new ImageIcon("selectorpanel_sprites/loadGame.png");
+	private static final ImageIcon NEW_SAND = new ImageIcon("selectorpanel_sprites/newGame_Over.png");
+	private static final ImageIcon LOAD_SAND = new ImageIcon("selectorpanel_sprites/loadGame_Over.png");
 
 	public GameFrame() {
 		setLoopingMusic(SoundType.TITLE);

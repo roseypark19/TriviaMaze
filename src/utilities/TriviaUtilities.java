@@ -54,9 +54,9 @@ public class TriviaUtilities {
 			addTrueFalseToList(rs);
 			rs = stmt.executeQuery(query + TriviaType.SHORTANSWER.toString());
 			addShortAnswerToList(rs);
-		} catch (SQLException e) {
-			e.printStackTrace();
-			System.exit(0);
+		} catch (final SQLException ex) {
+			System.err.println("Difficulties retrieving trivia from database!");
+			System.exit(1);
 		}
 	}
 
@@ -134,9 +134,9 @@ public class TriviaUtilities {
 		try {
 			dataSource = new SQLiteDataSource();
 			dataSource.setUrl("jdbc:sqlite:trivia.db");
-		} catch (Exception e) {
-			e.printStackTrace();
-			System.exit(0);
+		} catch (final Exception ex) {
+			System.err.println("Difficulties creating SQLiteDataSource!");
+			System.exit(1);
 		}
 		return dataSource;
 	}

@@ -39,6 +39,7 @@ public class SoundUtilities {
 				sounds.put(soundType, clip);
 			} catch (final Exception ex) {
 				System.err.println("Difficulties opening sounds!");
+				System.exit(1);
 			}
 		}
 		return sounds;

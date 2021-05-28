@@ -55,7 +55,7 @@ public class PlayPanel extends JPanel implements PropertyChangeListener {
 	public static final String TRIVIA_ANSWERED = "answered";
 	public static final int WIDTH = 530;
 	private static final int MAX_BEATS = 5;
-	private static final ImageIcon HEART = new ImageIcon("heart.png");
+	private static final ImageIcon HEART = new ImageIcon("playpanel_sprites/heart.png");
 	private static final Color BACKGROUND = new Color(217, 179, 130);
 	private static final Color TRANSPARENT = new Color(0, 0, 0, 0);
 	private final Set<KeyPadLabel> myKeyLabels;
