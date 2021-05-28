@@ -1,13 +1,14 @@
 package view;
 
 import java.awt.BorderLayout;
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import javax.swing.JPanel;
 
 import model.Maze;
+import model.Movement;
 import model.Player;
 
 public class GamePanel extends JPanel implements PropertyChangeListener {
@@ -24,24 +25,18 @@ public class GamePanel extends JPanel implements PropertyChangeListener {
 		myGameWon = false;
 		setLayout(new BorderLayout());
 		final Player player = new Player();
-		player.addPropertyChangeListener(Player.NO_HP, this);
 		final Maze maze = new Maze();
-		maze.addPropertyChangeListener(Maze.END_REACHED, this);
 		final MazePanel mazePan = new MazePanel(player, maze);
 		final PlayPanel playPan = new PlayPanel(player, maze);
-		final TriviaPanel trivPan = new TriviaPanel(player, maze);
-		mazePan.connectPanels(playPan, trivPan);
-		playPan.connectPanels(mazePan, trivPan);
-		trivPan.connectPanels(mazePan, playPan);
+		mazePan.addPropertyChangeListener(playPan);
+		playPan.addPropertyChangeListener(mazePan);
+		maze.addPropertyChangeListener(this);
+		player.addPropertyChangeListener(this);
+		player.addPropertyChangeListener(playPan);
 		add(mazePan, BorderLayout.WEST);
 		add(playPan, BorderLayout.EAST);
-		addFocusListener(new FocusAdapter() {
-			
-			public void focusGained(final FocusEvent theEvent) {
-				mazePan.grabFocus();
-			}
-			
-		});
+		addKeyListener(new KeyboardListener(mazePan));
+		requestFocus();
 	}
 	
 	public boolean isGameWon() {
@@ -60,6 +55,31 @@ public class GamePanel extends JPanel implements PropertyChangeListener {
 		} else if (theEvent.getPropertyName().equals(Maze.END_REACHED)) {
 			myGameWon = true;
 			firePropertyChange(Maze.END_REACHED, false, true);
+		}
+	}
+	
+	private class KeyboardListener extends KeyAdapter {
+		
+		private final MazePanel myMazePanel;
+		private boolean myReleased;
+		
+		public KeyboardListener(final MazePanel theMazePan) {
+			myMazePanel = theMazePan;
+			myReleased = true;
+		}
+
+		@Override
+		public void keyTyped(final KeyEvent theEvent) {
+			if (myReleased) {
+			    myMazePanel.initializeAdvancement(Movement.valueof(Character.toUpperCase(
+													               theEvent.getKeyChar())));
+			    myReleased = false;
+			}
+		}
+		
+		@Override
+		public void keyReleased(final KeyEvent theEvent) {
+			myReleased = true;
 		}
 	}
 }

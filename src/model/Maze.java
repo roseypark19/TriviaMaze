@@ -1,8 +1,6 @@
 package model;
 
-import java.awt.Graphics2D;
 import java.awt.Point;
-import java.awt.image.BufferedImage;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.io.Serializable;
@@ -15,8 +13,9 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 
+import javax.swing.Timer;
+
 import utilities.MazeGenerator;
-import utilities.SpriteUtilities;
 import utilities.TriviaUtilities;
 
 public class Maze implements Serializable {
@@ -25,27 +24,28 @@ public class Maze implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 309169416134584707L;
-	private static final BufferedImage FLAGS = SpriteUtilities.getFlags();
-	private static final BufferedImage WATER = SpriteUtilities.getWater();
 	public static final String END_REACHED = "end reached";
 	private static final Random RAND = new Random();
 	private final PropertyChangeSupport myPcs;
 	private final Map<Point, MazeTile> myTiles;
 	private final Map<Point, Tavern> myTaverns;
 	private final Set<Point> myWaters;
+	private final Timer myNotificationTimer;
 	private MazeTile myCurrTile;
 	
 	public Maze() {
 		myTiles = MazeGenerator.generateTileMap();
 		myTaverns = getTavernMap();
 		myWaters = getWaterSet();
+		myNotificationTimer = new Timer(0, theEvent -> notifyEndReached());
+		myNotificationTimer.setInitialDelay(550);
+		myNotificationTimer.setRepeats(false);
 		myCurrTile = myTiles.get(MazeGenerator.getEntryPoint());
 		myPcs = new PropertyChangeSupport(this);
 	}
 	
-	public void addPropertyChangeListener(final String theType,
-			                              final PropertyChangeListener theListener) {
-		myPcs.addPropertyChangeListener(theType, theListener);
+	public void addPropertyChangeListener(final PropertyChangeListener theListener) {
+		myPcs.addPropertyChangeListener(theListener);
 	}
 	
 	public boolean isMovementLegal(final Movement theMove) {
@@ -55,6 +55,9 @@ public class Maze implements Serializable {
 	public void advanceCurrentTile(final Movement theMove) {
 		if (isMovementLegal(theMove)) {
 			myCurrTile = myTiles.get(myCurrTile.getPointForMovement(theMove));
+			if (myCurrTile.getPoint().equals(MazeGenerator.getExitPoint())) {
+				myNotificationTimer.start();
+			}
 		} else {
 			throw new IllegalArgumentException("Tile not present in this movement direction!");
 		}
@@ -66,12 +69,6 @@ public class Maze implements Serializable {
 	
 	public boolean hasWater() {
 		return myWaters.contains(myCurrTile.getPoint());
-	}
-	
-	public void checkEndReached() {
-		if (myCurrTile.getPoint().equals(MazeGenerator.getExitPoint())) {
-			myPcs.firePropertyChange(END_REACHED, false, true);
-		}
 	}
 	
 	public void removeTavern() {
@@ -95,22 +92,33 @@ public class Maze implements Serializable {
 		return myTaverns.get(myCurrTile.getPoint()).getTrivia();
 	}
 	
-	public void draw(final Graphics2D theGraphics, final boolean theBaseFinished) {
-		if (!theBaseFinished) {
-			for (final MazeTile tile : myTiles.values()) {
-				tile.draw(theGraphics);
-			}
-			theGraphics.drawImage(FLAGS, (int) MazeGenerator.getExitPoint().getX() + 1, 
-					                     (int) MazeGenerator.getExitPoint().getY(), null);
-			for (final Point pt : myWaters) {
-				theGraphics.drawImage(WATER, (int) pt.getX() + 12, 
-						                     (int) pt.getY() + 6, null);
-			}
-		} else {
-			for (final Tavern tavern : myTaverns.values()) {
-				tavern.draw(theGraphics);
-			}
+	public Map<Point, Integer> getTileData() {
+		final Set<Point> copySet = copyPointSet(myTiles.keySet());
+		final Map<Point, Integer> dataMap = new HashMap<>();
+		for (final Point pt : copySet) {
+			dataMap.put(pt, myTiles.get(pt).getImageIndex());
 		}
+		return dataMap;
+	}
+	
+	public Set<Point> getWaterPoints() {
+		return copyPointSet(myWaters);
+	}
+	
+	public Set<Point> getTavernPoints() {
+		return copyPointSet(myTaverns.keySet());
+	}
+	
+	private Set<Point> copyPointSet(final Set<Point> thePointSet) {
+		final Set<Point> copySet = new HashSet<>();
+		for (final Point pt : thePointSet) {
+			copySet.add(new Point((int) pt.getX(), (int) pt.getY()));
+		}
+		return copySet;
+	}
+	
+	private void notifyEndReached() {
+		myPcs.firePropertyChange(END_REACHED, false, true);
 	}
 	
 	private Map<Point, Tavern> getTavernMap() {
@@ -124,7 +132,7 @@ public class Maze implements Serializable {
 			}
 			for (final Point pt : randPts) {
 				final Point newPoint = new Point(pt);
-				tavernMap.put(newPoint, new Tavern(newPoint, triviaList.remove(0)));
+				tavernMap.put(newPoint, new Tavern(triviaList.remove(0)));
 				points.add(pt);
 			}
 			for (final Point pt : points) {

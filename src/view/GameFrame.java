@@ -92,7 +92,8 @@ public class GameFrame extends JFrame implements PropertyChangeListener {
 		add(myCurrentPanel);
 		revalidate();
 		myCurrentPanel.grabFocus();
-		setLoopingMusic(SoundType.BACKGROUND);
+		SoundUtilities.stop(SoundType.TITLE);
+//		setLoopingMusic(SoundType.BACKGROUND);
 	}
 	
 	private void displaySelectorPanel(final boolean theWon) {

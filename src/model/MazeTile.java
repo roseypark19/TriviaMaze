@@ -1,13 +1,10 @@
 package model;
 
-import java.awt.Graphics2D;
 import java.awt.Point;
-import java.awt.image.BufferedImage;
 import java.io.Serializable;
 import java.util.Random;
 
 import utilities.MazeGenerator;
-import utilities.SpriteUtilities;
 
 public class MazeTile implements Serializable {
 
@@ -15,19 +12,18 @@ public class MazeTile implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = -1423349819693002944L;
-	private static final BufferedImage[] IMAGES = SpriteUtilities.getMazeTiles();
 	private static final Random RAND = new Random();
+	private static final int UNIQUE_IMAGES = 5;
 	public static final int SIZE = 48;
 	private static int uniqueID;
 	private final Point myPoint;
-	private final BufferedImage myImage;
+	private final int myImageIndex;
 	private int myID;
 	
 	public MazeTile(final Point thePoint) {
 		myPoint = new Point(thePoint);
-		myImage = IMAGES[RAND.nextInt(IMAGES.length)];
+		myImageIndex = RAND.nextInt(UNIQUE_IMAGES);
 		myID = uniqueID++ % ((MazeGenerator.SIZE * MazeGenerator.SIZE) + 2);
-		// the extra + 2 is to account for the addition of the entry and exit tiles
 	}
 	
 	public Point getPointForMovement(final Movement theMove) {
@@ -52,12 +48,12 @@ public class MazeTile implements Serializable {
 		return p;
 	}
 	
-	public void draw(final Graphics2D theGraphics) {
-		theGraphics.drawImage(myImage, (int) myPoint.getX(), (int) myPoint.getY(), null);
-	}
-	
 	public int getID() {
 		return myID;
+	}
+	
+	public int getImageIndex() {
+		return myImageIndex;
 	}
 	
 	public Point getPoint() {
