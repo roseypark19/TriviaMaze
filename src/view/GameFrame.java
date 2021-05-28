@@ -92,7 +92,8 @@ public class GameFrame extends JFrame implements PropertyChangeListener {
 		add(myCurrentPanel);
 		revalidate();
 		myCurrentPanel.grabFocus();
-		setLoopingMusic(SoundType.BACKGROUND);
+		SoundUtilities.stop(SoundType.TITLE);
+//		setLoopingMusic(SoundType.BACKGROUND);
 	}
 	
 	private void displaySelectorPanel(final boolean theWon) {
@@ -141,19 +142,19 @@ public class GameFrame extends JFrame implements PropertyChangeListener {
 				final FileInputStream file = new FileInputStream(f);
 				final ObjectInputStream in = new ObjectInputStream(file);
 				final GamePanel loadedGame = (GamePanel) in.readObject();
-				remove(myCurrentPanel);
 				myGamePanel = loadedGame;
 				if (myGamePanel.isGameOver()) {
 					displaySelectorPanel(false);
 				} else if (myGamePanel.isGameWon()) {
 					displaySelectorPanel(true);
 				} else {
+					remove(myCurrentPanel);
 					myGamePanel.addPropertyChangeListener(Player.NO_HP, this);
 					myGamePanel.addPropertyChangeListener(Maze.END_REACHED, this);
 					myCurrentPanel = myGamePanel;
 					add(myCurrentPanel);
 					revalidate();
-					myCurrentPanel.grabFocus();
+					myCurrentPanel.requestFocus();
 				}
 				in.close();
 				file.close();

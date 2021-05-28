@@ -5,12 +5,11 @@ import java.awt.Dimension;
 import java.awt.Font;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
+import javax.swing.JLabel;
 
 import model.Movement;
-import view.MazePanel;
 
-public class KeyPadButton extends JButton {
+public class KeyPadLabel extends JLabel {
 	
 	/**
 	 * 
@@ -21,7 +20,7 @@ public class KeyPadButton extends JButton {
 	private static final int SIZE = 70;
 	private final Movement myMovement;
 	
-	public KeyPadButton(final Movement theMove, final MazePanel theMazePan) {
+	public KeyPadLabel(final Movement theMove) {
 		myMovement = theMove;
 		setPreferredSize(new Dimension(SIZE, SIZE));
 		setFont(BUTTON_FONT);
@@ -29,7 +28,8 @@ public class KeyPadButton extends JButton {
 		setForeground(Color.BLACK);
 		setBorder(BorderFactory.createLineBorder(Color.BLACK, 4));
 		setFocusable(false);
-		addActionListener(theEvent -> theMazePan.initializeAdvancement(myMovement));
+		setOpaque(true);
+		setHorizontalAlignment(JLabel.CENTER);
 	}
 	
 	public void updateAppearance(final boolean theEnabled) {

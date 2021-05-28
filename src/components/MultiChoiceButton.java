@@ -7,7 +7,7 @@ import java.awt.Font;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 
-import view.TriviaPanel;
+import view.PlayPanel.TriviaPanel;
 
 public class MultiChoiceButton extends JButton {
 	

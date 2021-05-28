@@ -1,16 +1,12 @@
 package model;
 
-import java.awt.Graphics2D;
 import java.awt.Point;
-import java.awt.image.BufferedImage;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.io.Serializable;
-import java.util.Map;
 import javax.swing.Timer;
 
 import utilities.MazeGenerator;
-import utilities.SpriteUtilities;
 
 public class Player implements Serializable {
 	
@@ -18,11 +14,11 @@ public class Player implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 2488188103432279121L;
-	private static final Map<Movement, BufferedImage[]> SPRITE_MAP = 
-			                                           SpriteUtilities.getPlayerSprites();
 	public static final int MIN_HEALTH = 0;
 	public static final int MAX_HEALTH = 3;
 	public static final String NO_HP = "no hp";
+	public static final String HEALTH_GAINED = "health gained";
+	public static final String HEALTH_LOST = "health lost";
 	private static final int VELOCITY = 8;
 	private static final int CENTER_OFFSET = 5;
 	private static final int MOVE_DISTANCE = 48;
@@ -36,7 +32,6 @@ public class Player implements Serializable {
 	private int myMovementIndex;
 	private int myHealth;
 	private Movement myMovement;
-	private BufferedImage mySprite;
 	
 	public Player() {
 		final Point entry = MazeGenerator.getEntryPoint();
@@ -44,7 +39,6 @@ public class Player implements Serializable {
 		myY = (int) (entry.getY() + CENTER_OFFSET);
 		myMovementIndex = 0;
 		myMovement = Movement.DOWN;
-		mySprite = SPRITE_MAP.get(myMovement)[myMovementIndex];
 		myDistance = 0;
 		myHealth = MAX_HEALTH;
 		myNotificationTimer = new Timer(0, theEvent -> notifyNoHealth());
@@ -53,17 +47,16 @@ public class Player implements Serializable {
 		myPcs = new PropertyChangeSupport(this);
 	}
 	
-	public void addPropertyChangeListener(final String theType, 
-			                              final PropertyChangeListener theListener) {
-		myPcs.addPropertyChangeListener(theType, theListener);
-	}
-	
-	public void draw(final Graphics2D theGraphics) {
-		theGraphics.drawImage(mySprite, myX, myY, null);
+	public void addPropertyChangeListener(final PropertyChangeListener theListener) {
+		myPcs.addPropertyChangeListener(theListener);
 	}
 	
 	public Movement getCurrentMovement() {
 		return myMovement;
+	}
+	
+	public int getMovementIndex() {
+		return myMovementIndex;
 	}
 	
 	private void update() {
@@ -77,10 +70,23 @@ public class Player implements Serializable {
 	
 	public void decrementHealth() {
 		myHealth = myHealth > MIN_HEALTH ? myHealth - 1 : myHealth;
+		myPcs.firePropertyChange(HEALTH_LOST, MAX_HEALTH, MIN_HEALTH);
+		if (myHealth == MIN_HEALTH) {
+			myNotificationTimer.start();
+		}
 	}
 	
 	public void incrementHealth() {
 		myHealth = myHealth < MAX_HEALTH ? myHealth + 1 : myHealth;
+		myPcs.firePropertyChange(HEALTH_GAINED, MIN_HEALTH, MAX_HEALTH);
+	}
+	
+	public int getX() {
+		return myX;
+	}
+	
+	public int getY() {
+		return myY;
 	}
 	
 	public int getHealth() {
@@ -118,14 +124,7 @@ public class Player implements Serializable {
 				myVelY = 0;
 				break;
 		}
-		mySprite = SPRITE_MAP.get(myMovement)[myMovementIndex];
 		update();
-	}
-	
-	public void probeHealthState() {
-		if (myHealth == MIN_HEALTH) {
-			myNotificationTimer.start();
-		}
 	}
 	
 	private void notifyNoHealth() {
