@@ -15,7 +15,7 @@ public class KeyPadLabel extends JLabel {
 	 * 
 	 */
 	private static final long serialVersionUID = 6670444409184566253L;
-	private static final ImageIcon DISABLED = new ImageIcon("redX.png");
+	private static final ImageIcon DISABLED = new ImageIcon("playpanel_sprites/redX.png");
 	private static final Font BUTTON_FONT = new Font(Font.MONOSPACED, Font.BOLD, 45);
 	private static final int SIZE = 70;
 	private final Movement myMovement;
