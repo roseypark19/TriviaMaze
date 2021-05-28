@@ -69,16 +69,16 @@ public class Player implements Serializable {
 	}
 	
 	public void decrementHealth() {
-		myPcs.firePropertyChange(HEALTH_LOST, MAX_HEALTH, MIN_HEALTH);
 		myHealth = myHealth > MIN_HEALTH ? myHealth - 1 : myHealth;
+		myPcs.firePropertyChange(HEALTH_LOST, MAX_HEALTH, MIN_HEALTH);
 		if (myHealth == MIN_HEALTH) {
 			myNotificationTimer.start();
 		}
 	}
 	
 	public void incrementHealth() {
-		myPcs.firePropertyChange(HEALTH_GAINED, MIN_HEALTH, MAX_HEALTH);
 		myHealth = myHealth < MAX_HEALTH ? myHealth + 1 : myHealth;
+		myPcs.firePropertyChange(HEALTH_GAINED, MIN_HEALTH, MAX_HEALTH);
 	}
 	
 	public int getX() {

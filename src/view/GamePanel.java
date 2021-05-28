@@ -30,6 +30,7 @@ public class GamePanel extends JPanel implements PropertyChangeListener {
 		final PlayPanel playPan = new PlayPanel(player, maze);
 		mazePan.addPropertyChangeListener(playPan);
 		playPan.addPropertyChangeListener(mazePan);
+		playPan.addPropertyChangeListener(this);
 		maze.addPropertyChangeListener(this);
 		player.addPropertyChangeListener(this);
 		player.addPropertyChangeListener(playPan);
@@ -55,6 +56,8 @@ public class GamePanel extends JPanel implements PropertyChangeListener {
 		} else if (theEvent.getPropertyName().equals(Maze.END_REACHED)) {
 			myGameWon = true;
 			firePropertyChange(Maze.END_REACHED, false, true);
+		} else if (theEvent.getPropertyName().equals(PlayPanel.TRIVIA_ANSWERED)) {
+			requestFocus();
 		}
 	}
 	
