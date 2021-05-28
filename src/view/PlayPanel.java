@@ -50,13 +50,15 @@ public class PlayPanel extends JPanel implements PropertyChangeListener {
 	 */
 	private static final long serialVersionUID = 2115518979921196291L;
 	private static final BufferedImage TRIVIA_IMAGE = SpriteUtilities.getTriviaBackground();
+	private static final BufferedImage BACKGROUND = SpriteUtilities.getPlayPanelBackground();
+	private static final BufferedImage HOW_TO_PLAY = SpriteUtilities.getHowToPlayImage();
 	private static final Font TRIVIA_FONT = new Font(Font.MONOSPACED, Font.BOLD, 20);
 	private static final GridBagConstraints GB_CONSTRAINTS = new GridBagConstraints();
 	public static final String TRIVIA_ANSWERED = "answered";
 	public static final int WIDTH = 530;
 	private static final int MAX_BEATS = 5;
 	private static final ImageIcon HEART = new ImageIcon("playpanel_sprites/heart.png");
-	private static final Color BACKGROUND = new Color(217, 179, 130);
+//	private static final Color BACKGROUND = new Color(217, 179, 130);
 	private static final Color TRANSPARENT = new Color(0, 0, 0, 0);
 	private final Set<KeyPadLabel> myKeyLabels;
 	private final List<JLabel> myHearts;
@@ -71,7 +73,7 @@ public class PlayPanel extends JPanel implements PropertyChangeListener {
 	
 	public PlayPanel(final Player thePlayer, final Maze theMaze) {
 		setPreferredSize(new Dimension(WIDTH, MazePanel.HEIGHT));
-		setBackground(BACKGROUND);
+//		setBackground(BACKGROUND);
 		setLayout(new BorderLayout());
 		myPlayer = thePlayer;
 		myMaze = theMaze;
@@ -108,6 +110,8 @@ public class PlayPanel extends JPanel implements PropertyChangeListener {
 	@Override
 	public void paintComponent(final Graphics theGraphics) {
 		super.paintComponent(theGraphics);
+		final Graphics2D g2d = (Graphics2D) theGraphics;
+		g2d.drawImage(BACKGROUND, null, 0, 0);
 	}
 
 	public void updateKeyButtons() {
@@ -318,7 +322,7 @@ public class PlayPanel extends JPanel implements PropertyChangeListener {
 		private TriviaDisplayPanel() {
 			updateDisplaySizing();
 			setFocusable(false);
-			setBorder(BorderFactory.createLineBorder(Color.BLACK, BORDER_WIDTH));
+			setBorder(BorderFactory.createLineBorder(new Color(255, 171, 66), BORDER_WIDTH));
 			add(Box.createRigidArea(new Dimension(WIDTH, 8)));
 			myTriviaArea = new JTextArea();
 			configureTriviaArea();
@@ -328,8 +332,8 @@ public class PlayPanel extends JPanel implements PropertyChangeListener {
 		public void paintComponent(final Graphics theGraphics) {
 			super.paintComponent(theGraphics);
 			final Graphics2D g2d = (Graphics2D) theGraphics;
-			final BufferedImage image = myDisplayingTrivia ? TRIVIA_IMAGE : null;
-			g2d.drawImage(image, null, 0, 0);
+			final BufferedImage image = myDisplayingTrivia ? TRIVIA_IMAGE : HOW_TO_PLAY;
+			g2d.drawImage(image, null, 1, 1);
 		}
 		
 		private void updateDisplaySizing() {

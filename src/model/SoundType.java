@@ -4,7 +4,7 @@ public enum SoundType {
 	
 	TITLE("sound_files/RedSoloCup.wav"),
 
-	BACKGROUND("sound_files/LoopMusic.wav"),
+	BACKGROUND("sound_files/gamemusic.wav"),
 	
 	CORRECT("sound_files/correct.wav"),
 	
@@ -12,7 +12,9 @@ public enum SoundType {
 	
 	DRINK("sound_files/water.wav"),
 	
-	WIN("sound_files/wingame.wav");
+	WIN("sound_files/wingame.wav"),
+	
+	LOSE("sound_files/losegame.wav");
 	
 	private final String myType;
 	

@@ -5,6 +5,7 @@ import java.awt.FileDialog;
 import java.awt.FlowLayout;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -49,6 +50,9 @@ public class GameFrame extends JFrame implements PropertyChangeListener {
 	public GameFrame() {
 		setLoopingMusic(SoundType.TITLE);
 		setTitle("Maze Hops");
+		final ImageIcon beerIcon = new ImageIcon("frame_icon/beerIcon.png");
+		final Image image = beerIcon.getImage().getScaledInstance(15, -1, Image.SCALE_SMOOTH);
+		setIconImage(image);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		mySelectorPanel = new SelectorPanel();
 		myCurrentPanel = mySelectorPanel;
@@ -64,10 +68,8 @@ public class GameFrame extends JFrame implements PropertyChangeListener {
 	public void propertyChange(final PropertyChangeEvent theEvent) {
 		if (theEvent.getPropertyName().equals(Player.NO_HP)) {
 			displaySelectorPanel(false);
-			// play lose sound
 		} else if (theEvent.getPropertyName().equals(Maze.END_REACHED)) {
 			displaySelectorPanel(true);
-			SoundUtilities.play(SoundType.WIN);
 		}
 	}
 	
@@ -91,9 +93,8 @@ public class GameFrame extends JFrame implements PropertyChangeListener {
 		myCurrentPanel = myGamePanel;
 		add(myCurrentPanel);
 		revalidate();
-		myCurrentPanel.grabFocus();
-		SoundUtilities.stop(SoundType.TITLE);
-//		setLoopingMusic(SoundType.BACKGROUND);
+		myCurrentPanel.requestFocus();
+		setLoopingMusic(SoundType.BACKGROUND);
 	}
 	
 	private void displaySelectorPanel(final boolean theWon) {
@@ -104,7 +105,12 @@ public class GameFrame extends JFrame implements PropertyChangeListener {
 		add(myCurrentPanel);
 		mySelectorPanel.repaint();
 		revalidate();
-		myCurrentPanel.grabFocus();
+		myCurrentPanel.requestFocus();
+		if (theWon) {
+			SoundUtilities.play(SoundType.WIN);
+		} else {
+			SoundUtilities.play(SoundType.LOSE);
+		}
 		setLoopingMusic(SoundType.TITLE);
 	}
 	
@@ -122,6 +128,7 @@ public class GameFrame extends JFrame implements PropertyChangeListener {
 				file.close();
 			} catch (IOException ex) {
 				showSaveError(ex.getClass().getSimpleName(), fileName);
+				ex.printStackTrace();
 			}
 		}
 	}
@@ -154,6 +161,7 @@ public class GameFrame extends JFrame implements PropertyChangeListener {
 					myCurrentPanel = myGamePanel;
 					add(myCurrentPanel);
 					revalidate();
+					setLoopingMusic(SoundType.BACKGROUND);
 					myCurrentPanel.requestFocus();
 				}
 				in.close();

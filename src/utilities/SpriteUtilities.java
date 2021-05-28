@@ -61,7 +61,7 @@ public class SpriteUtilities {
 	public static BufferedImage getPlayPanelBackground() {
 		BufferedImage scroll = null;
 		try {
-			scroll = ImageIO.read(new File("playpanel_sprites/PlayPanel_background.png"));
+			scroll = ImageIO.read(new File("playpanel_sprites/playPanelBackground.png"));
 		} catch (final IOException ex) {
 			System.err.println("Could not load play panel background image!");
 			System.exit(1);
@@ -125,6 +125,17 @@ public class SpriteUtilities {
 			System.exit(1);
 		}
 		return insideTav;
+	}
+	
+	public static BufferedImage getHowToPlayImage() {
+		BufferedImage howToPlay = null;
+		try {
+			howToPlay = ImageIO.read(new File("playpanel_sprites/howToPlay.png"));
+		} catch (final IOException ex) {
+			System.err.println("Could not load how to play image!");
+			System.exit(1);
+		}
+		return howToPlay;
 	}
 	
 	public static BufferedImage getTitleScreen() {
