@@ -42,6 +42,7 @@ public class GameFrame extends JFrame implements PropertyChangeListener {
 	private static final BufferedImage TITLE = SpriteUtilities.getTitleScreen();
 	private static final BufferedImage GAME_OVER = SpriteUtilities.getGameOverScreen();
 	private static final BufferedImage GAME_WON = SpriteUtilities.getGameWonScreen();
+	private static final ImageIcon ERROR_ICON = new ImageIcon("playpanel_sprites/redX.png");
 	private static final ImageIcon NEW_GRASS = new ImageIcon("selectorpanel_sprites/newGame.png");
 	private static final ImageIcon LOAD_GRASS = new ImageIcon("selectorpanel_sprites/loadGame.png");
 	private static final ImageIcon NEW_SAND = new ImageIcon("selectorpanel_sprites/newGame_Over.png");
@@ -67,9 +68,9 @@ public class GameFrame extends JFrame implements PropertyChangeListener {
 	@Override
 	public void propertyChange(final PropertyChangeEvent theEvent) {
 		if (theEvent.getPropertyName().equals(Player.NO_HP)) {
-			displaySelectorPanel(false);
+			displaySelectorPanel();
 		} else if (theEvent.getPropertyName().equals(Maze.END_REACHED)) {
-			displaySelectorPanel(true);
+			displaySelectorPanel();
 		}
 	}
 	
@@ -97,16 +98,15 @@ public class GameFrame extends JFrame implements PropertyChangeListener {
 		setLoopingMusic(SoundType.BACKGROUND);
 	}
 	
-	private void displaySelectorPanel(final boolean theWon) {
+	private void displaySelectorPanel() {
 		remove(myCurrentPanel);
-		mySelectorPanel.setButtonIcons(theWon);
-		mySelectorPanel.setImage(theWon);
+		mySelectorPanel.setButtonIcons();
 		myCurrentPanel = mySelectorPanel;
 		add(myCurrentPanel);
 		mySelectorPanel.repaint();
 		revalidate();
 		myCurrentPanel.requestFocus();
-		if (theWon) {
+		if (myGamePanel.isGameWon()) {
 			SoundUtilities.play(SoundType.WIN);
 		} else {
 			SoundUtilities.play(SoundType.LOSE);
@@ -123,12 +123,11 @@ public class GameFrame extends JFrame implements PropertyChangeListener {
 				final File f = new File(fd.getDirectory(), fileName);
 				final FileOutputStream file = new FileOutputStream(f);
 				final ObjectOutputStream out = new ObjectOutputStream(file);
-				out.writeObject(new GamePanel());
+				out.writeObject(myGamePanel);
 				out.close();
 				file.close();
 			} catch (IOException ex) {
 				showSaveError(ex.getClass().getSimpleName(), fileName);
-				ex.printStackTrace();
 			}
 		}
 	}
@@ -136,8 +135,8 @@ public class GameFrame extends JFrame implements PropertyChangeListener {
 	private void showSaveError(final String theExceptionName, final String theFileName) {
 		final String message = String.format("Could not save game: \"%s\"\nSource: %s", 
 				                             theFileName, theExceptionName);
-		JOptionPane.showConfirmDialog(this, message, "Error Saving Game!", 
-				                                     JOptionPane.ERROR_MESSAGE);
+		JOptionPane.showMessageDialog(this, message, "Error Saving Game!", 
+                                      JOptionPane.ERROR_MESSAGE, ERROR_ICON);
 	}
 	
 	private void loadGame() {
@@ -150,10 +149,8 @@ public class GameFrame extends JFrame implements PropertyChangeListener {
 				final ObjectInputStream in = new ObjectInputStream(file);
 				final GamePanel loadedGame = (GamePanel) in.readObject();
 				myGamePanel = loadedGame;
-				if (myGamePanel.isGameOver()) {
-					displaySelectorPanel(false);
-				} else if (myGamePanel.isGameWon()) {
-					displaySelectorPanel(true);
+				if (myGamePanel.isGameOver() || myGamePanel.isGameWon()) {
+					displaySelectorPanel();
 				} else {
 					remove(myCurrentPanel);
 					myGamePanel.addPropertyChangeListener(this);
@@ -177,7 +174,7 @@ public class GameFrame extends JFrame implements PropertyChangeListener {
 		final String message = String.format("Could not load game: \"%s\"\nSource: %s", 
                 							 theFileName, theExceptionName);
 		JOptionPane.showMessageDialog(this, message, "Error Loading Game!", 
-				                                     JOptionPane.ERROR_MESSAGE);
+				                      JOptionPane.ERROR_MESSAGE, ERROR_ICON);
 	}
 	
 	private class SelectorPanel extends JPanel {
@@ -188,10 +185,8 @@ public class GameFrame extends JFrame implements PropertyChangeListener {
 		private static final long serialVersionUID = 2071944460810159409L;
 		private final JButton myNewButton;
 		private final JButton myLoadButton;
-		private BufferedImage myImage;
 		
 		private SelectorPanel() {
-			myImage = TITLE;
 			setPreferredSize(new Dimension(MazePanel.WIDTH + PlayPanel.WIDTH,
 										   MazePanel.HEIGHT));
 			setLayout(new FlowLayout(FlowLayout.CENTER, 75, 0));
@@ -214,16 +209,20 @@ public class GameFrame extends JFrame implements PropertyChangeListener {
 		public void paintComponent(final Graphics theGraphics) {
 			super.paintComponent(theGraphics);
 			final Graphics2D g2d = (Graphics2D) theGraphics;
-			g2d.drawImage(myImage, null, 0, 0);
+			BufferedImage image = null;
+			if (myGamePanel != null && myGamePanel.isGameOver()) {
+				image = GAME_OVER;
+			} else if (myGamePanel != null && myGamePanel.isGameWon()) {
+				image = GAME_WON;
+			} else {
+				image = TITLE;
+			}
+			g2d.drawImage(image, null, 0, 0);
 		}
 		
-		private void setImage(final boolean theWon) {
-			myImage = theWon ? GAME_WON : GAME_OVER;
-		}
-		
-		private void setButtonIcons(final boolean theWon) {
-			final ImageIcon newIcon = theWon ? NEW_GRASS : NEW_SAND;
-			final ImageIcon loadIcon = theWon ? LOAD_GRASS : LOAD_SAND;
+		private void setButtonIcons() {
+			final ImageIcon newIcon = myGamePanel.isGameWon() ? NEW_GRASS : NEW_SAND;
+			final ImageIcon loadIcon = myGamePanel.isGameWon() ? LOAD_GRASS : LOAD_SAND;
 			myNewButton.setIcon(newIcon);
 			myLoadButton.setIcon(loadIcon);
 		}
