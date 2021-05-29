@@ -9,7 +9,7 @@ import javax.swing.JButton;
 
 import view.PlayPanel.TriviaPanel;
 
-public class TrueFalseButton extends JButton {
+public class TrueFalseButton extends JButton implements TriviaComponent {
 	
 	/**
 	 * 
@@ -30,7 +30,11 @@ public class TrueFalseButton extends JButton {
 		setFont(FONT);
 		setBorder(BorderFactory.createLineBorder(Color.BLACK, BORDER_WIDTH));
 		setFocusable(false);
-		addActionListener(theEvent -> theTrivPan.processResponse(String.valueOf(myBool)));
+		addActionListener(theTrivPan);
+	}
+	
+	public void addActionListener(final TriviaPanel theTrivPan) {
+		super.addActionListener(theEvent -> theTrivPan.processResponse(String.valueOf(myBool)));
 	}
 
 }

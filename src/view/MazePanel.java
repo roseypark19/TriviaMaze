@@ -102,6 +102,11 @@ public class MazePanel extends JPanel implements PropertyChangeListener {
 		}
 	}
 	
+	public void restoreListeners() {
+		myPlayerTimer.addActionListener(theEvent -> advancePlayer());
+		myFadeTimer.addActionListener(theEvent -> executeFade());
+	}
+	
 	public void initializeAdvancement(final Movement theMove) {
 		final boolean reqs = !myPlayerTimer.isRunning() && !myInsideTavern &&
 				             myMaze.isMovementLegal(theMove);     

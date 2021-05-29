@@ -3,13 +3,12 @@ package components;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
-
 import javax.swing.BorderFactory;
 import javax.swing.JTextField;
 
 import view.PlayPanel.TriviaPanel;
 
-public class ShortAnswerField extends JTextField {
+public class ShortAnswerField extends JTextField implements TriviaComponent {
 
 	/**
 	 * 
@@ -28,7 +27,11 @@ public class ShortAnswerField extends JTextField {
 		setFont(FONT);
 		setBorder(BorderFactory.createLineBorder(Color.BLACK, BORDER_WIDTH));
 		setHorizontalAlignment(JTextField.CENTER);
-		addActionListener(theEvent -> {
+		addActionListener(theTrivPan);
+	}
+	
+	public void addActionListener(final TriviaPanel theTrivPan) {
+		super.addActionListener(theEvent -> {
 			theTrivPan.processResponse(getText());
 			setText(null);
 		});

@@ -49,11 +49,11 @@ public class SoundUtilities {
 		return SOUNDS.get(theType).isActive();
 	}
 	
-	public static void changeVolume(final float theNewVolume) {
+	public static void changeVolume(final int theNewVolume) {
 		for (final SoundType sT : SOUNDS.keySet()) {
 			final Clip clip = SOUNDS.get(sT);
 			final FloatControl fC = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
-			fC.setValue(theNewVolume);
+			fC.setValue(20.0f * (float) Math.log10(theNewVolume / 100.0));
 		}
 	}
 }
