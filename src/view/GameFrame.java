@@ -154,13 +154,12 @@ public class GameFrame extends JFrame implements PropertyChangeListener {
 				} else {
 					remove(myCurrentPanel);
 					myGamePanel.addPropertyChangeListener(this);
-					myGamePanel.addPropertyChangeListener(this);
 					myGamePanel.restoreListeners();
 					myCurrentPanel = myGamePanel;
 					add(myCurrentPanel);
 					revalidate();
 					setLoopingMusic(SoundType.BACKGROUND);
-					myGamePanel.requestFocus();
+					myCurrentPanel.requestFocus();
 				}
 				in.close();
 				file.close();
