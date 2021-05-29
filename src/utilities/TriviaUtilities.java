@@ -18,8 +18,6 @@ public class TriviaUtilities {
 
 	private static final List<Trivia> TRIVIA_LIST = new LinkedList<>();
 
-//	final private static TriviaFactory FACTORY = new TriviaFactory();
-
 	public static List<Trivia> getTriviaList() {
 		if (TRIVIA_LIST.isEmpty()) {
 			SQLiteDataSource dataSource = accessDataSource();
