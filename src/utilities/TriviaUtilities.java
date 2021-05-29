@@ -16,9 +16,9 @@ import model.TriviaType;
 
 public class TriviaUtilities {
 
-	final private static List<Trivia> TRIVIA_LIST = new LinkedList<>();
+	private static final List<Trivia> TRIVIA_LIST = new LinkedList<>();
 
-	final private static TriviaFactory FACTORY = new TriviaFactory();
+//	final private static TriviaFactory FACTORY = new TriviaFactory();
 
 	public static List<Trivia> getTriviaList() {
 		if (TRIVIA_LIST.isEmpty()) {
@@ -72,7 +72,7 @@ public class TriviaUtilities {
 		while (theSet.next()) {
 			final String question = theSet.getString(queryQuestion);
 			final String correct = theSet.getString(queryCorrect);
-			TRIVIA_LIST.add(FACTORY.createTrivia(correct, question, TriviaType.SHORTANSWER, null));
+			TRIVIA_LIST.add(TriviaFactory.createTrivia(correct, question, TriviaType.SHORTANSWER, null));
 		}
 	}
 
@@ -91,7 +91,7 @@ public class TriviaUtilities {
 			final String correct = theSet.getString(queryCorrectLetter);
 			final String answers = theSet.getString(queryAnswers);
 			final String[] parsedAnswers = parseMultiChoiceAnswers(answers);
-			TRIVIA_LIST.add(FACTORY.createTrivia(correct, question, TriviaType.MULTICHOICE, parsedAnswers));
+			TRIVIA_LIST.add(TriviaFactory.createTrivia(correct, question, TriviaType.MULTICHOICE, parsedAnswers));
 		}
 	}
 
@@ -107,7 +107,7 @@ public class TriviaUtilities {
 		while (theSet.next()) {
 			final String question = theSet.getString(queryQuestion);
 			final String correct = theSet.getString(queryCorrect);
-			TRIVIA_LIST.add(FACTORY.createTrivia(correct, question, TriviaType.TRUEFALSE, null));
+			TRIVIA_LIST.add(TriviaFactory.createTrivia(correct, question, TriviaType.TRUEFALSE, null));
 		}
 	}
 

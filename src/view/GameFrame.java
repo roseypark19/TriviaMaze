@@ -123,7 +123,7 @@ public class GameFrame extends JFrame implements PropertyChangeListener {
 				final File f = new File(fd.getDirectory(), fileName);
 				final FileOutputStream file = new FileOutputStream(f);
 				final ObjectOutputStream out = new ObjectOutputStream(file);
-				out.writeObject(myGamePanel);
+				out.writeObject(new GamePanel());
 				out.close();
 				file.close();
 			} catch (IOException ex) {
@@ -156,13 +156,14 @@ public class GameFrame extends JFrame implements PropertyChangeListener {
 					displaySelectorPanel(true);
 				} else {
 					remove(myCurrentPanel);
-					myGamePanel.addPropertyChangeListener(Player.NO_HP, this);
-					myGamePanel.addPropertyChangeListener(Maze.END_REACHED, this);
+					myGamePanel.addPropertyChangeListener(this);
+					myGamePanel.addPropertyChangeListener(this);
+					myGamePanel.restoreListeners();
 					myCurrentPanel = myGamePanel;
 					add(myCurrentPanel);
 					revalidate();
 					setLoopingMusic(SoundType.BACKGROUND);
-					myCurrentPanel.requestFocus();
+					myGamePanel.requestFocus();
 				}
 				in.close();
 				file.close();

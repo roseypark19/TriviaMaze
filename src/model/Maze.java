@@ -48,6 +48,10 @@ public class Maze implements Serializable {
 		myPcs.addPropertyChangeListener(theListener);
 	}
 	
+	public void restoreListeners() {
+		myNotificationTimer.addActionListener(theEvent -> notifyEndReached());
+	}
+	
 	public boolean isMovementLegal(final Movement theMove) {
 		return myTiles.containsKey(myCurrTile.getPointForMovement(theMove));
 	}

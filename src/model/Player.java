@@ -51,6 +51,10 @@ public class Player implements Serializable {
 		myPcs.addPropertyChangeListener(theListener);
 	}
 	
+	public void restoreListeners() {
+		myNotificationTimer.addActionListener(theEvent -> notifyNoHealth());
+	}
+	
 	public Movement getCurrentMovement() {
 		return myMovement;
 	}

@@ -5,8 +5,6 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.io.Serializable;
-
 import javax.swing.JPanel;
 
 import model.Maze;
@@ -19,6 +17,10 @@ public class GamePanel extends JPanel implements PropertyChangeListener {
 	 * 
 	 */
 	private static final long serialVersionUID = -5014076795452073479L;
+	private final Player myPlayer;
+	private final Maze myMaze;
+	private final MazePanel myMazePanel;
+	private final PlayPanel myPlayPanel;
 	private boolean myGameOver;
 	private boolean myGameWon;
 	
@@ -26,19 +28,19 @@ public class GamePanel extends JPanel implements PropertyChangeListener {
 		myGameOver = false;
 		myGameWon = false;
 		setLayout(new BorderLayout());
-		final Player player = new Player();
-		final Maze maze = new Maze();
-		final MazePanel mazePan = new MazePanel(player, maze);
-		final PlayPanel playPan = new PlayPanel(player, maze);
-		mazePan.addPropertyChangeListener(playPan);
-		playPan.addPropertyChangeListener(mazePan);
-		playPan.addPropertyChangeListener(this);
-		maze.addPropertyChangeListener(this);
-		player.addPropertyChangeListener(this);
-		player.addPropertyChangeListener(playPan);
-		add(mazePan, BorderLayout.WEST);
-		add(playPan, BorderLayout.EAST);
-		addKeyListener(new KeyboardListener(mazePan));
+		myPlayer = new Player();
+		myMaze = new Maze();
+		myMazePanel = new MazePanel(myPlayer, myMaze);
+		myPlayPanel = new PlayPanel(myPlayer, myMaze);
+		myMazePanel.addPropertyChangeListener(myPlayPanel);
+		myPlayPanel.addPropertyChangeListener(myMazePanel);
+		myPlayPanel.addPropertyChangeListener(this);
+		myMaze.addPropertyChangeListener(this);
+		myPlayer.addPropertyChangeListener(this);
+		myPlayer.addPropertyChangeListener(myPlayPanel);
+		addKeyListener(new KeyboardListener());
+		add(myMazePanel, BorderLayout.WEST);
+		add(myPlayPanel, BorderLayout.EAST);
 		requestFocus();
 	}
 	
@@ -48,6 +50,14 @@ public class GamePanel extends JPanel implements PropertyChangeListener {
 
 	public boolean isGameOver() {
 		return myGameOver;
+	}
+	
+	public void restoreListeners() {
+		myMazePanel.restoreListeners();
+		myPlayPanel.restoreListeners();
+		myMaze.restoreListeners();
+		myPlayer.restoreListeners();
+		addKeyListener(new KeyboardListener());
 	}
 
 	@Override
@@ -65,11 +75,9 @@ public class GamePanel extends JPanel implements PropertyChangeListener {
 	
 	private class KeyboardListener extends KeyAdapter {
 		
-		private final MazePanel myMazePanel;
 		private boolean myReleased;
 		
-		public KeyboardListener(final MazePanel theMazePan) {
-			myMazePanel = theMazePan;
+		public KeyboardListener() {
 			myReleased = true;
 		}
 
