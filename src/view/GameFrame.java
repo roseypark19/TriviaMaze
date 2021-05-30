@@ -67,9 +67,8 @@ public class GameFrame extends JFrame implements PropertyChangeListener {
 
 	@Override
 	public void propertyChange(final PropertyChangeEvent theEvent) {
-		if (theEvent.getPropertyName().equals(Player.NO_HP)) {
-			displaySelectorPanel();
-		} else if (theEvent.getPropertyName().equals(Maze.END_REACHED)) {
+		if (theEvent.getPropertyName().equals(Player.NO_HP) ||
+			theEvent.getPropertyName().equals(Maze.END_REACHED)) {
 			displaySelectorPanel();
 		}
 	}

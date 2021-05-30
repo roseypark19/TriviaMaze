@@ -35,8 +35,8 @@ public class Maze implements Serializable {
 	
 	public Maze() {
 		myTiles = MazeGenerator.generateTileMap();
-		myTaverns = getTavernMap();
-		myWaters = getWaterSet();
+		myTaverns = generateTavernMap();
+		myWaters = generateWaterSet();
 		myNotificationTimer = new Timer(0, theEvent -> notifyEndReached());
 		myNotificationTimer.setInitialDelay(550);
 		myNotificationTimer.setRepeats(false);
@@ -125,7 +125,7 @@ public class Maze implements Serializable {
 		myPcs.firePropertyChange(END_REACHED, false, true);
 	}
 	
-	private Map<Point, Tavern> getTavernMap() {
+	private Map<Point, Tavern> generateTavernMap() {
 		final List<Trivia> triviaList = TriviaUtilities.getTriviaList();
 		final Map<Point, Tavern> tavernMap = new HashMap<>();
 		final List<Point> points = getAlternatingFirstRow();
@@ -146,7 +146,7 @@ public class Maze implements Serializable {
 		return tavernMap;
 	}
 	
-	private Set<Point> getWaterSet() {
+	private Set<Point> generateWaterSet() {
 		final Set<Point> waterSet = new HashSet<>();
 		final List<Point> points = getAlternatingFirstRow();
 		for (int row = 0; row < MazeGenerator.SIZE; row += 2) {
