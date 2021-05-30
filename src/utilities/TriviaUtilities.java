@@ -16,9 +16,7 @@ import model.TriviaType;
 
 public class TriviaUtilities {
 
-	final private static List<Trivia> TRIVIA_LIST = new LinkedList<>();
-
-	final private static TriviaFactory FACTORY = new TriviaFactory();
+	private static final List<Trivia> TRIVIA_LIST = new LinkedList<>();
 
 	public static List<Trivia> getTriviaList() {
 		if (TRIVIA_LIST.isEmpty()) {
@@ -54,9 +52,9 @@ public class TriviaUtilities {
 			addTrueFalseToList(rs);
 			rs = stmt.executeQuery(query + TriviaType.SHORTANSWER.toString());
 			addShortAnswerToList(rs);
-		} catch (SQLException e) {
-			e.printStackTrace();
-			System.exit(0);
+		} catch (final SQLException ex) {
+			System.err.println("Difficulties retrieving trivia from database!");
+			System.exit(1);
 		}
 	}
 
@@ -72,7 +70,7 @@ public class TriviaUtilities {
 		while (theSet.next()) {
 			final String question = theSet.getString(queryQuestion);
 			final String correct = theSet.getString(queryCorrect);
-			TRIVIA_LIST.add(FACTORY.createTrivia(correct, question, TriviaType.SHORTANSWER, null));
+			TRIVIA_LIST.add(TriviaFactory.createTrivia(correct, question, TriviaType.SHORTANSWER, null));
 		}
 	}
 
@@ -91,7 +89,7 @@ public class TriviaUtilities {
 			final String correct = theSet.getString(queryCorrectLetter);
 			final String answers = theSet.getString(queryAnswers);
 			final String[] parsedAnswers = parseMultiChoiceAnswers(answers);
-			TRIVIA_LIST.add(FACTORY.createTrivia(correct, question, TriviaType.MULTICHOICE, parsedAnswers));
+			TRIVIA_LIST.add(TriviaFactory.createTrivia(correct, question, TriviaType.MULTICHOICE, parsedAnswers));
 		}
 	}
 
@@ -107,7 +105,7 @@ public class TriviaUtilities {
 		while (theSet.next()) {
 			final String question = theSet.getString(queryQuestion);
 			final String correct = theSet.getString(queryCorrect);
-			TRIVIA_LIST.add(FACTORY.createTrivia(correct, question, TriviaType.TRUEFALSE, null));
+			TRIVIA_LIST.add(TriviaFactory.createTrivia(correct, question, TriviaType.TRUEFALSE, null));
 		}
 	}
 
@@ -134,9 +132,9 @@ public class TriviaUtilities {
 		try {
 			dataSource = new SQLiteDataSource();
 			dataSource.setUrl("jdbc:sqlite:trivia.db");
-		} catch (Exception e) {
-			e.printStackTrace();
-			System.exit(0);
+		} catch (final Exception ex) {
+			System.err.println("Difficulties creating SQLiteDataSource!");
+			System.exit(1);
 		}
 		return dataSource;
 	}

@@ -17,7 +17,8 @@ public class SpriteUtilities {
 		try {
 			final BufferedImage[] sprites = new BufferedImage[16];
 			for (int i = 1; i <= sprites.length; i++) {
-				sprites[i-1] = ImageIO.read(new File(String.format("image%d.png", i)));
+				sprites[i-1] = 
+				   ImageIO.read(new File(String.format("player_sprites/image%d.png", i)));
 			}
 			
 			playerSprites.put(Movement.DOWN, Arrays.copyOfRange(sprites, 0, 4));
@@ -27,6 +28,7 @@ public class SpriteUtilities {
 			
 		} catch (final IOException ex) {
 			System.err.println("Could not load sprite image!");
+			System.exit(1);
 		}
 		return playerSprites;
 	}
@@ -35,10 +37,12 @@ public class SpriteUtilities {
 		BufferedImage[] fades = new BufferedImage[4];
 		try {
 			for (int i = 1; i <= fades.length; i++) {
-				fades[i - 1] = ImageIO.read(new File(String.format("%d.png", i * 10)));
+				fades[i - 1] = 
+						    ImageIO.read(new File(String.format("fades/%d.png", i * 10)));
 			}
 		} catch (final IOException ex) {
 			System.err.println("Could not load fade image!");
+			System.exit(1);
 		}
 		return fades;
 	}
@@ -46,19 +50,21 @@ public class SpriteUtilities {
 	public static BufferedImage getGrass() {
 		BufferedImage grass = null;
 		try {
-			grass = ImageIO.read(new File("grass.png"));
+			grass = ImageIO.read(new File("maze_sprites/grass.png"));
 		} catch (final IOException ex) {
 			System.err.println("Could not load grass image!");
+			System.exit(1);
 		}
 		return grass;
 	}
 	
-	public static BufferedImage getScroll() {
+	public static BufferedImage getPlayPanelBackground() {
 		BufferedImage scroll = null;
 		try {
-			scroll = ImageIO.read(new File("scroll.png"));
+			scroll = ImageIO.read(new File("playpanel_sprites/playPanelBackground.png"));
 		} catch (final IOException ex) {
-			System.err.println("Could not load scroll image!");
+			System.err.println("Could not load play panel background image!");
+			System.exit(1);
 		}
 		return scroll;
 	}
@@ -66,9 +72,10 @@ public class SpriteUtilities {
 	public static BufferedImage getTavern() {
 		BufferedImage tavern = null;
 		try {
-			tavern = ImageIO.read(new File("tavern.png"));
+			tavern = ImageIO.read(new File("maze_sprites/tavern.png"));
 		} catch (final IOException ex) {
 			System.err.println("Could not load tavern image!");
+			System.exit(1);
 		}
 		return tavern;
 	}
@@ -76,9 +83,10 @@ public class SpriteUtilities {
 	public static BufferedImage getFlags() {
 		BufferedImage flag = null;
 		try {
-			flag = ImageIO.read(new File("flags.png"));
+			flag = ImageIO.read(new File("maze_sprites/flags.png"));
 		} catch (final IOException ex) {
 			System.err.println("Could not load tavern image!");
+			System.exit(1);
 		}
 		return flag;
 	}
@@ -87,10 +95,12 @@ public class SpriteUtilities {
 		BufferedImage[] tiles = new BufferedImage[5];
 		try {
 			for (int i = 1; i <= tiles.length; i++) {
-				tiles[i - 1] = ImageIO.read(new File(String.format("mazetile%d.png", i)));
+				tiles[i - 1] = 
+				  ImageIO.read(new File(String.format("maze_sprites/mazetile%d.png", i)));
 			}
 		} catch (final IOException ex) {
 			System.err.println("Could not load tile image!");
+			System.exit(1);
 		}
 		return tiles;
 	}
@@ -98,9 +108,10 @@ public class SpriteUtilities {
 	public static BufferedImage getWater() {
 		BufferedImage water = null;
 		try {
-			water = ImageIO.read(new File("water.png"));
+			water = ImageIO.read(new File("maze_sprites/water.png"));
 		} catch (final IOException ex) {
 			System.err.println("Could not load water image!");
+			System.exit(1);
 		}
 		return water;
 	}
@@ -108,19 +119,32 @@ public class SpriteUtilities {
 	public static BufferedImage getTriviaBackground() {
 		BufferedImage insideTav = null;
 		try {
-			insideTav = ImageIO.read(new File("insideTavern.png"));
+			insideTav = ImageIO.read(new File("playpanel_sprites/insideTavern.png"));
 		} catch (final IOException ex) {
 			System.err.println("Could not load trivia panel image!");
+			System.exit(1);
 		}
 		return insideTav;
+	}
+	
+	public static BufferedImage getHowToPlayImage() {
+		BufferedImage howToPlay = null;
+		try {
+			howToPlay = ImageIO.read(new File("playpanel_sprites/howToPlay.png"));
+		} catch (final IOException ex) {
+			System.err.println("Could not load how to play image!");
+			System.exit(1);
+		}
+		return howToPlay;
 	}
 	
 	public static BufferedImage getTitleScreen() {
 		BufferedImage title = null;
 		try {
-			title = ImageIO.read(new File("titleScreen.png"));
+			title = ImageIO.read(new File("selectorpanel_sprites/titleScreen.png"));
 		} catch (final IOException ex) {
 			System.err.println("Could not load title screen image!");
+			System.exit(1);
 		}
 		return title;
 	}
@@ -128,9 +152,10 @@ public class SpriteUtilities {
 	public static BufferedImage getGameOverScreen() {
 		BufferedImage over = null;
 		try {
-			over = ImageIO.read(new File("gameOverScreen.png"));
+			over = ImageIO.read(new File("selectorpanel_sprites/gameOverScreen.png"));
 		} catch (final IOException ex) {
 			System.err.println("Could not load game over screen image!");
+			System.exit(1);
 		}
 		return over;
 	}
@@ -138,9 +163,10 @@ public class SpriteUtilities {
 	public static BufferedImage getGameWonScreen() {
 		BufferedImage won = null;
 		try {
-			won = ImageIO.read(new File("gameWonScreen.png"));
+			won = ImageIO.read(new File("selectorpanel_sprites/gameWonScreen.png"));
 		} catch (final IOException ex) {
 			System.err.println("Could not load game won screen image!");
+			System.exit(1);
 		}
 		return won;
 	}

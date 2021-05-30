@@ -33,6 +33,7 @@ import javax.swing.Timer;
 import components.KeyPadLabel;
 import components.MultiChoiceButton;
 import components.ShortAnswerField;
+import components.TriviaComponent;
 import components.TrueFalseButton;
 import model.Maze;
 import model.Movement;
@@ -50,13 +51,14 @@ public class PlayPanel extends JPanel implements PropertyChangeListener {
 	 */
 	private static final long serialVersionUID = 2115518979921196291L;
 	private static final BufferedImage TRIVIA_IMAGE = SpriteUtilities.getTriviaBackground();
+	private static final BufferedImage BACKGROUND = SpriteUtilities.getPlayPanelBackground();
+	private static final BufferedImage HOW_TO_PLAY = SpriteUtilities.getHowToPlayImage();
 	private static final Font TRIVIA_FONT = new Font(Font.MONOSPACED, Font.BOLD, 20);
 	private static final GridBagConstraints GB_CONSTRAINTS = new GridBagConstraints();
 	public static final String TRIVIA_ANSWERED = "answered";
 	public static final int WIDTH = 530;
 	private static final int MAX_BEATS = 5;
-	private static final ImageIcon HEART = new ImageIcon("heart.png");
-	private static final Color BACKGROUND = new Color(217, 179, 130);
+	private static final ImageIcon HEART = new ImageIcon("playpanel_sprites/heart.png");
 	private static final Color TRANSPARENT = new Color(0, 0, 0, 0);
 	private final Set<KeyPadLabel> myKeyLabels;
 	private final List<JLabel> myHearts;
@@ -71,7 +73,6 @@ public class PlayPanel extends JPanel implements PropertyChangeListener {
 	
 	public PlayPanel(final Player thePlayer, final Maze theMaze) {
 		setPreferredSize(new Dimension(WIDTH, MazePanel.HEIGHT));
-		setBackground(BACKGROUND);
 		setLayout(new BorderLayout());
 		myPlayer = thePlayer;
 		myMaze = theMaze;
@@ -101,6 +102,11 @@ public class PlayPanel extends JPanel implements PropertyChangeListener {
 		}
 	}
 	
+	public void restoreListeners() {
+		myHeartTimer.addActionListener(theEvent -> toggleHeartBeat());
+		myTriviaPanel.restoreTimerListeners();
+	}
+	
 	public void addPropertyChangeListener(final PropertyChangeListener theListener) {
 		myPcs.addPropertyChangeListener(theListener);
 	}
@@ -108,6 +114,8 @@ public class PlayPanel extends JPanel implements PropertyChangeListener {
 	@Override
 	public void paintComponent(final Graphics theGraphics) {
 		super.paintComponent(theGraphics);
+		final Graphics2D g2d = (Graphics2D) theGraphics;
+		g2d.drawImage(BACKGROUND, null, 0, 0);
 	}
 
 	public void updateKeyButtons() {
@@ -128,7 +136,7 @@ public class PlayPanel extends JPanel implements PropertyChangeListener {
 
 	private void initializeHeartBeat() {
 		if (!myHeartTimer.isRunning()) {
-			myHeartIndex = Math.max(0, myPlayer.getHealth() - 1);
+			myHeartIndex = myPlayer.getHealth();
 			myHeartTimer.start();
 		}
 	}
@@ -198,8 +206,8 @@ public class PlayPanel extends JPanel implements PropertyChangeListener {
 		private final Timer myTeardownTimer;
 		private final TriviaDisplayPanel myDisplayPanel;
 		private final Map<TriviaType, JPanel> myAnswerPanels;
+		private final List<TriviaComponent> myTriviaComponents;
 		private JPanel myAnswerPanel;
-		private Trivia myCurrentTrivia;
 		
 		private TriviaPanel() {
 			setLayout(new GridBagLayout());
@@ -214,28 +222,36 @@ public class PlayPanel extends JPanel implements PropertyChangeListener {
 			myDisplayPanel = new TriviaDisplayPanel();
 			add(myDisplayPanel);
 			myAnswerPanels = new HashMap<>();
+			myTriviaComponents = new ArrayList<>();
 			populateAnswerMap();
 		}
 		
 		public void processResponse(final String theResponse) {
 			setAnswerComponentsActivated(false);
-			if (myCurrentTrivia.isCorrect(theResponse)) {
+			if (myMaze.getTavernTrivia().isCorrect(theResponse)) {
 				SoundUtilities.play(SoundType.CORRECT);
 				myDisplayPanel.myTriviaArea.setText(CORRECT);
 			} else {
 				SoundUtilities.play(SoundType.INCORRECT);
 				myDisplayPanel.myTriviaArea.setText(INCORRECT);
-				initializeHeartBeat();
 				myPlayer.decrementHealth();
 			}
 			myTeardownTimer.start();
 		}
 		
+		private void restoreTimerListeners() {
+			mySetupTimer.addActionListener(theEvent -> showTrivia());
+			myTeardownTimer.addActionListener(theEvent -> tearDownTrivia());
+			for (final TriviaComponent tC : myTriviaComponents) {
+				tC.addActionListener(this);
+			}
+		}
+		
 		private void setupNewTrivia() {
-			myCurrentTrivia = myMaze.getTavernTrivia();
-			String question = myCurrentTrivia.getQuestion();
-			if (myCurrentTrivia.getTriviaType() == TriviaType.MULTICHOICE) {
-				question += "\n" + myCurrentTrivia.getAnswers();
+			final Trivia newTriv = myMaze.getTavernTrivia();
+			String question = newTriv.getQuestion();
+			if (newTriv.getTriviaType() == TriviaType.MULTICHOICE) {
+				question += "\n" + newTriv.getAnswers();
 			}
 			myDisplayPanel.myTriviaArea.setText(question);
 			mySetupTimer.start();
@@ -253,7 +269,9 @@ public class PlayPanel extends JPanel implements PropertyChangeListener {
 			final JPanel multiChoice = new JPanel(new GridBagLayout());
 			multiChoice.setBackground(TRANSPARENT);
 			for (char letter = 'A'; letter <= 'D'; letter++) {
-				multiChoice.add(new MultiChoiceButton(letter, this));
+				final MultiChoiceButton mC = new MultiChoiceButton(letter, this);
+				myTriviaComponents.add(mC);
+				multiChoice.add(mC);
 				if (letter < 'D') {
 					multiChoice.add(Box.createHorizontalStrut(40));
 				}
@@ -261,18 +279,24 @@ public class PlayPanel extends JPanel implements PropertyChangeListener {
 			myAnswerPanels.put(TriviaType.MULTICHOICE, multiChoice);
 			final JPanel trueFalse = new JPanel(new GridBagLayout());
 			trueFalse.setBackground(TRANSPARENT);
-			trueFalse.add(new TrueFalseButton(true, this));
+			final TrueFalseButton trueButton = new TrueFalseButton(true, this);
+			myTriviaComponents.add(trueButton);
+			trueFalse.add(trueButton);
 			trueFalse.add(Box.createHorizontalStrut(40));
-			trueFalse.add(new TrueFalseButton(false, this));
+			final TrueFalseButton falseButton = new TrueFalseButton(false, this);
+			myTriviaComponents.add(falseButton);
+			trueFalse.add(falseButton);
 			myAnswerPanels.put(TriviaType.TRUEFALSE, trueFalse);
 			final JPanel shortAns = new JPanel(new GridBagLayout());
-			shortAns.add(new ShortAnswerField(this));
+			final ShortAnswerField sA = new ShortAnswerField(this);
+			myTriviaComponents.add(sA);
+			shortAns.add(sA);
 			myAnswerPanels.put(TriviaType.SHORTANSWER, shortAns);
 		}
 		
 		private void showTrivia() {
 			myDisplayPanel.updateDisplaySizing();
-			updateAnswerPanel(myCurrentTrivia.getTriviaType());
+			updateAnswerPanel(myMaze.getTavernTrivia().getTriviaType());
 			myDisplayPanel.myTriviaArea.setVisible(true);
 			setAnswerComponentsActivated(true);
 		}
@@ -318,7 +342,7 @@ public class PlayPanel extends JPanel implements PropertyChangeListener {
 		private TriviaDisplayPanel() {
 			updateDisplaySizing();
 			setFocusable(false);
-			setBorder(BorderFactory.createLineBorder(Color.BLACK, BORDER_WIDTH));
+			setBorder(BorderFactory.createLineBorder(new Color(255, 171, 66), BORDER_WIDTH));
 			add(Box.createRigidArea(new Dimension(WIDTH, 8)));
 			myTriviaArea = new JTextArea();
 			configureTriviaArea();
@@ -328,8 +352,8 @@ public class PlayPanel extends JPanel implements PropertyChangeListener {
 		public void paintComponent(final Graphics theGraphics) {
 			super.paintComponent(theGraphics);
 			final Graphics2D g2d = (Graphics2D) theGraphics;
-			final BufferedImage image = myDisplayingTrivia ? TRIVIA_IMAGE : null;
-			g2d.drawImage(image, null, 0, 0);
+			final BufferedImage image = myDisplayingTrivia ? TRIVIA_IMAGE : HOW_TO_PLAY;
+			g2d.drawImage(image, null, 1, 1);
 		}
 		
 		private void updateDisplaySizing() {

@@ -2,17 +2,19 @@ package model;
 
 public enum SoundType {
 	
-	TITLE("RedSoloCup.wav"),
+	TITLE("sound_files/RedSoloCup.wav"),
 
-	BACKGROUND("LoopMusic.wav"),
+	BACKGROUND("sound_files/gamemusic.wav"),
 	
-	CORRECT("correct.wav"),
+	CORRECT("sound_files/correct.wav"),
 	
-	INCORRECT("fail.wav"),
+	INCORRECT("sound_files/fail.wav"),
 	
-	DRINK("water.wav"),
+	DRINK("sound_files/water.wav"),
 	
-	WIN("wingame.wav");
+	WIN("sound_files/wingame.wav"),
+	
+	LOSE("sound_files/losegame.wav");
 	
 	private final String myType;
 	
