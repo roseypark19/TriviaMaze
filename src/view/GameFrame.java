@@ -5,8 +5,6 @@ import java.awt.FileDialog;
 import java.awt.FlowLayout;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -16,9 +14,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-
-import javax.sound.sampled.LineUnavailableException;
-import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.Box;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -115,6 +110,7 @@ public class GameFrame extends JFrame implements PropertyChangeListener {
 		volumeSlider.setPaintTrack(true);
 		volumeSlider.setMajorTickSpacing(25);
 		volumeSlider.setMinorTickSpacing(5);
+		volumeSlider.addChangeListener(theEvent -> SoundUtilities.changeVolume(volumeSlider.getValue()));
 		optionsMenu.add(volumeLabel);
 		optionsMenu.add(volumeSlider);
 
@@ -188,6 +184,7 @@ public class GameFrame extends JFrame implements PropertyChangeListener {
 				file.close();
 			} catch (IOException ex) {
 				showSaveError(ex.getClass().getSimpleName(), fileName);
+				ex.printStackTrace();
 			}
 		}
 	}

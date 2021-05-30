@@ -1,6 +1,8 @@
 package model;
 
-public enum Movement {
+import java.io.Serializable;
+
+public enum Movement implements Serializable {
 	
 	UP('W'),
 	

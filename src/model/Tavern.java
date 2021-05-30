@@ -3,10 +3,16 @@ package model;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.image.BufferedImage;
+import java.io.Serializable;
 
 import utilities.SpriteUtilities;
 
-public class Tavern {
+public class Tavern implements Serializable {
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -4719058083324002399L;
 	
 	private static final BufferedImage IMAGE = SpriteUtilities.getTavern();
 	private final Point myPoint;

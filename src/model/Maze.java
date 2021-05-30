@@ -45,8 +45,6 @@ public class Maze implements Serializable {
 		myWaters = getWaterSet();
 		myCurrTile = myTiles.get(MazeGenerator.getEntryPoint());
 		myPcs = new PropertyChangeSupport(this);
-//		mySoundPlayer.setFile(SoundFX.GAME_MUSIC);
-//		mySoundPlayer.play();
 	}
 	
 	public void addPropertyChangeListener(final String theType,
