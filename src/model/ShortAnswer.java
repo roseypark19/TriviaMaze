@@ -8,7 +8,7 @@ package model;
  */
 public class ShortAnswer extends AbstractTrivia {
 
-    public ShortAnswer(final String theCorrectResponse, final String theQuestion) {
+    ShortAnswer(final String theCorrectResponse, final String theQuestion) {
         super(theCorrectResponse, theQuestion, TriviaType.SHORTANSWER);
         if (theCorrectResponse.equalsIgnoreCase(Boolean.TRUE.toString()) || 
         	theCorrectResponse.equalsIgnoreCase(Boolean.FALSE.toString())) {

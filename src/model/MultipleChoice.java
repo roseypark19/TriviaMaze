@@ -12,7 +12,7 @@ public class MultipleChoice extends AbstractTrivia {
 
     private final String[] myAnswers;
 
-    public MultipleChoice(final String theCorrectLetter, final String[] theAnswers, final String theQuestion) {
+    MultipleChoice(final String theCorrectLetter, final String[] theAnswers, final String theQuestion) {
         super(theCorrectLetter, theQuestion, TriviaType.MULTICHOICE);
         if (theCorrectLetter.length() != 1 || theCorrectLetter.charAt(0) < 'A' || theCorrectLetter.charAt(0) > 'D') {
             throw new IllegalArgumentException("Invalid correct letter!");

@@ -11,7 +11,7 @@ public class TrueFalse extends AbstractTrivia {
 	private static final String[] ANSWERS = {Boolean.TRUE.toString(), 
 			                                 Boolean.FALSE.toString()};
 
-    public TrueFalse(final String theCorrectBool, final String theQuestion) {
+    TrueFalse(final String theCorrectBool, final String theQuestion) {
         super(theCorrectBool, theQuestion, TriviaType.TRUEFALSE);
         if (!theCorrectBool.equalsIgnoreCase(ANSWERS[0]) && 
         	!theCorrectBool.equalsIgnoreCase(ANSWERS[1])) {
