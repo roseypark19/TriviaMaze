@@ -3,6 +3,7 @@ package components;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.util.Objects;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -23,6 +24,7 @@ public class TrueFalseButton extends JButton implements TriviaComponent {
 	
 	public TrueFalseButton(final boolean theBoolean, final TriviaPanel theTrivPan) {
 		super(String.valueOf(theBoolean));
+		Objects.requireNonNull(theTrivPan, "Trivia panels must be non-null!");
 		myBool = theBoolean;
 		setPreferredSize(new Dimension(WIDTH, HEIGHT));
 		setBackground(Color.LIGHT_GRAY);

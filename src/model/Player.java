@@ -4,6 +4,8 @@ import java.awt.Point;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.io.Serializable;
+import java.util.Objects;
+
 import javax.swing.Timer;
 
 import utilities.MazeGenerator;
@@ -48,6 +50,7 @@ public class Player implements Serializable {
 	}
 	
 	public void addPropertyChangeListener(final PropertyChangeListener theListener) {
+		Objects.requireNonNull(theListener, "Property change listeners must be non-null!");
 		myPcs.addPropertyChangeListener(theListener);
 	}
 	
@@ -102,6 +105,7 @@ public class Player implements Serializable {
 	}
 	
 	public void setMovement(final Movement theMove) {
+		Objects.requireNonNull(theMove, "Movements must be non-null!");
 		myMovement = theMove;
 	}
 	

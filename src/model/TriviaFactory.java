@@ -14,7 +14,7 @@ public class TriviaFactory {
     public static Trivia createTrivia(final String theCorrect, 
     		                          final String theQuestion, 
     		                          final TriviaType theType,
-                                      final String[] theAnswers) {
+                                      final String[] theAnswers) {   	
         Trivia trivia = null;
 
         switch (theType) {

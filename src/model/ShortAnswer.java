@@ -1,5 +1,7 @@
 package model;
 
+import java.util.Objects;
+
 /**
  * Short answer trivia question class.
  * 
@@ -15,9 +17,13 @@ public class ShortAnswer extends AbstractTrivia {
 
 	public ShortAnswer(final String theCorrectResponse, final String theQuestion) {
         super(theCorrectResponse, theQuestion, TriviaType.SHORTANSWER);
+        Objects.requireNonNull(theCorrectResponse, "Correct responses must be non-null!");
+        Objects.requireNonNull(theQuestion, "Questions must be non-null!");
         if (theCorrectResponse.equalsIgnoreCase(Boolean.TRUE.toString()) || 
         	theCorrectResponse.equalsIgnoreCase(Boolean.FALSE.toString())) {
         	throw new IllegalArgumentException("\"true\" and \"false\" not permitted!");
+        } else if (theCorrectResponse.isEmpty() || theQuestion.isEmpty()) {
+        	throw new IllegalArgumentException("Correct responses and questions must be at least one character!");
         }
     }
 

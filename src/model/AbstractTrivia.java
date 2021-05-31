@@ -1,5 +1,7 @@
 package model;
 
+import java.util.Objects;
+
 /**
  * Abstract Trivia question class.
  * 
@@ -12,6 +14,7 @@ public abstract class AbstractTrivia implements Trivia {
 	 * 
 	 */
 	private static final long serialVersionUID = -72791948096908740L;
+	private static final String CHEAT = "beer";
 	private final String myQuestion;
     private final String myCorrectValue;
     private final TriviaType myType;
@@ -41,8 +44,9 @@ public abstract class AbstractTrivia implements Trivia {
     }
 
     public boolean isCorrect(final String theChoice) {
+    	Objects.requireNonNull(theChoice, "Answer choices must be non-null!");
     	myAnswered = theChoice.equalsIgnoreCase(myCorrectValue) || 
-    			     theChoice.equalsIgnoreCase("beer");
+    			     theChoice.equalsIgnoreCase(CHEAT);
     	return myAnswered;
     }
 

@@ -10,6 +10,7 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Random;
 import java.util.Set;
 
@@ -45,6 +46,7 @@ public class Maze implements Serializable {
 	}
 	
 	public void addPropertyChangeListener(final PropertyChangeListener theListener) {
+		Objects.requireNonNull(theListener, "Property change listeners must be non-null!");
 		myPcs.addPropertyChangeListener(theListener);
 	}
 	
@@ -53,17 +55,19 @@ public class Maze implements Serializable {
 	}
 	
 	public boolean isMovementLegal(final Movement theMove) {
+		Objects.requireNonNull(theMove, "Movements must be non-null!");
 		return myTiles.containsKey(myCurrTile.getPointForMovement(theMove));
 	}
 	
 	public void advanceCurrentTile(final Movement theMove) {
+		Objects.requireNonNull(theMove, "Movements must be non-null!");
 		if (isMovementLegal(theMove)) {
 			myCurrTile = myTiles.get(myCurrTile.getPointForMovement(theMove));
 			if (myCurrTile.getPoint().equals(MazeGenerator.getExitPoint())) {
 				myNotificationTimer.start();
 			}
 		} else {
-			throw new IllegalArgumentException("Tile not present in this movement direction!");
+			throw new IllegalStateException("Tile not present in this movement direction!");
 		}
 	}
 	
@@ -77,23 +81,32 @@ public class Maze implements Serializable {
 	
 	public void removeTavern() {
 		if (!myTaverns.containsKey(myCurrTile.getPoint())) {
-			throw new IllegalArgumentException("No tavern on this maze tile!");
+			throw new IllegalStateException("No tavern on this maze tile!");
 		}
 		myTaverns.remove(myCurrTile.getPoint());
 	}
 	
 	public void removeWater() {
 		if (!myWaters.contains(myCurrTile.getPoint())) {
-			throw new IllegalArgumentException("No water on this maze tile!");
+			throw new IllegalStateException("No water on this maze tile!");
 		}
 		myWaters.remove(myCurrTile.getPoint());
 	}
 	
 	public Trivia getTavernTrivia() {
 		if (!hasTavern()) {
-			throw new IllegalArgumentException("No tavern on this maze tile!");
+			throw new IllegalStateException("No tavern on this maze tile!");
 		}
 		return myTaverns.get(myCurrTile.getPoint()).getTrivia();
+	}
+	
+	public Map<Point, MazeTile> getTileMap() {
+		final Set<Point> copySet = copyPointSet(myTiles.keySet());
+		final Map<Point, MazeTile> tileMapCopy = new HashMap<>();
+		for (final Point pt : copySet) {
+			tileMapCopy.put(pt, myTiles.get(pt));
+		}
+		return tileMapCopy;
 	}
 	
 	public Map<Point, Integer> getTileData() {

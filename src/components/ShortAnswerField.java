@@ -3,6 +3,8 @@ package components;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.util.Objects;
+
 import javax.swing.BorderFactory;
 import javax.swing.JTextField;
 
@@ -20,6 +22,7 @@ public class ShortAnswerField extends JTextField implements TriviaComponent {
 	private static final int BORDER_WIDTH = 3;
 	
 	public ShortAnswerField(final TriviaPanel theTrivPan) {
+		Objects.requireNonNull(theTrivPan, "Trivia panels must be non-null!");
 		setPreferredSize(new Dimension(WIDTH, HEIGHT));
 		setFocusable(true);
 		setEditable(true);

@@ -7,14 +7,18 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
+import model.Maze;
 import model.MazeTile;
 import model.Movement;
 
 public class MazeSolver {
 	
-	public static boolean isMazeSolveable(final Map<Point, MazeTile> theMaze) {
+	public static boolean isMazeSolveable(final Maze theMaze) {
+		Objects.requireNonNull(theMaze, "Mazes must be non-null!");
+		final Map<Point, MazeTile> tileMap = theMaze.getTileMap();
 		boolean solveable = true;
 		final Deque<Point> pointStack = new ArrayDeque<>();
 		final Set<Point> visited = new HashSet<>();
@@ -31,8 +35,8 @@ public class MazeSolver {
 			int tries = 0;
 			do {
 				final Movement nextMove = moves.remove(0);
-				final Point tryPoint = theMaze.get(curr).getPointForMovement(nextMove);
-				if (!visited.contains(tryPoint) && theMaze.containsKey(tryPoint)) {
+				final Point tryPoint = tileMap.get(curr).getPointForMovement(nextMove);
+				if (!visited.contains(tryPoint) && tileMap.containsKey(tryPoint)) {
 					pointStack.push(curr);
 					curr = tryPoint;
 					moveComplete = true;

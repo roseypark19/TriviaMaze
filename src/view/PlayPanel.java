@@ -20,6 +20,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.swing.BorderFactory;
@@ -72,6 +73,8 @@ public class PlayPanel extends JPanel implements PropertyChangeListener {
 	private boolean myDisplayingTrivia;
 	
 	public PlayPanel(final Player thePlayer, final Maze theMaze) {
+		Objects.requireNonNull(thePlayer, "Players must be non-null!");
+		Objects.requireNonNull(theMaze, "Mazes must be non-null!");
 		setPreferredSize(new Dimension(WIDTH, MazePanel.HEIGHT));
 		setLayout(new BorderLayout());
 		myPlayer = thePlayer;
@@ -108,6 +111,7 @@ public class PlayPanel extends JPanel implements PropertyChangeListener {
 	}
 	
 	public void addPropertyChangeListener(final PropertyChangeListener theListener) {
+		Objects.requireNonNull(theListener, "Property change listeners must be non-null!");
 		myPcs.addPropertyChangeListener(theListener);
 	}
 	
@@ -227,6 +231,7 @@ public class PlayPanel extends JPanel implements PropertyChangeListener {
 		}
 		
 		public void processResponse(final String theResponse) {
+			Objects.requireNonNull(theResponse, "Responses must be non-null!");
 			setAnswerComponentsActivated(false);
 			if (myMaze.getTavernTrivia().isCorrect(theResponse)) {
 				SoundUtilities.play(SoundType.CORRECT);

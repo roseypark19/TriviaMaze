@@ -1,5 +1,7 @@
 package model;
 
+import java.util.Objects;
+
 /**
  * True or false trivia question.
  * 
@@ -17,9 +19,13 @@ public class TrueFalse extends AbstractTrivia {
 
     public TrueFalse(final String theCorrectBool, final String theQuestion) {
         super(theCorrectBool, theQuestion, TriviaType.TRUEFALSE);
+        Objects.requireNonNull(theCorrectBool, "Correct boolean strings must be non-null!");
+        Objects.requireNonNull(theQuestion, "Questions must be non-null!");
         if (!theCorrectBool.equalsIgnoreCase(ANSWERS[0]) && 
         	!theCorrectBool.equalsIgnoreCase(ANSWERS[1])) {
-        	throw new IllegalArgumentException("Invalid correct answer!");
+        	throw new IllegalArgumentException("Invalid correct answer! Answers must be true/false.");
+        } else if (theQuestion.isEmpty()) {
+        	throw new IllegalArgumentException("Questions must be at least one character!");
         }
     }
 

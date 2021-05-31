@@ -74,15 +74,12 @@ public class GameFrame extends JFrame implements PropertyChangeListener {
 	}
 	
 	private void setLoopingMusic(final SoundType theType) {
-		if (SoundUtilities.isPlaying(SoundType.TITLE)) {
+		if (SoundUtilities.isPlaying(SoundType.TITLE) && theType != SoundType.TITLE) {
 			SoundUtilities.stop(SoundType.TITLE);
-			SoundUtilities.play(theType);
-		} else if (SoundUtilities.isPlaying(SoundType.BACKGROUND)) {
+		} else if (SoundUtilities.isPlaying(SoundType.BACKGROUND) && theType != SoundType.BACKGROUND) {
 			SoundUtilities.stop(SoundType.BACKGROUND);
-			SoundUtilities.play(theType);
-		} else {
-			SoundUtilities.play(theType);
-		}
+		} 
+		SoundUtilities.play(theType);
 	}
 	
 	private void newGame() {

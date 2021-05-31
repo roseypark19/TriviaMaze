@@ -8,6 +8,9 @@ public class UnionFinder {
 	private int myComponentCount;
 	
 	public UnionFinder(final int theSize) {
+		if (theSize < 0) {
+			throw new IllegalArgumentException("Sizes must be non-negative!");
+		}
 		mySize = myComponentCount = theSize;
 		mySizes = new int[mySize];
 		myIds = new int[mySize];

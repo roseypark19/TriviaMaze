@@ -3,6 +3,8 @@ package components;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.util.Objects;
+
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -21,6 +23,7 @@ public class KeyPadLabel extends JLabel {
 	private final Movement myMovement;
 	
 	public KeyPadLabel(final Movement theMove) {
+		Objects.requireNonNull(theMove, "Movements must be non-null!");
 		myMovement = theMove;
 		setPreferredSize(new Dimension(SIZE, SIZE));
 		setFont(BUTTON_FONT);

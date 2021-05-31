@@ -10,6 +10,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.Map;
+import java.util.Objects;
 
 import javax.swing.JPanel;
 import javax.swing.Timer;
@@ -50,6 +51,8 @@ public class MazePanel extends JPanel implements PropertyChangeListener {
 	private boolean myFaded;
 
 	public MazePanel(final Player thePlayer, final Maze theMaze) {
+		Objects.requireNonNull(thePlayer, "Players must be non-null!");
+		Objects.requireNonNull(theMaze, "Mazes must be non-null!");
 		setPreferredSize(new Dimension(WIDTH, HEIGHT));
 		setFocusable(true);
 		setBackground(Color.BLACK);
@@ -65,6 +68,7 @@ public class MazePanel extends JPanel implements PropertyChangeListener {
 	}
 	
 	public void addPropertyChangeListener(final PropertyChangeListener theListener) {
+		Objects.requireNonNull(theListener, "Property change listeners must be non-null!");
 		myPcs.addPropertyChangeListener(theListener);
 	}
 	
@@ -108,6 +112,7 @@ public class MazePanel extends JPanel implements PropertyChangeListener {
 	}
 	
 	public void initializeAdvancement(final Movement theMove) {
+		Objects.requireNonNull(theMove, "Movements must be non-null!");
 		final boolean reqs = !myPlayerTimer.isRunning() && !myInsideTavern &&
 				             myMaze.isMovementLegal(theMove);     
 		if (reqs) {

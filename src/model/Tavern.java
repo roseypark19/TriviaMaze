@@ -1,6 +1,7 @@
 package model;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 public class Tavern implements Serializable {
 	
@@ -11,6 +12,7 @@ public class Tavern implements Serializable {
 	private final Trivia myTrivia;
 	
 	public Tavern(final Trivia theTrivia) {
+		Objects.requireNonNull(theTrivia, "Trivias must be non-null!");
 		myTrivia = theTrivia;
 	}
 	
