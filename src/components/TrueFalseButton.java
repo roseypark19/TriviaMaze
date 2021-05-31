@@ -7,6 +7,8 @@ import java.awt.Font;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 
+import view.TriviaPanel;
+
 public class TrueFalseButton extends JButton {
 	
 	/**
@@ -19,7 +21,7 @@ public class TrueFalseButton extends JButton {
 	private static final int BORDER_WIDTH = 3;
 	private final boolean myBool;
 	
-	public TrueFalseButton(final boolean theBoolean) {
+	public TrueFalseButton(final boolean theBoolean, final TriviaPanel theTrivPan) {
 		super(String.valueOf(theBoolean));
 		myBool = theBoolean;
 		setPreferredSize(new Dimension(WIDTH, HEIGHT));
@@ -28,8 +30,7 @@ public class TrueFalseButton extends JButton {
 		setFont(FONT);
 		setBorder(BorderFactory.createLineBorder(Color.BLACK, BORDER_WIDTH));
 		setFocusable(false);
-		addActionListener(theEvent -> 
-		               TriviaPanel.getInstance().processResponse(String.valueOf(myBool)));
+		addActionListener(theEvent -> theTrivPan.processResponse(String.valueOf(myBool)));
 	}
 
 }

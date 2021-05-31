@@ -21,7 +21,7 @@ public class KeyPadButton extends JButton {
 	private static final int SIZE = 70;
 	private final Movement myMovement;
 	
-	public KeyPadButton(final Movement theMove) {
+	public KeyPadButton(final Movement theMove, final MazePanel theMazePan) {
 		myMovement = theMove;
 		setPreferredSize(new Dimension(SIZE, SIZE));
 		setFont(BUTTON_FONT);
@@ -29,8 +29,7 @@ public class KeyPadButton extends JButton {
 		setForeground(Color.BLACK);
 		setBorder(BorderFactory.createLineBorder(Color.BLACK, 4));
 		setFocusable(false);
-		addActionListener(theEvent -> 
-		                       MazePanel.getInstance().initializeAdvancement(myMovement));
+		addActionListener(theEvent -> theMazePan.initializeAdvancement(myMovement));
 	}
 	
 	public void updateAppearance(final boolean theEnabled) {

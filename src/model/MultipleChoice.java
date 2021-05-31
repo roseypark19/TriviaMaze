@@ -10,7 +10,12 @@ import java.util.Arrays;
  */
 public class MultipleChoice extends AbstractTrivia {
 
-    private final String[] myAnswers;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 3234033564212707170L;
+	
+	private final String[] myAnswers;
 
     public MultipleChoice(final String theCorrectLetter, final String[] theAnswers, final String theQuestion) {
         super(theCorrectLetter, theQuestion, TriviaType.MULTICHOICE);
@@ -32,6 +37,11 @@ public class MultipleChoice extends AbstractTrivia {
             index++;
         }
         return sb.toString();
+    }
+    
+    @Override
+    public Trivia copy() {
+    	return new MultipleChoice(getCorrectValue(), myAnswers, getQuestion());
     }
 
 }

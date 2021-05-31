@@ -1,6 +1,8 @@
 package model;
 
-public enum TriviaType {
+import java.io.Serializable;
+
+public enum TriviaType implements Serializable {
 	
 	MULTICHOICE("MC"),
 	

@@ -20,24 +20,22 @@ public class TriviaUtilities {
 
     final private static TriviaFactory triviaFactory = new TriviaFactory();
 
-//    public static void main(String[] args) {
-//        var s = getTriviaList();
-//        for (Trivia t : s) {
-//            System.out.println("Trivia Type: " + t.getTriviaType().toString());
-//            System.out.println("Question: " + t.getQuestion());
-//            System.out.println("Answers:\n" + t.getAnswers());
-//            System.out.println("Correct: " + t.getCorrectValue() + "\n");
-//        }
-//        System.out.println(s.size());
-//    }
-
     public static List<Trivia> getTriviaList() {
         if (triviaList.isEmpty()) {
             SQLiteDataSource dataSource = accessDataSource();
             addTriviaToList(dataSource);
-            Collections.shuffle(triviaList);
         }
-        return new LinkedList<>(triviaList);
+        final List<Trivia> trivCopy = getTriviaListCopy();
+        Collections.shuffle(trivCopy);
+        return trivCopy;
+    }
+    
+    private static List<Trivia> getTriviaListCopy() {
+    	final List<Trivia> copy = new LinkedList<>();
+    	for (final Trivia triv : triviaList) {
+    		copy.add(triv.copy());
+    	}
+    	return copy;
     }
 
     /**

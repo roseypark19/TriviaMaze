@@ -8,7 +8,12 @@ package model;
  */
 public abstract class AbstractTrivia implements Trivia {
 	
-    private final String myQuestion;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -72791948096908740L;
+	
+	private final String myQuestion;
     private final String myCorrectValue;
     private final TriviaType myType;
     private boolean myAnswered;
@@ -40,4 +45,5 @@ public abstract class AbstractTrivia implements Trivia {
     	myAnswered = theChoice.equalsIgnoreCase(myCorrectValue);
     	return myAnswered;
     }
+
 }

@@ -104,5 +104,44 @@ public class SpriteUtilities {
 		}
 		return water;
 	}
+	
+	public static BufferedImage getTriviaBackground() {
+		BufferedImage insideTav = null;
+		try {
+			insideTav = ImageIO.read(new File("insideTavern.png"));
+		} catch (final IOException ex) {
+			System.err.println("Could not load trivia panel image!");
+		}
+		return insideTav;
+	}
+	
+	public static BufferedImage getTitleScreen() {
+		BufferedImage title = null;
+		try {
+			title = ImageIO.read(new File("titleScreen.png"));
+		} catch (final IOException ex) {
+			System.err.println("Could not load title screen image!");
+		}
+		return title;
+	}
+	
+	public static BufferedImage getGameOverScreen() {
+		BufferedImage over = null;
+		try {
+			over = ImageIO.read(new File("gameOverScreen.png"));
+		} catch (final IOException ex) {
+			System.err.println("Could not load game over screen image!");
+		}
+		return over;
+	}
 
+	public static BufferedImage getGameWonScreen() {
+		BufferedImage won = null;
+		try {
+			won = ImageIO.read(new File("gameWonScreen.png"));
+		} catch (final IOException ex) {
+			System.err.println("Could not load game won screen image!");
+		}
+		return won;
+	}
 }

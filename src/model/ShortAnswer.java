@@ -8,7 +8,12 @@ package model;
  */
 public class ShortAnswer extends AbstractTrivia {
 
-    public ShortAnswer(final String theCorrectResponse, final String theQuestion) {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1993985826483549999L;
+
+	public ShortAnswer(final String theCorrectResponse, final String theQuestion) {
         super(theCorrectResponse, theQuestion, TriviaType.SHORTANSWER);
         if (theCorrectResponse.equalsIgnoreCase(Boolean.TRUE.toString()) || 
         	theCorrectResponse.equalsIgnoreCase(Boolean.FALSE.toString())) {
@@ -19,6 +24,11 @@ public class ShortAnswer extends AbstractTrivia {
 	@Override
 	public String getAnswers() {
 		return getCorrectValue();
+	}
+	
+	@Override
+	public Trivia copy() {
+		return new ShortAnswer(getCorrectValue(), getQuestion());
 	}
 
 }

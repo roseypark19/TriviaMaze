@@ -3,21 +3,31 @@ package model;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.image.BufferedImage;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
+import java.io.Serializable;
 import java.util.Map;
+import javax.swing.Timer;
 
 import utilities.MazeGenerator;
 import utilities.SpriteUtilities;
 
-public class Player {
+public class Player implements Serializable {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 2488188103432279121L;
 	private static final Map<Movement, BufferedImage[]> SPRITE_MAP = 
 			                                           SpriteUtilities.getPlayerSprites();
 	public static final int MIN_HEALTH = 0;
 	public static final int MAX_HEALTH = 3;
+	public static final String NO_HP = "no hp";
 	private static final int VELOCITY = 8;
 	private static final int CENTER_OFFSET = 5;
 	private static final int MOVE_DISTANCE = 48;
-	private static Player uniqueInstance = new Player();
+	private final Timer myNotificationTimer;
+	private final PropertyChangeSupport myPcs;
 	private int myVelX;
 	private int myVelY;
 	private int myX;
@@ -28,7 +38,7 @@ public class Player {
 	private Movement myMovement;
 	private BufferedImage mySprite;
 	
-	private Player() {
+	public Player() {
 		final Point entry = MazeGenerator.getEntryPoint();
 		myX = (int) (entry.getX() + CENTER_OFFSET);
 		myY = (int) (entry.getY() + CENTER_OFFSET);
@@ -37,10 +47,15 @@ public class Player {
 		mySprite = SPRITE_MAP.get(myMovement)[myMovementIndex];
 		myDistance = 0;
 		myHealth = MAX_HEALTH;
+		myNotificationTimer = new Timer(0, theEvent -> notifyNoHealth());
+		myNotificationTimer.setRepeats(false);
+		myNotificationTimer.setInitialDelay(2700);
+		myPcs = new PropertyChangeSupport(this);
 	}
 	
-	public static synchronized Player getInstance() {
-		return uniqueInstance;
+	public void addPropertyChangeListener(final String theType, 
+			                              final PropertyChangeListener theListener) {
+		myPcs.addPropertyChangeListener(theType, theListener);
 	}
 	
 	public void draw(final Graphics2D theGraphics) {
@@ -105,5 +120,15 @@ public class Player {
 		}
 		mySprite = SPRITE_MAP.get(myMovement)[myMovementIndex];
 		update();
+	}
+	
+	public void probeHealthState() {
+		if (myHealth == MIN_HEALTH) {
+			myNotificationTimer.start();
+		}
+	}
+	
+	private void notifyNoHealth() {
+		myPcs.firePropertyChange(NO_HP, false, true);
 	}
 }

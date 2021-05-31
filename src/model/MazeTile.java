@@ -3,13 +3,18 @@ package model;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.image.BufferedImage;
+import java.io.Serializable;
 import java.util.Random;
 
 import utilities.MazeGenerator;
 import utilities.SpriteUtilities;
 
-public class MazeTile {
+public class MazeTile implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -1423349819693002944L;
 	private static final BufferedImage[] IMAGES = SpriteUtilities.getMazeTiles();
 	private static final Random RAND = new Random();
 	public static final int SIZE = 48;

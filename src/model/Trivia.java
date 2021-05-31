@@ -1,6 +1,8 @@
 package model;
 
-public interface Trivia {
+import java.io.Serializable;
+
+public interface Trivia extends Serializable {
 	
 	boolean isCorrect(final String theAnswerKey);
 	
@@ -13,5 +15,7 @@ public interface Trivia {
 	String getCorrectValue();
 	
 	String getAnswers();
+	
+	Trivia copy();
 
 }

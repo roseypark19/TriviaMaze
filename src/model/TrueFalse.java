@@ -8,6 +8,11 @@ package model;
  */
 public class TrueFalse extends AbstractTrivia {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -2292036415291204613L;
+	
 	private static final String[] ANSWERS = {Boolean.TRUE.toString(), 
 			                                 Boolean.FALSE.toString()};
 
@@ -22,6 +27,11 @@ public class TrueFalse extends AbstractTrivia {
 	@Override
 	public String getAnswers() {
 		return ANSWERS[0] + "\n" + ANSWERS[1];
+	}
+	
+	@Override
+	public Trivia copy() {
+		return new TrueFalse(getCorrectValue(), getQuestion());
 	}
 
 }
