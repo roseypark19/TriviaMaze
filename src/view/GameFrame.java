@@ -1,3 +1,9 @@
+/*
+ * GameFrame.java
+ * TCSS360 - Trivia Maze
+ * Spring 2021
+ */
+
 package view;
 
 import java.awt.Dimension;
@@ -29,25 +35,52 @@ import model.SoundType;
 import utilities.SoundUtilities;
 import utilities.SpriteUtilities;
 
+/**
+ * GameFrame is a class which contains the main game panel as well as a selector panel
+ * for selecting to start/load a game.
+ * 
+ * @author Parker Rosengreen, Rebekah Parkhurst, Artem Potafiy
+ * @version 31 May 2021
+ */
 public class GameFrame extends JFrame implements PropertyChangeListener {
 	
+	/** This game frame's selector panel */
 	private final SelectorPanel mySelectorPanel;
+	
+	/** This game frame's game panel */
 	private GamePanel myGamePanel;
+	
+	/** The panel currently being displayed by this game frame */
 	private JPanel myCurrentPanel;
 
-	/**
-	 * 
-	 */
+	/** The serial version UID */
 	private static final long serialVersionUID = -997412424190795317L;
+	
+	/** The title screen sprite image */
 	private static final BufferedImage TITLE = SpriteUtilities.getTitleScreen();
+	
+	/** The game over screen sprite image */
 	private static final BufferedImage GAME_OVER = SpriteUtilities.getGameOverScreen();
+	
+	/** The game won screen sprite image */
 	private static final BufferedImage GAME_WON = SpriteUtilities.getGameWonScreen();
+	
+	/** The error icon used when displaying save/load errors */
 	private static final ImageIcon ERROR_ICON = new ImageIcon("playpanel_sprites/redX.png");
+	
+	/** The grass-backed icon used for the "new game" button */
 	private static final ImageIcon NEW_GRASS = new ImageIcon("selectorpanel_sprites/newGame.png");
+	
+	/** The grass-backed icon used for the "load game" button */
 	private static final ImageIcon LOAD_GRASS = new ImageIcon("selectorpanel_sprites/loadGame.png");
+	
+	/** The sand-backed icon used for the "new game" button */
 	private static final ImageIcon NEW_SAND = new ImageIcon("selectorpanel_sprites/newGame_Over.png");
+	
+	/** The sand-backed icon used for the "load game" button */
 	private static final ImageIcon LOAD_SAND = new ImageIcon("selectorpanel_sprites/loadGame_Over.png");
 
+	/** Constructs a new GameFrame which is displayed to the screen. */
 	public GameFrame() {
 		setLoopingMusic(SoundType.TITLE);
 		setTitle("Maze Hops");
@@ -73,6 +106,11 @@ public class GameFrame extends JFrame implements PropertyChangeListener {
 		}
 	}
 	
+	/**
+	 * Sets the looping background music for the Maze Hops game.
+	 * 
+	 * @param theType the sound type of the background music to be played
+	 */
 	private void setLoopingMusic(final SoundType theType) {
 		if (SoundUtilities.isPlaying(SoundType.TITLE) && theType != SoundType.TITLE) {
 			SoundUtilities.stop(SoundType.TITLE);
@@ -82,6 +120,7 @@ public class GameFrame extends JFrame implements PropertyChangeListener {
 		SoundUtilities.play(theType);
 	}
 	
+	/** Instantiates and displays a new game panel on this game frame. */
 	private void newGame() {
 		remove(myCurrentPanel);
 		myGamePanel = new GamePanel();
@@ -94,9 +133,10 @@ public class GameFrame extends JFrame implements PropertyChangeListener {
 		setLoopingMusic(SoundType.BACKGROUND);
 	}
 	
+	/** Displays this game frame's selector panel. */
 	private void displaySelectorPanel() {
 		remove(myCurrentPanel);
-		mySelectorPanel.setButtonIcons();
+		mySelectorPanel.updateButtonIcons();
 		myCurrentPanel = mySelectorPanel;
 		add(myCurrentPanel);
 		mySelectorPanel.repaint();
@@ -110,6 +150,7 @@ public class GameFrame extends JFrame implements PropertyChangeListener {
 		setLoopingMusic(SoundType.TITLE);
 	}
 	
+	/** Saves this game frame's game panel to a selected output file. */
 	private void saveGame() {
 		final FileDialog fd = new FileDialog(this, "Save Game", FileDialog.SAVE);
 		fd.setVisible(true);
@@ -128,6 +169,13 @@ public class GameFrame extends JFrame implements PropertyChangeListener {
 		}
 	}
 	
+	/**
+	 * Displays a save error message to inform the user that this frame's game panel cannot
+	 * be saved.
+	 * 
+	 * @param theExceptionName the type of exception generated
+	 * @param theFileName the name of the chosen output file
+	 */
 	private void showSaveError(final String theExceptionName, final String theFileName) {
 		final String message = String.format("Could not save game: \"%s\"\nSource: %s", 
 				                             theFileName, theExceptionName);
@@ -135,6 +183,7 @@ public class GameFrame extends JFrame implements PropertyChangeListener {
                                       JOptionPane.ERROR_MESSAGE, ERROR_ICON);
 	}
 	
+	/** Loads a previously saved game panel from a selected input file. */
 	private void loadGame() {
 		final FileDialog fd = new FileDialog(this, "Load Game", FileDialog.LOAD);
 		fd.setVisible(true);
@@ -165,6 +214,13 @@ public class GameFrame extends JFrame implements PropertyChangeListener {
 		}
 	}
 	
+	/**
+	 * Displays a load error message to inform the user that a selected input file cannot
+	 * be loaded.
+	 * 
+	 * @param theExceptionName the type of exception generated
+	 * @param theFileName the name of the chosen input file
+	 */
 	private void showLoadError(final String theExceptionName, final String theFileName) {
 		final String message = String.format("Could not load game: \"%s\"\nSource: %s", 
                 							 theFileName, theExceptionName);
@@ -172,15 +228,26 @@ public class GameFrame extends JFrame implements PropertyChangeListener {
 				                      JOptionPane.ERROR_MESSAGE, ERROR_ICON);
 	}
 	
+	/**
+	 * SelectorPanel is a class offering components for selecting a new game or loading
+	 * a previously saved game. The background image of this panel changes according to the
+	 * current state of this game frame's game panel.
+	 * 
+	 * @author Parker Rosengreen, Rebekah Parkhurst, Artem Potafiy
+	 * @version 31 May 2021
+	 */
 	private class SelectorPanel extends JPanel {
 		
-		/**
-		 * 
-		 */
+		/** The serial version UID */
 		private static final long serialVersionUID = 2071944460810159409L;
+		
+		/** This selector panel's "new game" button */
 		private final JButton myNewButton;
+		
+		/** This selector panel's "load game" button */
 		private final JButton myLoadButton;
 		
+		/** Creates a new SelectorPanel and configures new/load game buttons. */
 		private SelectorPanel() {
 			setPreferredSize(new Dimension(MazePanel.WIDTH + PlayPanel.WIDTH,
 										   MazePanel.HEIGHT));
@@ -215,7 +282,11 @@ public class GameFrame extends JFrame implements PropertyChangeListener {
 			g2d.drawImage(image, null, 0, 0);
 		}
 		
-		private void setButtonIcons() {
+		/** 
+		 * Updates the new/load game button icons according to the state of this game frame's 
+		 * game panel. 
+		 */
+		private void updateButtonIcons() {
 			final ImageIcon newIcon = myGamePanel.isGameWon() ? NEW_GRASS : NEW_SAND;
 			final ImageIcon loadIcon = myGamePanel.isGameWon() ? LOAD_GRASS : LOAD_SAND;
 			myNewButton.setIcon(newIcon);

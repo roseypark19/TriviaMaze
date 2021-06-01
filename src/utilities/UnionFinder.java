@@ -18,19 +18,19 @@ package utilities;
  */
 public class UnionFinder {
 	
-	/** The number of elements in this UnionFinder */
+	/** The number of elements in this union finder */
 	private final int mySize;
 	
-	/** The size of each group in this UnionFinder */
+	/** The size of each group in this union finder */
 	private final int[] mySizes;
 	
 	/** 
-	 * The group ID numbers associated with this UnionFinder.
+	 * The group ID numbers associated with this union finder.
 	 * myIds[i] points to the parent of i. If myIds[i] = i, then i is a root node.
 	 */
 	private final int[] myIds;
 	
-	/** The current number of groups in this UnionFinder */
+	/** The current number of groups in this union finder */
 	private int myComponentCount;
 	
 	/**
