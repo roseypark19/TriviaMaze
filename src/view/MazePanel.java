@@ -182,6 +182,7 @@ public class MazePanel extends JPanel implements PropertyChangeListener {
 	 * the desired movement direction results in a legal tile position on this maze panel's maze.
 	 * 
 	 * @param theMove the desired movement direction
+	 * @throws NullPointerException if theMove is null
 	 */
 	public void initializeAdvancement(final Movement theMove) {
 		Objects.requireNonNull(theMove, "Movements must be non-null!");
