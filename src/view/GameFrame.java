@@ -69,6 +69,10 @@ public class GameFrame extends JFrame implements PropertyChangeListener {
 		setVisible(true);
 	}
 
+	/**
+	 * Sets up the menu bar for the GameFrame constructor.
+	 * @param theMenu passes the JMenuBar to setup.
+	 */
 	private void setupMenuBar(final JMenuBar theMenu) {
 		JMenu fileMenu = new JMenu("File");
 		theMenu.add(fileMenu);
@@ -79,8 +83,6 @@ public class GameFrame extends JFrame implements PropertyChangeListener {
 		JMenu optionsMenu = new JMenu("Options");
 		theMenu.add(optionsMenu);
 		
-		JMenu helpMenu = new JMenu("Help");
-		theMenu.add(helpMenu);
 		
 		/* File Menu */
 		JMenuItem newGame = new JMenuItem("New Game");
@@ -100,7 +102,12 @@ public class GameFrame extends JFrame implements PropertyChangeListener {
 		/* About Menu */
 		JMenuItem aboutGame = new JMenuItem("About");
 		aboutMenu.add(aboutGame);
-		aboutGame.addActionListener(theEvent -> aboutMenu());
+		aboutGame.addActionListener(theEvent -> JOptionPane.showMessageDialog(this,
+			    "MazeHops, University of Washington Tacoma \n"
+			    + "TCSS 360B, Spring 2021 \n "
+			    + "Designed by Parker Rosengreen, Rebekah Parkhurst, Artem Potafiy",
+			    "About MazeHops",
+			    JOptionPane.PLAIN_MESSAGE));
 		
 		/* Options Menu */
 		JLabel volumeLabel = new JLabel("Adjust Volume");
@@ -114,13 +121,6 @@ public class GameFrame extends JFrame implements PropertyChangeListener {
 		optionsMenu.add(volumeLabel);
 		optionsMenu.add(volumeSlider);
 
-		/* Help Menu */
-		JMenuItem helpItem = new JMenuItem("Help");
-		helpMenu.add(helpItem);
-	}
-	
-	private void aboutMenu() {
-		
 	}
 
 	@Override
