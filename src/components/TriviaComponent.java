@@ -11,8 +11,8 @@ import java.io.Serializable;
 import view.PlayPanel.TriviaPanel;
 
 /**
- * TriviaComponent is an interface implemented by all play panel components which supply
- * responses to displayed trivia questions.
+ * TriviaComponent is an interface defining behaviors to be shared by all implementing
+ * subclasses.
  * 
  * @author Parker Rosengreen, Rebekah Parkhurst, Artem Potafiy
  * @version 31 May 2021
@@ -24,6 +24,7 @@ public interface TriviaComponent extends Serializable {
 	 * component to the provided parent trivia panel for processing. 
 	 * 
 	 * @param theTrivPan the parent trivia panel of this component
+	 * @throws NullPointerException if theTrivPan is null
 	 */
 	void addActionListener(final TriviaPanel theTrivPan);
 

@@ -84,8 +84,8 @@ public class GamePanel extends JPanel implements PropertyChangeListener {
 		@Override
 		public void keyTyped(final KeyEvent theEvent) {
 			if (myReleased) {
-			    myMazePanel.initializeAdvancement(Movement.valueof(Character.toUpperCase(
-													               theEvent.getKeyChar())));
+			    myMazePanel.initializeAdvancement(
+			    		  Movement.valueof(Character.toUpperCase(theEvent.getKeyChar())));
 			    myReleased = false;
 			}
 		}

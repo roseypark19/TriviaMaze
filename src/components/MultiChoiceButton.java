@@ -64,13 +64,7 @@ public class MultiChoiceButton extends JButton implements TriviaComponent {
 		addActionListener(theTrivPan);
 	}
 	
-	/**
-	 * Adds an action listener to this button which sends the choice character of this
-	 * button to the provided parent trivia panel for processing.
-	 * 
-	 * @param theTrivPan the parent trivia panel of this button
-	 * @throws NullPointerException if theTrivPan is null
-	 */
+	@Override
 	public void addActionListener(final TriviaPanel theTrivPan) {
 		Objects.requireNonNull(theTrivPan, "Trivia panels must be non-null!");
 		super.addActionListener(theEvent -> theTrivPan.processResponse(String.valueOf(myChoice)));

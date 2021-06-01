@@ -56,13 +56,7 @@ public class ShortAnswerField extends JTextField implements TriviaComponent {
 		addActionListener(theTrivPan);
 	}
 	
-	/**
-	 * Adds an action listener to this field which sends the text of this
-	 * field to the provided parent trivia panel for processing.
-	 * 
-	 * @param theTrivPan the parent trivia panel of this field
-	 * @throws NullPointerException if theTrivPan is null
-	 */
+	@Override
 	public void addActionListener(final TriviaPanel theTrivPan) {
 		Objects.requireNonNull(theTrivPan, "Triva panels must be non-null!");
 		super.addActionListener(theEvent -> {
