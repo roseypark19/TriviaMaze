@@ -1,3 +1,9 @@
+/*
+ * MazeSolver.java
+ * TCSS360 - Trivia Maze
+ * Spring 2021
+ */
+
 package utilities;
 
 import java.awt.Point;
@@ -14,8 +20,21 @@ import model.Maze;
 import model.MazeTile;
 import model.Movement;
 
+/**
+ * MazeSolver is a class for evaluating whether or not a maze can be solved.
+ * 
+ * @author Parker Rosengreen, Rebekah Parkhurst, Artem Potafiy
+ * @version 31 May 2021
+ */
 public class MazeSolver {
 	
+	/**
+	 * Determines whether or not a provided maze can be solved. A maze can be solved if there
+	 * exists a path between its entry and exit points.
+	 * 
+	 * @param theMaze the maze to be checked
+	 * @return true if theMaze can be solved, false otherwise
+	 */
 	public static boolean isMazeSolveable(final Maze theMaze) {
 		Objects.requireNonNull(theMaze, "Mazes must be non-null!");
 		final Map<Point, MazeTile> tileMap = theMaze.getTileMap();
