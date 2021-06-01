@@ -1,3 +1,9 @@
+/*
+ * TriviaUtilities.java
+ * TCSS360 - Trivia Maze
+ * Spring 2021
+ */
+
 package utilities;
 
 import java.sql.Connection;
@@ -14,10 +20,24 @@ import model.Trivia;
 import model.TriviaFactory;
 import model.TriviaType;
 
+/**
+ * TriviaUtilities is a class for accessing and providing trivia data from a specified
+ * SQLite database source.
+ * 
+ * @author Parker Rosengreen, Rebekah Parkhurst, Artem Potafiy
+ * @version 31 May 2021
+ */
 public class TriviaUtilities {
 
+	/** The list of trivia retrieved from the SQLite database source */
 	private static final List<Trivia> TRIVIA_LIST = new LinkedList<>();
 
+	/**
+	 * Returns a randomly shuffled copy of the trivia list. If the list has not yet been
+	 * created, then the SQLite database source is accessed and a new trivia list is populated.
+	 * 
+	 * @return the randomly shuffled list of trivia
+	 */
 	public static List<Trivia> getTriviaList() {
 		if (TRIVIA_LIST.isEmpty()) {
 			SQLiteDataSource dataSource = accessDataSource();
@@ -28,6 +48,11 @@ public class TriviaUtilities {
 		return trivCopy;
 	}
 
+	/**
+	 * Creates and returns a copy of the trivia list.
+	 * 
+	 * @return the trivia list copy
+	 */
 	private static List<Trivia> getTriviaListCopy() {
 		final List<Trivia> copy = new LinkedList<>();
 		for (final Trivia triv : TRIVIA_LIST) {
@@ -37,10 +62,9 @@ public class TriviaUtilities {
 	}
 
 	/**
-	 * Getting trivia from database and adding it into list.
+	 * Retrieves all trivia from the SQLite database source and adds them to the trivia list.
 	 * 
-	 * @param theDataSource
-	 * @param theTriviaType
+	 * @param theDataSource the SQLite database source
 	 */
 	private static void addTriviaToList(final SQLiteDataSource theDataSource) {
 		ResultSet rs = null;
@@ -59,10 +83,10 @@ public class TriviaUtilities {
 	}
 
 	/**
-	 * Add short answer trivia from database into list.
+	 * Adds short answer trivia from SQLite database source to the trivia list.
 	 * 
-	 * @param theSet
-	 * @throws SQLException
+	 * @param theSet the result set corresponding to the short answer query
+	 * @throws SQLException if an access error occurs with theSet
 	 */
 	private static void addShortAnswerToList(final ResultSet theSet) throws SQLException {
 		final String queryQuestion = "question";
@@ -75,10 +99,10 @@ public class TriviaUtilities {
 	}
 
 	/**
-	 * Add multiple choice trivia from database into list.
+	 * Adds multiple choice trivia from SQLite database source to the trivia list.
 	 * 
-	 * @param theSet
-	 * @throws SQLException
+	 * @param theSet the result set corresponding to the multiple choice query
+	 * @throws SQLException if an access error occurs with theSet
 	 */
 	private static void addMultiChoiceToList(final ResultSet theSet) throws SQLException {
 		final String queryQuestion = "question";
@@ -94,10 +118,10 @@ public class TriviaUtilities {
 	}
 
 	/**
-	 * Add true false trivia from database into list.
+	 * Adds true/false trivia from SQLite database source to the trivia list.
 	 * 
-	 * @param theSet
-	 * @throws SQLException
+	 * @param theSet the result set corresponding to the true/false query
+	 * @throws SQLException if an access error occurs with theSet
 	 */
 	private static void addTrueFalseToList(final ResultSet theSet) throws SQLException {
 		final String queryQuestion = "question";
@@ -110,10 +134,10 @@ public class TriviaUtilities {
 	}
 
 	/**
-	 * Helper for parsing string query from database.
+	 * Parses multiple choice answers using a provided query string of answers.
 	 * 
-	 * @param theQueryString
-	 * @return
+	 * @param theQueryString the query string of answers
+	 * @return an array of individually parsed answers
 	 */
 	private static String[] parseMultiChoiceAnswers(final String theQueryString) {
 		String[] answers = theQueryString.split(",");
@@ -124,8 +148,9 @@ public class TriviaUtilities {
 	}
 
 	/**
+	 * Retrieves the data source for accessing the SQLite database containing trivia.
 	 * 
-	 * @return SQLiteDataSource for accessing database.
+	 * @return SQLiteDataSource the data source for accessing the SQLite database.
 	 */
 	private static SQLiteDataSource accessDataSource() {
 		SQLiteDataSource dataSource = null;
