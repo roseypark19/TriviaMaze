@@ -106,6 +106,7 @@ public class PlayPanel extends JPanel implements PropertyChangeListener {
 	}
 	
 	public void restoreListeners() {
+		myPlayer.restoreListeners();
 		myHeartTimer.addActionListener(theEvent -> toggleHeartBeat());
 		myTriviaPanel.restoreTimerListeners();
 	}

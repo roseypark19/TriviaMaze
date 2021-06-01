@@ -111,14 +111,9 @@ public class Player implements Serializable {
 		myPcs.addPropertyChangeListener(theListener);
 	}
 	
-	/**
-	 * Restores the action listeners associated with this player. Note that this method
-	 * will only perform restorations if listeners have not been previously assigned.
-	 */
+	/** Restores the action listeners associated with this player. */
 	public void restoreListeners() {
-		if (myNotificationTimer.getActionListeners().length == 0) {
-			myNotificationTimer.addActionListener(theEvent -> notifyNoHealth());
-		}
+		myNotificationTimer.addActionListener(theEvent -> notifyNoHealth());
 	}
 	
 	/**

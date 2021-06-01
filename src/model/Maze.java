@@ -86,14 +86,9 @@ public class Maze implements Serializable {
 		myPcs.addPropertyChangeListener(theListener);
 	}
 	
-	/**
-	 * Restores the action listeners associated with this maze. Note that this method
-	 * will only perform restorations if listeners have not been previously assigned.
-	 */
+	/** Restores the action listeners associated with this maze. */
 	public void restoreListeners() {
-		if (myNotificationTimer.getActionListeners().length == 0) {
-			myNotificationTimer.addActionListener(theEvent -> notifyEndReached());
-		}
+		myNotificationTimer.addActionListener(theEvent -> notifyEndReached());
 	}
 	
 	/**
