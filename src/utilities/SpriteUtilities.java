@@ -1,3 +1,9 @@
+/*
+ * SpriteUtilities.java
+ * TCSS360 - Trivia Maze
+ * Spring 2021
+ */
+
 package utilities;
 
 import java.awt.image.BufferedImage;
@@ -10,8 +16,19 @@ import java.util.Map;
 import javax.imageio.ImageIO;
 import model.Movement;
 
+/**
+ * SpriteUtilities is a class which retrieves all sprite images for the Maze Hops game.
+ * 
+ * @author Parker Rosengreen, Rebekah Parkhurst, Artem Potafiy
+ * @version 31 May 2021
+ */
 public class SpriteUtilities {
 	
+	/**
+	 * Retrieves a movement-based mapping to arrays of player sprite images. 
+	 * 
+	 * @return the movement-based mapping to the individual sprite arrays.
+	 */
 	public static Map<Movement, BufferedImage[]> getPlayerSprites() {
 		final Map<Movement, BufferedImage[]> playerSprites = new HashMap<>();
 		try {
@@ -33,6 +50,11 @@ public class SpriteUtilities {
 		return playerSprites;
 	}
 	
+	/**
+	 * Retrieves the array of sprite images used for maze panel fade ins/outs.
+	 * 
+	 * @return the array of fade sprite images
+	 */
 	public static BufferedImage[] getFades() {
 		BufferedImage[] fades = new BufferedImage[4];
 		try {
@@ -47,6 +69,11 @@ public class SpriteUtilities {
 		return fades;
 	}
 	
+	/**
+	 * Retrieves the sprite image for the maze panel grass background.
+	 * 
+	 * @return the grass background sprite image
+	 */
 	public static BufferedImage getGrass() {
 		BufferedImage grass = null;
 		try {
@@ -58,6 +85,11 @@ public class SpriteUtilities {
 		return grass;
 	}
 	
+	/**
+	 * Retrieves the sprite image for the play panel background.
+	 * 
+	 * @return the play panel background sprite image
+	 */
 	public static BufferedImage getPlayPanelBackground() {
 		BufferedImage scroll = null;
 		try {
@@ -69,6 +101,11 @@ public class SpriteUtilities {
 		return scroll;
 	}
 	
+	/**
+	 * Retrieves the sprite image for a tavern.
+	 * 
+	 * @return the tavern sprite image
+	 */
 	public static BufferedImage getTavern() {
 		BufferedImage tavern = null;
 		try {
@@ -80,6 +117,11 @@ public class SpriteUtilities {
 		return tavern;
 	}
 	
+	/**
+	 * Retrieves the sprite image for the finish flags.
+	 * 
+	 * @return the finish flags sprite image
+	 */
 	public static BufferedImage getFlags() {
 		BufferedImage flag = null;
 		try {
@@ -91,6 +133,11 @@ public class SpriteUtilities {
 		return flag;
 	}
 	
+	/**
+	 * Retrieves the array of sprite images used for maze tiles.
+	 * 
+	 * @return the array of maze tile sprite images
+	 */
 	public static BufferedImage[] getMazeTiles() {
 		BufferedImage[] tiles = new BufferedImage[5];
 		try {
@@ -105,6 +152,11 @@ public class SpriteUtilities {
 		return tiles;
 	}
 	
+	/**
+	 * Retrieves the sprite image for a water.
+	 * 
+	 * @return the water sprite image
+	 */
 	public static BufferedImage getWater() {
 		BufferedImage water = null;
 		try {
@@ -116,6 +168,11 @@ public class SpriteUtilities {
 		return water;
 	}
 	
+	/**
+	 * Retrieves the sprite image for the trivia panel background.
+	 * 
+	 * @return the trivia panel background sprite image
+	 */
 	public static BufferedImage getTriviaBackground() {
 		BufferedImage insideTav = null;
 		try {
@@ -127,6 +184,11 @@ public class SpriteUtilities {
 		return insideTav;
 	}
 	
+	/**
+	 * Retrieves the "how to play" sprite image.
+	 * 
+	 * @return the how to play sprite image
+	 */
 	public static BufferedImage getHowToPlayImage() {
 		BufferedImage howToPlay = null;
 		try {
@@ -138,6 +200,11 @@ public class SpriteUtilities {
 		return howToPlay;
 	}
 	
+	/**
+	 * Retrieves the title screen sprite image.
+	 * 
+	 * @return the title screen sprite image
+	 */
 	public static BufferedImage getTitleScreen() {
 		BufferedImage title = null;
 		try {
@@ -149,6 +216,11 @@ public class SpriteUtilities {
 		return title;
 	}
 	
+	/**
+	 * Retrieves the game over screen sprite image.
+	 * 
+	 * @return the game over screen sprite image
+	 */
 	public static BufferedImage getGameOverScreen() {
 		BufferedImage over = null;
 		try {
@@ -160,6 +232,11 @@ public class SpriteUtilities {
 		return over;
 	}
 
+	/**
+	 * Retrieves the game won screen sprite image.
+	 * 
+	 * @return the game won screen sprite image
+	 */
 	public static BufferedImage getGameWonScreen() {
 		BufferedImage won = null;
 		try {
