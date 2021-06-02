@@ -13,6 +13,8 @@ import java.awt.FlowLayout;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.image.BufferedImage;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -105,6 +107,7 @@ public class GameFrame extends JFrame implements PropertyChangeListener {
 		myLayeredPane.setPreferredSize(new Dimension(MazePanel.WIDTH + PlayPanel.WIDTH, MazePanel.HEIGHT));
 		myLayeredPane.add(mySelectorPanel, JLayeredPane.DEFAULT_LAYER);
 		add(myLayeredPane);
+		addComponentListener(new FrameComponentListener());
 		setLoopingMusic(SoundType.TITLE);
 		pack();
 		setLocationRelativeTo(null);
@@ -366,6 +369,21 @@ public class GameFrame extends JFrame implements PropertyChangeListener {
 			final ImageIcon loadIcon = myGamePanel.isGameWon() ? LOAD_GRASS : LOAD_SAND;
 			myNewButton.setIcon(newIcon);
 			myLoadButton.setIcon(loadIcon);
+		}
+	}
+	
+	/**
+	 * FrameComponentListener is a class which listens for movements of this game frame
+	 * and repaints all child components.
+	 * 
+	 * @author Parker Rosengreen, Rebekah Parkhurst, Artem Potafiy
+	 * @version 31 May 2021
+	 */
+	private class FrameComponentListener extends ComponentAdapter {
+		
+		@Override
+		public void componentMoved(final ComponentEvent theEvent) {
+			repaint();
 		}
 	}
 
