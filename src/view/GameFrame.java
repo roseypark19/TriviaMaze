@@ -6,6 +6,7 @@
 
 package view;
 
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FileDialog;
 import java.awt.FlowLayout;
@@ -18,7 +19,6 @@ import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
@@ -26,9 +26,13 @@ import javax.swing.Box;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLayeredPane;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-
+import javax.swing.JSlider;
 import model.Maze;
 import model.Player;
 import model.SoundType;
@@ -43,15 +47,6 @@ import utilities.SpriteUtilities;
  * @version 31 May 2021
  */
 public class GameFrame extends JFrame implements PropertyChangeListener {
-	
-	/** This game frame's selector panel */
-	private final SelectorPanel mySelectorPanel;
-	
-	/** This game frame's game panel */
-	private GamePanel myGamePanel;
-	
-	/** The panel currently being displayed by this game frame */
-	private JPanel myCurrentPanel;
 
 	/** The serial version UID */
 	private static final long serialVersionUID = -997412424190795317L;
@@ -79,23 +74,92 @@ public class GameFrame extends JFrame implements PropertyChangeListener {
 	
 	/** The sand-backed icon used for the "load game" button */
 	private static final ImageIcon LOAD_SAND = new ImageIcon("selectorpanel_sprites/loadGame_Over.png");
+	
+	/** The maximum audio volume */
+	private static final int MAX_VOLUME = 100;
+	
+	/** The default audio volume */
+	private static final int DEFAULT_VOLUME = 50;
+	
+	/** This game frame's selector panel */
+	private final SelectorPanel mySelectorPanel;
+	
+	/** This game frame's layered pane */
+	private final JLayeredPane myLayeredPane;
+	
+	/** This game frame's game panel */
+	private GamePanel myGamePanel;
 
 	/** Constructs a new GameFrame which is displayed to the screen. */
 	public GameFrame() {
-		setLoopingMusic(SoundType.TITLE);
 		setTitle("Maze Hops");
 		final ImageIcon beerIcon = new ImageIcon("frame_icon/beerIcon.png");
 		final Image image = beerIcon.getImage().getScaledInstance(15, -1, Image.SCALE_SMOOTH);
 		setIconImage(image);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		final JMenuBar menuBar = new JMenuBar();
+		setupMenuBar(menuBar);
+		setJMenuBar(menuBar);
 		mySelectorPanel = new SelectorPanel();
-		myCurrentPanel = mySelectorPanel;
-		add(myCurrentPanel);
-		myCurrentPanel.grabFocus();
+		myLayeredPane = new JLayeredPane();
+		myLayeredPane.setPreferredSize(new Dimension(MazePanel.WIDTH + PlayPanel.WIDTH, MazePanel.HEIGHT));
+		myLayeredPane.add(mySelectorPanel, JLayeredPane.DEFAULT_LAYER);
+		add(myLayeredPane);
+		setLoopingMusic(SoundType.TITLE);
 		pack();
 		setLocationRelativeTo(null);
 		setResizable(false);
 		setVisible(true);
+	}
+	
+	/**
+	 * Sets up the menu bar for the GameFrame constructor.
+	 * @param theMenuBar passes the JMenuBar to setup.
+	 */
+	private void setupMenuBar(final JMenuBar theMenuBar) {
+		final JMenu fileMenu = new JMenu("File");
+		theMenuBar.add(fileMenu);
+		
+		final JMenu aboutMenu = new JMenu("About");
+		theMenuBar.add(aboutMenu);
+		
+		final JMenu optionsMenu = new JMenu("Options");
+		theMenuBar.add(optionsMenu);
+			
+		// File Menu
+		final JMenuItem newGame = new JMenuItem("New Game");
+		final JMenuItem saveGame = new JMenuItem("Save Game");
+		final JMenuItem loadGame = new JMenuItem("Load Game");
+		final JMenuItem exitGame = new JMenuItem("Exit");
+		fileMenu.add(newGame);
+		fileMenu.add(saveGame);
+		fileMenu.add(loadGame);
+		fileMenu.addSeparator();
+		fileMenu.add(exitGame);
+		newGame.addActionListener(theEvent -> newGame());
+		saveGame.addActionListener(theEvent -> saveGame());
+		loadGame.addActionListener(theEvent -> loadGame());
+		exitGame.addActionListener(theEvent -> System.exit(0));
+		
+		// About Menu
+		final JMenuItem aboutGame = new JMenuItem("About");
+		aboutMenu.add(aboutGame);
+		aboutGame.addActionListener(theEvent -> JOptionPane.showMessageDialog(this,
+			    "Maze Hops, University of Washington Tacoma \n"
+			    + "TCSS 360 B, Spring 2021 \n"
+			    + "Designed by Parker Rosengreen, Rebekah Parkhurst, Artem Potafiy",
+			    "About Maze Hops",
+			    JOptionPane.PLAIN_MESSAGE));
+		
+		// Options Menu 
+		final JMenu volumeMenu = new JMenu("Adjust Volume");
+		final JSlider volumeSlider = new JSlider(0, MAX_VOLUME, DEFAULT_VOLUME);
+		volumeSlider.setPaintTrack(true);
+		volumeSlider.setMajorTickSpacing(25);
+		volumeSlider.setMinorTickSpacing(5);
+		volumeSlider.addChangeListener(theEvent -> SoundUtilities.changeVolume(volumeSlider.getValue()));
+		volumeMenu.add(volumeSlider);
+		optionsMenu.add(volumeMenu);
 	}
 
 	@Override
@@ -122,26 +186,23 @@ public class GameFrame extends JFrame implements PropertyChangeListener {
 	
 	/** Instantiates and displays a new game panel on this game frame. */
 	private void newGame() {
-		remove(myCurrentPanel);
 		myGamePanel = new GamePanel();
 		myGamePanel.addPropertyChangeListener(Player.NO_HP, this);
 		myGamePanel.addPropertyChangeListener(Maze.END_REACHED, this);
-		myCurrentPanel = myGamePanel;
-		add(myCurrentPanel);
-		revalidate();
-		myCurrentPanel.requestFocus();
+		myLayeredPane.removeAll();
+		myLayeredPane.add(myGamePanel, JLayeredPane.DEFAULT_LAYER);
+		myLayeredPane.revalidate();
+		myGamePanel.requestFocus();
 		setLoopingMusic(SoundType.BACKGROUND);
 	}
 	
 	/** Displays this game frame's selector panel. */
 	private void displaySelectorPanel() {
-		remove(myCurrentPanel);
+		myLayeredPane.removeAll();
 		mySelectorPanel.updateButtonIcons();
-		myCurrentPanel = mySelectorPanel;
-		add(myCurrentPanel);
 		mySelectorPanel.repaint();
-		revalidate();
-		myCurrentPanel.requestFocus();
+		myLayeredPane.add(mySelectorPanel, JLayeredPane.DEFAULT_LAYER);
+		myLayeredPane.revalidate();
 		if (myGamePanel.isGameWon()) {
 			SoundUtilities.play(SoundType.WIN);
 		} else {
@@ -150,22 +211,38 @@ public class GameFrame extends JFrame implements PropertyChangeListener {
 		setLoopingMusic(SoundType.TITLE);
 	}
 	
-	/** Saves this game frame's game panel to a selected output file. */
+	/** 
+	 * Saves this game frame's game panel to a selected output file. Files are saved
+	 * with a .bin extension by default.
+	 */
 	private void saveGame() {
 		final FileDialog fd = new FileDialog(this, "Save Game", FileDialog.SAVE);
 		fd.setVisible(true);
 		if (fd.getFile() != null) {
-			final String fileName = fd.getFile(); // possible file extension?
+			final String fileName = fd.getFile(); 
 			try {
 				final File f = new File(fd.getDirectory(), fileName);
 				final FileOutputStream file = new FileOutputStream(f);
 				final ObjectOutputStream out = new ObjectOutputStream(file);
+				boolean removed = false;
+				for (final Component comp : 
+					 myLayeredPane.getComponentsInLayer(JLayeredPane.DEFAULT_LAYER)) {
+					if (comp == myGamePanel) {
+						removed = true;
+						myLayeredPane.remove(myGamePanel);
+						break;
+					}
+				}
 				out.writeObject(myGamePanel);
+				if (removed) {
+					myLayeredPane.add(myGamePanel, JLayeredPane.DEFAULT_LAYER);
+					myLayeredPane.revalidate();
+				}
 				out.close();
 				file.close();
-			} catch (IOException ex) {
+			} catch (final Exception ex) {
 				showSaveError(ex.getClass().getSimpleName(), fileName);
-			}
+			} 
 		}
 	}
 	
@@ -192,23 +269,22 @@ public class GameFrame extends JFrame implements PropertyChangeListener {
 				final File f = new File(fd.getDirectory(), fd.getFile());
 				final FileInputStream file = new FileInputStream(f);
 				final ObjectInputStream in = new ObjectInputStream(file);
-				final GamePanel loadedGame = (GamePanel) in.readObject();
-				myGamePanel = loadedGame;
+				myGamePanel = (GamePanel) in.readObject();
 				if (myGamePanel.isGameOver() || myGamePanel.isGameWon()) {
 					displaySelectorPanel();
 				} else {
-					remove(myCurrentPanel);
+					myLayeredPane.removeAll();
 					myGamePanel.addPropertyChangeListener(this);
 					myGamePanel.restoreListeners();
-					myCurrentPanel = myGamePanel;
-					add(myCurrentPanel);
-					revalidate();
+					myLayeredPane.add(myGamePanel, JLayeredPane.DEFAULT_LAYER);
+					myLayeredPane.revalidate();
+					myGamePanel.requestFocus();
 					setLoopingMusic(SoundType.BACKGROUND);
-					myCurrentPanel.requestFocus();
 				}
 				in.close();
 				file.close();
-			} catch (Exception ex) {
+			} catch (final Exception ex) {
+				ex.printStackTrace();
 				showLoadError(ex.getClass().getSimpleName(), fd.getFile());
 			}
 		}
@@ -249,8 +325,7 @@ public class GameFrame extends JFrame implements PropertyChangeListener {
 		
 		/** Creates a new SelectorPanel and configures new/load game buttons. */
 		private SelectorPanel() {
-			setPreferredSize(new Dimension(MazePanel.WIDTH + PlayPanel.WIDTH,
-										   MazePanel.HEIGHT));
+			setBounds(0, 0, MazePanel.WIDTH + PlayPanel.WIDTH, MazePanel.HEIGHT);
 			setLayout(new FlowLayout(FlowLayout.CENTER, 75, 0));
 			add(Box.createRigidArea(new Dimension(1487, 620)));
 			myNewButton = new JButton(NEW_GRASS);
