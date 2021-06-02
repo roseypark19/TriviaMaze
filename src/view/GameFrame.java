@@ -77,6 +77,9 @@ public class GameFrame extends JFrame implements PropertyChangeListener {
 	/** The sand-backed icon used for the "load game" button */
 	private static final ImageIcon LOAD_SAND = new ImageIcon("selectorpanel_sprites/loadGame_Over.png");
 	
+	/** The beer icon used for the frame and about icons */
+	private static final ImageIcon BEER = new ImageIcon("frame_icon/beerIcon.png");
+	
 	/** The maximum audio volume */
 	private static final int MAX_VOLUME = 100;
 	
@@ -95,9 +98,7 @@ public class GameFrame extends JFrame implements PropertyChangeListener {
 	/** Constructs a new GameFrame which is displayed to the screen. */
 	public GameFrame() {
 		setTitle("Maze Hops");
-		final ImageIcon beerIcon = new ImageIcon("frame_icon/beerIcon.png");
-		final Image image = beerIcon.getImage().getScaledInstance(15, -1, Image.SCALE_SMOOTH);
-		setIconImage(image);
+		setIconImage(BEER.getImage().getScaledInstance(15, -1, Image.SCALE_SMOOTH));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		final JMenuBar menuBar = new JMenuBar();
 		setupMenuBar(menuBar);
@@ -149,10 +150,10 @@ public class GameFrame extends JFrame implements PropertyChangeListener {
 		aboutMenu.add(aboutGame);
 		aboutGame.addActionListener(theEvent -> JOptionPane.showMessageDialog(this,
 			    "Maze Hops, University of Washington Tacoma \n"
-			    + "TCSS 360 B, Spring 2021 \n"
-			    + "Designed by Parker Rosengreen, Rebekah Parkhurst, Artem Potafiy",
+			    + "TCSS 360, Spring 2021 \n"
+			    + "Designed by Parker Rosengreen, Rebekah Parkhurst, and Artem Potafiy",
 			    "About Maze Hops",
-			    JOptionPane.PLAIN_MESSAGE));
+			    JOptionPane.PLAIN_MESSAGE, BEER));
 		
 		// Options Menu 
 		final JMenu volumeMenu = new JMenu("Adjust Volume");
