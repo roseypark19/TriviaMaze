@@ -80,21 +80,15 @@ public enum Movement {
 	 * method is case sensitive.
 	 * 
 	 * @param theChar the character in question
-	 * @return the corresponding movement direction if such exists
-	 * @throws IllegalArgumentException if no movement direction exists for theChar
+	 * @return the corresponding movement direction if such exists, null otherwise
 	 */
 	public static Movement valueof(final char theChar) {
 		Movement move = null;
-		boolean found = false;
 		for (final Movement movement : Movement.values()) {
 			if (movement.myLetter == theChar) {
 				move = movement;
-				found = true;
 				break;
 			}
-		}
-		if (!found) {
-			throw new IllegalArgumentException("No movement exists for this character!");
 		}
 		return move;
 	}

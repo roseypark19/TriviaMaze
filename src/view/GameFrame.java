@@ -35,6 +35,9 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
+import javax.swing.event.MenuEvent;
+import javax.swing.event.MenuListener;
+
 import model.Maze;
 import model.Player;
 import model.SoundType;
@@ -140,6 +143,7 @@ public class GameFrame extends JFrame implements PropertyChangeListener {
 		fileMenu.add(loadGame);
 		fileMenu.addSeparator();
 		fileMenu.add(exitGame);
+		fileMenu.addMenuListener(new FileMenuListener(saveGame));
 		newGame.addActionListener(theEvent -> newGame());
 		saveGame.addActionListener(theEvent -> saveGame());
 		loadGame.addActionListener(theEvent -> loadGame());
@@ -288,7 +292,6 @@ public class GameFrame extends JFrame implements PropertyChangeListener {
 				in.close();
 				file.close();
 			} catch (final Exception ex) {
-				ex.printStackTrace();
 				showLoadError(ex.getClass().getSimpleName(), fd.getFile());
 			}
 		}
@@ -386,6 +389,35 @@ public class GameFrame extends JFrame implements PropertyChangeListener {
 		public void componentMoved(final ComponentEvent theEvent) {
 			repaint();
 		}
+	}
+	
+	/**
+	 * FileMenuListener is a menu listener which controls when saving a game is enabled.
+	 * 
+	 * @author Parker Rosengreen, Rebekah Parkhurst, Artem Potafiy
+	 * @version 31 May 2021
+	 */
+	private class FileMenuListener implements MenuListener {
+		
+		private final JMenuItem mySaveItem;
+		
+		private FileMenuListener(final JMenuItem theSaveItem) {
+			mySaveItem = theSaveItem;
+		}
+
+		@Override
+		public void menuSelected(final MenuEvent theEvent) {
+			mySaveItem.setEnabled(myGamePanel != null);
+		}
+
+		@Override
+		public void menuDeselected(final MenuEvent theEvent) {
+			mySaveItem.setEnabled(myGamePanel != null);
+		}
+
+		@Override
+		public void menuCanceled(final MenuEvent theEvent) {}
+		
 	}
 
 }
