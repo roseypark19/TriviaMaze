@@ -110,7 +110,7 @@ public class MazePanel extends JPanel implements PropertyChangeListener {
 	 * @param theMaze the maze to be assigned
 	 * @throws NullPointerException if thePlayer or theMaze is null
 	 */
-	public MazePanel(final Player thePlayer, final Maze theMaze) {
+	MazePanel(final Player thePlayer, final Maze theMaze) {
 		Objects.requireNonNull(thePlayer, "Players must be non-null!");
 		Objects.requireNonNull(theMaze, "Mazes must be non-null!");
 		setPreferredSize(new Dimension(WIDTH, HEIGHT));
@@ -173,7 +173,7 @@ public class MazePanel extends JPanel implements PropertyChangeListener {
 	}
 	
 	/** Restores the action listeners associated with this maze panel. */
-	public void restoreListeners() {
+	void restoreListeners() {
 		myMaze.restoreListeners();
 		myPlayerTimer.addActionListener(theEvent -> advancePlayer());
 		myFadeTimer.addActionListener(theEvent -> executeFade());
@@ -188,7 +188,7 @@ public class MazePanel extends JPanel implements PropertyChangeListener {
 	 * @param theMove the desired movement direction
 	 * @throws NullPointerException if theMove is null
 	 */
-	public void initializeAdvancement(final Movement theMove) {
+	void initializeAdvancement(final Movement theMove) {
 		Objects.requireNonNull(theMove, "Movements must be non-null!");
 		final boolean reqs = !myPlayerTimer.isRunning() && !myInsideTavern &&
 				             myMaze.isMovementLegal(theMove);     

@@ -43,7 +43,7 @@ public class GamePanel extends JPanel implements PropertyChangeListener {
 	private boolean myGameWon;
 	
 	/** Constructs a new GamePanel and configures necessary property change listeners. */
-	public GamePanel() {
+	GamePanel() {
 		myGameOver = false;
 		myGameWon = false;
 		setLayout(new BorderLayout());
@@ -61,7 +61,6 @@ public class GamePanel extends JPanel implements PropertyChangeListener {
 		addKeyListener(new KeyboardListener());
 		add(myMazePanel, BorderLayout.WEST);
 		add(myPlayPanel, BorderLayout.EAST);
-		requestFocus();
 	}
 	
 	/**
@@ -69,7 +68,7 @@ public class GamePanel extends JPanel implements PropertyChangeListener {
 	 * 
 	 * @return true if this game is won, false otherwise
 	 */
-	public boolean isGameWon() {
+	boolean isGameWon() {
 		return myGameWon;
 	}
 
@@ -78,12 +77,12 @@ public class GamePanel extends JPanel implements PropertyChangeListener {
 	 * 
 	 * @return true if this game is lost, false otherwise
 	 */
-	public boolean isGameOver() {
+	boolean isGameOver() {
 		return myGameOver;
 	}
 	
 	/** Restores all listeners associated with this game panel and its child panels. */
-	public void restoreListeners() {
+	void restoreListeners() {
 		myMazePanel.restoreListeners();
 		myPlayPanel.restoreListeners();
 		addKeyListener(new KeyboardListener());
@@ -115,7 +114,7 @@ public class GamePanel extends JPanel implements PropertyChangeListener {
 		private boolean myReleased;
 		
 		/** Constructs a new KeyboardListener */
-		public KeyboardListener() {
+		private KeyboardListener() {
 			myReleased = true;
 		}
 

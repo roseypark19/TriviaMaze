@@ -30,7 +30,7 @@ public class GraphEdge {
 	 * @param theSecond the second vertex ID number
 	 * @param theCost the edge cost
 	 */
-	public GraphEdge(final int theFirst, final int theSecond, final int theCost) {
+	GraphEdge(final int theFirst, final int theSecond, final int theCost) {
 		myFirst = theFirst;
 		mySecond = theSecond;
 		myCost = theCost;
@@ -41,7 +41,7 @@ public class GraphEdge {
 	 * 
 	 * @return the ID number
 	 */
-	public int getFirst() {
+	int getFirst() {
 		return myFirst;
 	}
 	
@@ -50,7 +50,7 @@ public class GraphEdge {
 	 * 
 	 * @return the ID number
 	 */
-	public int getSecond() {
+	int getSecond() {
 		return mySecond;
 	}
 	
@@ -59,7 +59,7 @@ public class GraphEdge {
 	 * 
 	 * @return the cost
 	 */
-	public int getCost() {
+	int getCost() {
 		return myCost;
 	}
 }

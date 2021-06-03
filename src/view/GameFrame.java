@@ -210,7 +210,7 @@ public class GameFrame extends JFrame implements PropertyChangeListener {
 		mySelectorPanel.updateButtonIcons();
 		mySelectorPanel.repaint();
 		myLayeredPane.add(mySelectorPanel, JLayeredPane.DEFAULT_LAYER);
-		myLayeredPane.revalidate();
+		myLayeredPane.repaint();
 		if (myGamePanel.isGameWon()) {
 			SoundUtilities.play(SoundType.WIN);
 		} else {
@@ -244,7 +244,7 @@ public class GameFrame extends JFrame implements PropertyChangeListener {
 				out.writeObject(myGamePanel);
 				if (removed) {
 					myLayeredPane.add(myGamePanel, JLayeredPane.DEFAULT_LAYER);
-					myLayeredPane.revalidate();
+					myLayeredPane.repaint();
 				}
 				out.close();
 				file.close();
@@ -285,7 +285,7 @@ public class GameFrame extends JFrame implements PropertyChangeListener {
 					myGamePanel.addPropertyChangeListener(this);
 					myGamePanel.restoreListeners();
 					myLayeredPane.add(myGamePanel, JLayeredPane.DEFAULT_LAYER);
-					myLayeredPane.revalidate();
+					myLayeredPane.repaint();
 					myGamePanel.requestFocus();
 					setLoopingMusic(SoundType.BACKGROUND);
 				}
@@ -387,7 +387,7 @@ public class GameFrame extends JFrame implements PropertyChangeListener {
 		
 		@Override
 		public void componentMoved(final ComponentEvent theEvent) {
-			repaint();
+			myLayeredPane.repaint();
 		}
 	}
 	

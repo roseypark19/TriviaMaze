@@ -57,28 +57,6 @@ public class SoundUtilities {
 		Objects.requireNonNull(theType, "Sound types must be non-null!");
 		SOUNDS.get(theType).stop();
 	}
-	
-	/**
-	 * Creates and supplies the mapping of each sound type to its corresponding audio clip.
-	 * 
-	 * @return the mapping of each sound type to its audio clip
-	 */
-	private static Map<SoundType, Clip> collectSounds() {
-		final Map<SoundType, Clip> sounds = new HashMap<>();
-		for (final SoundType soundType : SoundType.values()) {
-			try {
-				final AudioInputStream aIS = 
-						  AudioSystem.getAudioInputStream(new File(soundType.toString()));
-				final Clip clip = AudioSystem.getClip();
-				clip.open(aIS);
-				sounds.put(soundType, clip);
-			} catch (final Exception ex) {
-				System.err.println("Difficulties opening sounds!");
-				System.exit(1);
-			}
-		}
-		return sounds;
-	}
 
 	/**
 	 * Indicates whether the audio clip corresponding to the provided sound type is currently
@@ -109,5 +87,27 @@ public class SoundUtilities {
 			final FloatControl fC = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
 			fC.setValue(20.0f * (float) Math.log10(theNewVolume / 100.0));
 		}
+	}
+	
+	/**
+	 * Creates and supplies the mapping of each sound type to its corresponding audio clip.
+	 * 
+	 * @return the mapping of each sound type to its audio clip
+	 */
+	private static Map<SoundType, Clip> collectSounds() {
+		final Map<SoundType, Clip> sounds = new HashMap<>();
+		for (final SoundType soundType : SoundType.values()) {
+			try {
+				final AudioInputStream aIS = 
+						  AudioSystem.getAudioInputStream(new File(soundType.toString()));
+				final Clip clip = AudioSystem.getClip();
+				clip.open(aIS);
+				sounds.put(soundType, clip);
+			} catch (final Exception ex) {
+				System.err.println("Difficulties opening sounds!");
+				System.exit(1);
+			}
+		}
+		return sounds;
 	}
 }
