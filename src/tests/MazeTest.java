@@ -41,16 +41,25 @@ public class MazeTest {
 	/** The MazeForTests test fixture */
 	private MazeForTests myMaze;
 
+	/** 
+	 * Instantiates a new maze for tests prior to each test case. Also indirectly tests
+	 * {@link MazeForTests#MazeForTests()}. 
+	 */
 	@Before
 	public void setUp() {
 		myMaze = new MazeForTests();
 	}
 
+	/** 
+	 * Test method for {@link MazeForTests#addPropertyChangeListener(java.beans.PropertyChangeListener)}
+	 * with a null argument.
+	 */
 	@Test (expected = NullPointerException.class)
 	public void testAddPropertyChangeListenerNull() {
 		myMaze.addPropertyChangeListener(null);
 	}
-
+	
+	/** Test method for {@link MazeForTests#isMovementLegal(Movement)}. */
 	@Test
 	public void testIsMovementLegal() {
 		final List<MazeTile> tileList = new ArrayList<>(myMaze.myTiles.values());
@@ -64,6 +73,7 @@ public class MazeTest {
 		}
 	}
 
+	/** Test method for {@link MazeForTests#isMovementLegal(Movement)} with an illegal movement. */
 	@Test
 	public void testAdvanceCurrentTileIllegal() {
 		final List<MazeTile> tileList = new ArrayList<>(myMaze.myTiles.values());
@@ -88,6 +98,7 @@ public class MazeTest {
 		}
 	}
 	
+	/** Test method for {@link MazeForTests#isMovementLegal(Movement)} with a legal movement. */
 	@Test
 	public void testAdvanceCurrentTileLegal() {
 		final List<MazeTile> tileList = new ArrayList<>(myMaze.myTiles.values());
@@ -109,11 +120,13 @@ public class MazeTest {
 		}
 	}
 	
+	/** Test method for {@link MazeForTests#advanceCurrentTile(Movement)} with a null argument. */
 	@Test (expected = NullPointerException.class)
 	public void testAdvanceCurrentTileNull() {
 		myMaze.advanceCurrentTile(null);
 	}
 
+	/** Test method for {@link MazeForTests#hasTavern()}. */
 	@Test
 	public void testHasTavern() {
 		final List<MazeTile> tileList = new ArrayList<>(myMaze.myTiles.values());
@@ -124,6 +137,7 @@ public class MazeTest {
 		}
 	}
 
+	/** Test method for {@link MazeForTests#hasWater()}. */
 	@Test
 	public void testHasWater() {
 		final List<MazeTile> tileList = new ArrayList<>(myMaze.myTiles.values());
@@ -134,6 +148,7 @@ public class MazeTest {
 		}
 	}
 
+	/** Test method for {@link MazeForTests#removeTavern()} with an illegal tile. */
 	@Test
 	public void testRemoveTavernIllegal() {
 		myMaze.myTiles.keySet().removeAll(myMaze.myTaverns.keySet());
@@ -151,6 +166,7 @@ public class MazeTest {
 		}
 	}
 
+	/** Test method for {@link MazeForTests#removeTavern()} with a legal tile. */
 	@Test
 	public void testRemoveTavernLegal() {
 		myMaze.myTiles.keySet().retainAll(myMaze.myTaverns.keySet());
@@ -164,6 +180,7 @@ public class MazeTest {
 		}
 	}
 	
+	/** Test method for {@link MazeForTests#removeWater()} with an illegal tile. */
 	@Test
 	public void testRemoveWaterIllegal() {
 		myMaze.myTiles.keySet().removeAll(myMaze.myWaters);
@@ -181,6 +198,7 @@ public class MazeTest {
 		}
 	}
 	
+	/** Test method for {@link MazeForTests#removeWater()} with a legal tile. */
 	@Test
 	public void testRemoveWaterLegal() {
 		myMaze.myTiles.keySet().retainAll(myMaze.myWaters);
@@ -194,6 +212,7 @@ public class MazeTest {
 		}
 	}
 
+	/** Test method for {@link MazeForTests#getTavernTrivia()} with an illegal tile. */
 	@Test
 	public void testGetTavernTriviaIllegal() {
 		myMaze.myTiles.keySet().removeAll(myMaze.myTaverns.keySet());
@@ -211,6 +230,7 @@ public class MazeTest {
 		}
 	}
 	
+	/** Test method for {@link MazeForTests#getTavernTrivia()} with a legal tile. */
 	@Test
 	public void testGetTavernTriviaLegal() {
 		myMaze.myTiles.keySet().retainAll(myMaze.myTaverns.keySet());
@@ -222,6 +242,7 @@ public class MazeTest {
 		}
 	}
 
+	/** Test method for {@link MazeForTests#getTileMap()}. */
 	@Test
 	public void testGetTileMap() {
 		assertTrue("getTileMap() produced an unexpected result!",
@@ -229,6 +250,7 @@ public class MazeTest {
 				   !(myMaze.myTiles == myMaze.getTileMap()));
 	}
 
+	/** Test method for {@link MazeForTests#getTileData()}. */
 	@Test
 	public void testGetTileData() {
 		final Map<Point, Integer> dataMap = myMaze.getTileData();
@@ -238,6 +260,7 @@ public class MazeTest {
 		}
 	}
 
+	/** Test method for {@link MazeForTests#getWaterPoints()}. */
 	@Test
 	public void testGetWaterPoints() {
 		assertTrue("getWaterPoints() produced an unexpected result!",
@@ -245,6 +268,7 @@ public class MazeTest {
 				   !(myMaze.myWaters == myMaze.getWaterPoints()));
 	}
 
+	/** Test method for {@link MazeForTests#getTavernPoints()}. */
 	@Test
 	public void testGetTavernPoints() {
 		assertTrue("getTavernPoints() produced an unexpected result!",
@@ -252,6 +276,7 @@ public class MazeTest {
 				   !(myMaze.myTaverns.keySet() == myMaze.getTavernPoints()));
 	}
 	
+	/** Test method for {@link MazeForTests#copyPointSet()}. */
 	@Test
 	public void testCopyPointSet() {
 		for (int i = 1; i <= TRIALS; i++) {
@@ -285,6 +310,7 @@ public class MazeTest {
 		}
 	}
 	
+	/** Test method to ensure that a constructed maze contains a path from entry to exit. */
 	@Test
 	public void testMazeSolveability() {
 		for (int i = 1; i <= TRIALS; i++) {
