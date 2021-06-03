@@ -1,5 +1,5 @@
 /*
- * AbstractTrivia.java
+ * AbstractTriviaForTests.java
  * TCSS360 - Trivia Maze
  * Spring 2021
  */
@@ -11,9 +11,13 @@ import model.TriviaType;
 import java.util.Objects;
 
 /**
- * AbstractTriviaForTests is the exact same as the {@link AbstractTrivia} class.
- * This is Done to maintain encapsulation in {@link AbstractTrivia} while
- * testing said class.
+ * {@link AbstractTriviaForTests} is the exact same as the
+ * {@link AbstractTrivia} class. The constructor for {@link AbstractTrivia} has
+ * protected visibility, so {@link AbstractTriviaForTests} must be placed in the
+ * test_utilities package to allow other test classes to inherit from
+ * {@link AbstractTriviaForTests}, thus inheriting the same properties as
+ * {@link AbstractTrivia}. This is done to maintain encapsulation in
+ * {@link AbstractTrivia} while testing said class.
  * 
  * @author Parker Rosengreen, Rebekah Parkhurst, Artem Potafiy
  * @version 31 May 2021

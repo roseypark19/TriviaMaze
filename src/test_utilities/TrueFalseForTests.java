@@ -1,5 +1,5 @@
 /*
- * TrueFalse.java
+ * TrueFalseForTests.java
  * TCSS360 - Trivia Maze
  * Spring 2021
  */
@@ -12,7 +12,8 @@ import model.TriviaType;
 import java.util.Objects;
 
 /**
- * TrueFalseForTests is the exact same as the {@link TrueFalse} class. This is
+ * {@link TrueFalseForTests} is the exact same as the {@link TrueFalse} class.
+ * The only difference is that the constructor in this class is public. This is
  * Done to maintain encapsulation in {@link TrueFalse} while testing said class.
  * 
  * @author Parker Rosengreen, Rebekah Parkhurst, Artem Potafiy

@@ -1,5 +1,5 @@
 /*
- * MultipleChoice.java
+ * MultipleChoiceForTests.java
  * TCSS360 - Trivia Maze
  * Spring 2021
  */
@@ -13,9 +13,10 @@ import java.util.Arrays;
 import java.util.Objects;
 
 /**
- * MultipleChoiceForTests is the exact same as the {@link MultipleChoice} class.
- * This is Done to maintain encapsulation in {@link MultipleChoice} while
- * testing said class.
+ * {@link MultipleChoiceForTests} is the exact same as the
+ * {@link MultipleChoice} class. The only difference is that the constructor in
+ * this class is public. This is done to maintain encapsulation in
+ * {@link MultipleChoice} while testing said class.
  * 
  * @author Parker Rosengreen, Rebekah Parkhurst, Artem Potafiy
  * @version 31 May 2021

@@ -1,5 +1,5 @@
 /*
- * ShortAnswer.java
+ * ShortAnswerForTests.java
  * TCSS360 - Trivia Maze
  * Spring 2021
  */
@@ -12,9 +12,10 @@ import model.TriviaType;
 import java.util.Objects;
 
 /**
- * ShortAnswerTests is the exact same as the {@link ShortAnswer} class. This is
- * Done to maintain encapsulation in {@link ShortAnswer} while testing said
- * class.
+ * {@link ShortAnswerForTests} is the exact same as the {@link ShortAnswer}
+ * class. The only difference is that the constructor in this class is public.
+ * This is done to maintain encapsulation in {@link ShortAnswer} while testing
+ * said class.
  * 
  * @author Parker Rosengreen, Rebekah Parkhurst, Artem Potafiy
  * @version 31 May 2021
