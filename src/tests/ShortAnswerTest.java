@@ -7,7 +7,7 @@ package tests;
 
 import static org.junit.Assert.*;
 
-import org.junit.BeforeClass;
+import org.junit.Before;
 import org.junit.Test;
 
 import model.TriviaType;
@@ -50,8 +50,8 @@ public class ShortAnswerTest {
     /**
      * Initializes new trivia.
      */
-    @BeforeClass
-    public static void setup() {
+    @Before
+    public void setup() {
         trivia = new ShortAnswerForTests(CORRECT, QUESTION);
     }
 

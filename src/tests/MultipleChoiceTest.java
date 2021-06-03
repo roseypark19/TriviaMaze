@@ -10,7 +10,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
 
-import org.junit.BeforeClass;
+import org.junit.Before;
 import org.junit.Test;
 
 import model.TriviaType;
@@ -68,8 +68,8 @@ public class MultipleChoiceTest {
     /**
      * Initializes new trivia.
      */
-    @BeforeClass
-    public static void setup() {
+    @Before
+    public void setup() {
         trivia = new MultipleChoiceForTests(CORRECT, ANSWERS, QUESTION);
     }
 

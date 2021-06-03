@@ -10,7 +10,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
 
-import org.junit.BeforeClass;
+import org.junit.Before;
 import org.junit.Test;
 
 import model.TriviaType;
@@ -54,8 +54,8 @@ public class TrueFalseTest {
     /**
      * Initializes new trivia.
      */
-    @BeforeClass
-    public static void setup() {
+    @Before
+    public void setup() {
         trueTrivia = new TrueFalseForTests(ANSWERS[0], QUESTION);
         falseTrivia = new TrueFalseForTests(ANSWERS[1], QUESTION);
     }
