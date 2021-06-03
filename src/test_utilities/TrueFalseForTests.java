@@ -4,10 +4,11 @@
  * Spring 2021
  */
 
-package tests;
+package test_utilities;
 
 import model.Trivia;
 import model.TriviaType;
+
 import java.util.Objects;
 
 /**

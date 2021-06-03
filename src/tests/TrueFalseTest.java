@@ -14,6 +14,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import model.TriviaType;
+import test_utilities.TrueFalseForTests;
 
 /**
  * TrueFalseTest is a test class used to test the {@link TrueFalse} class. Note,

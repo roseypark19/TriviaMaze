@@ -11,6 +11,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import model.TriviaType;
+import test_utilities.ShortAnswerForTests;
 
 /**
  * ShortAnswerTest is a test class used to test the {@link ShortAnswer} class.
