@@ -63,14 +63,14 @@ public class MultipleChoiceTest {
     private static final String ANSWERS_FORMAT = "A. test\nB. test\nC. test\nD. test";
 
     /** Trivia question. */
-    private static MultipleChoiceForTests trivia;
+    private static MultipleChoiceForTests myTrivia;
 
     /**
      * Initializes new trivia.
      */
     @Before
     public void setup() {
-        trivia = new MultipleChoiceForTests(CORRECT, ANSWERS, QUESTION);
+        myTrivia = new MultipleChoiceForTests(CORRECT, ANSWERS, QUESTION);
     }
 
     /**
@@ -78,7 +78,7 @@ public class MultipleChoiceTest {
      */
     @Test
     public void testGetAnswers() {
-        assertEquals(ANSWERS_FORMAT, trivia.getAnswers());
+        assertEquals(ANSWERS_FORMAT, myTrivia.getAnswers());
     }
 
     /**
@@ -86,7 +86,7 @@ public class MultipleChoiceTest {
      */
     @Test
     public void testGetCorrectValue() {
-        assertEquals(CORRECT, trivia.getCorrectValue());
+        assertEquals(CORRECT, myTrivia.getCorrectValue());
     }
 
     /**
@@ -94,7 +94,7 @@ public class MultipleChoiceTest {
      */
     @Test
     public void testGetQuestion() {
-        assertEquals(QUESTION, trivia.getQuestion());
+        assertEquals(QUESTION, myTrivia.getQuestion());
     }
 
     /**
@@ -102,7 +102,7 @@ public class MultipleChoiceTest {
      */
     @Test
     public void testGetTriviaType() {
-        assertEquals(TriviaType.MULTICHOICE, trivia.getTriviaType());
+        assertEquals(TriviaType.MULTICHOICE, myTrivia.getTriviaType());
     }
 
     /**
@@ -111,7 +111,7 @@ public class MultipleChoiceTest {
      */
     @Test
     public void testIsCorrectWithCorrect() {
-        assertTrue(trivia.isCorrect(CORRECT));
+        assertTrue(myTrivia.isCorrect(CORRECT));
     }
 
     /**
@@ -120,7 +120,7 @@ public class MultipleChoiceTest {
      */
     @Test
     public void testIsCorrectWithIncorrect() {
-        assertFalse(trivia.isCorrect(INVALID));
+        assertFalse(myTrivia.isCorrect(INVALID));
     }
 
     /**
@@ -129,7 +129,7 @@ public class MultipleChoiceTest {
      */
     @Test
     public void testIsCorrectWithCheat() {
-        assertTrue(trivia.isCorrect(CHEAT));
+        assertTrue(myTrivia.isCorrect(CHEAT));
     }
 
     /**
@@ -139,7 +139,7 @@ public class MultipleChoiceTest {
     @Test
     public void testIsCorrectWithNull() {
         assertThrows(NullPointerException.class, () -> {
-            trivia.isCorrect(NULL_STRING);
+            myTrivia.isCorrect(NULL_STRING);
         });
     }
 
@@ -149,7 +149,7 @@ public class MultipleChoiceTest {
      */
     @Test
     public void testIsAnsweredNotAnswered() {
-        assertFalse(trivia.isAnswered());
+        assertFalse(myTrivia.isAnswered());
     }
 
     /**
@@ -158,8 +158,8 @@ public class MultipleChoiceTest {
      */
     @Test
     public void testIsAnsweredWhenAnswered() {
-        trivia.isCorrect(CORRECT);
-        assertTrue(trivia.isAnswered());
+        myTrivia.isCorrect(CORRECT);
+        assertTrue(myTrivia.isAnswered());
     }
 
     /**
@@ -168,7 +168,7 @@ public class MultipleChoiceTest {
      */
     @Test
     public void testCopyCorrect() {
-        assertEquals(CORRECT, trivia.copy().getCorrectValue());
+        assertEquals(CORRECT, myTrivia.copy().getCorrectValue());
     }
 
     /**
@@ -177,7 +177,7 @@ public class MultipleChoiceTest {
      */
     @Test
     public void testCopyQuestion() {
-        assertEquals(QUESTION, trivia.copy().getQuestion());
+        assertEquals(QUESTION, myTrivia.copy().getQuestion());
     }
 
     /**
@@ -186,7 +186,7 @@ public class MultipleChoiceTest {
      */
     @Test
     public void testCopyAnswers() {
-        assertEquals(ANSWERS_FORMAT, trivia.copy().getAnswers());
+        assertEquals(ANSWERS_FORMAT, myTrivia.copy().getAnswers());
     }
 
     /**

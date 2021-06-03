@@ -45,14 +45,14 @@ public class ShortAnswerTest {
     private static final String EMPTY = "";
 
     /** A trivia question. */
-    private static ShortAnswerForTests trivia;
+    private static ShortAnswerForTests myTrivia;
 
     /**
      * Initializes new trivia.
      */
     @Before
     public void setup() {
-        trivia = new ShortAnswerForTests(CORRECT, QUESTION);
+        myTrivia = new ShortAnswerForTests(CORRECT, QUESTION);
     }
 
     /**
@@ -60,7 +60,7 @@ public class ShortAnswerTest {
      */
     @Test
     public void testGetAnswers() {
-        assertEquals(CORRECT, trivia.getAnswers());
+        assertEquals(CORRECT, myTrivia.getAnswers());
     }
 
     /**
@@ -68,7 +68,7 @@ public class ShortAnswerTest {
      */
     @Test
     public void testGetCorrectValue() {
-        assertEquals(CORRECT, trivia.getCorrectValue());
+        assertEquals(CORRECT, myTrivia.getCorrectValue());
     }
 
     /**
@@ -76,7 +76,7 @@ public class ShortAnswerTest {
      */
     @Test
     public void testGetQuestion() {
-        assertEquals(QUESTION, trivia.getQuestion());
+        assertEquals(QUESTION, myTrivia.getQuestion());
     }
 
     /**
@@ -84,7 +84,7 @@ public class ShortAnswerTest {
      */
     @Test
     public void testGetTriviaType() {
-        assertEquals(TriviaType.SHORTANSWER, trivia.getTriviaType());
+        assertEquals(TriviaType.SHORTANSWER, myTrivia.getTriviaType());
     }
 
     /**
@@ -93,7 +93,7 @@ public class ShortAnswerTest {
      */
     @Test
     public void testIsCorrectWithCorrect() {
-        assertTrue(trivia.isCorrect(CORRECT));
+        assertTrue(myTrivia.isCorrect(CORRECT));
     }
 
     /**
@@ -102,7 +102,7 @@ public class ShortAnswerTest {
      */
     @Test
     public void testIsCorrectWithIncorrect() {
-        assertFalse(trivia.isCorrect(INCORRECT));
+        assertFalse(myTrivia.isCorrect(INCORRECT));
     }
 
     /**
@@ -111,7 +111,7 @@ public class ShortAnswerTest {
      */
     @Test
     public void testIsCorrectWithCheat() {
-        assertTrue(trivia.isCorrect(CHEAT));
+        assertTrue(myTrivia.isCorrect(CHEAT));
     }
 
     /**
@@ -121,7 +121,7 @@ public class ShortAnswerTest {
     @Test
     public void testIsCorrectWithNull() {
         assertThrows(NullPointerException.class, () -> {
-            trivia.isCorrect(NULL_STRING);
+            myTrivia.isCorrect(NULL_STRING);
         });
     }
 
@@ -131,7 +131,7 @@ public class ShortAnswerTest {
      */
     @Test
     public void testIsAnsweredNotAnswered() {
-        assertFalse(trivia.isAnswered());
+        assertFalse(myTrivia.isAnswered());
     }
 
     /**
@@ -140,8 +140,8 @@ public class ShortAnswerTest {
      */
     @Test
     public void testIsAnsweredWhenAnswered() {
-        trivia.isCorrect(CORRECT);
-        assertTrue(trivia.isAnswered());
+        myTrivia.isCorrect(CORRECT);
+        assertTrue(myTrivia.isAnswered());
     }
 
     /**
@@ -150,7 +150,7 @@ public class ShortAnswerTest {
      */
     @Test
     public void testCopyCorrect() {
-        assertEquals(CORRECT, trivia.copy().getCorrectValue());
+        assertEquals(CORRECT, myTrivia.copy().getCorrectValue());
     }
 
     /**
@@ -159,7 +159,7 @@ public class ShortAnswerTest {
      */
     @Test
     public void testCopyQuestion() {
-        assertEquals(QUESTION, trivia.copy().getQuestion());
+        assertEquals(QUESTION, myTrivia.copy().getQuestion());
     }
 
     /**

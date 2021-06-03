@@ -47,17 +47,18 @@ public class TrueFalseTest {
     private static final String[] ANSWERS = { Boolean.TRUE.toString(), Boolean.FALSE.toString() };
 
     /** A trivia whose correct answer is 'true'. */
-    private static TrueFalseForTests trueTrivia;
+    private static TrueFalseForTests myTrueTrivia;
+
     /** A trivia whose correct answer is 'false'. */
-    private static TrueFalseForTests falseTrivia;
+    private static TrueFalseForTests myFalseTrivia;
 
     /**
      * Initializes new trivia.
      */
     @Before
     public void setup() {
-        trueTrivia = new TrueFalseForTests(ANSWERS[0], QUESTION);
-        falseTrivia = new TrueFalseForTests(ANSWERS[1], QUESTION);
+        myTrueTrivia = new TrueFalseForTests(ANSWERS[0], QUESTION);
+        myFalseTrivia = new TrueFalseForTests(ANSWERS[1], QUESTION);
     }
 
     /**
@@ -65,7 +66,7 @@ public class TrueFalseTest {
      */
     @Test
     public void testGetAnswers() {
-        assertEquals(ANSWERS[0] + "\n" + ANSWERS[1], trueTrivia.getAnswers());
+        assertEquals(ANSWERS[0] + "\n" + ANSWERS[1], myTrueTrivia.getAnswers());
     }
 
     /**
@@ -74,7 +75,7 @@ public class TrueFalseTest {
      */
     @Test
     public void testGetCorrectValueTrue() {
-        assertEquals(ANSWERS[0], trueTrivia.getCorrectValue());
+        assertEquals(ANSWERS[0], myTrueTrivia.getCorrectValue());
     }
 
     /**
@@ -83,7 +84,7 @@ public class TrueFalseTest {
      */
     @Test
     public void testGetCorrectValueFalse() {
-        assertEquals(ANSWERS[1], falseTrivia.getCorrectValue());
+        assertEquals(ANSWERS[1], myFalseTrivia.getCorrectValue());
     }
 
     /**
@@ -91,12 +92,15 @@ public class TrueFalseTest {
      */
     @Test
     public void testGetQuestion() {
-        assertEquals(QUESTION, trueTrivia.getQuestion());
+        assertEquals(QUESTION, myTrueTrivia.getQuestion());
     }
 
+    /**
+     * Test method for {@link TrueFalseForTest#getTriviaType()}.
+     */
     @Test
     public void testGetTriviaType() {
-        assertEquals(TriviaType.TRUEFALSE, trueTrivia.getTriviaType());
+        assertEquals(TriviaType.TRUEFALSE, myTrueTrivia.getTriviaType());
     }
 
     /**
@@ -105,7 +109,7 @@ public class TrueFalseTest {
      */
     @Test
     public void testIsCorrectWithCorrect() {
-        assertTrue(trueTrivia.isCorrect(ANSWERS[0]));
+        assertTrue(myTrueTrivia.isCorrect(ANSWERS[0]));
     }
 
     /**
@@ -114,7 +118,7 @@ public class TrueFalseTest {
      */
     @Test
     public void testIsCorrectWithIncorrect() {
-        assertFalse(trueTrivia.isCorrect(ANSWERS[1]));
+        assertFalse(myTrueTrivia.isCorrect(ANSWERS[1]));
     }
 
     /**
@@ -123,7 +127,7 @@ public class TrueFalseTest {
      */
     @Test
     public void testIsCorrectWithCheat() {
-        assertTrue(trueTrivia.isCorrect(CHEAT));
+        assertTrue(myTrueTrivia.isCorrect(CHEAT));
     }
 
     /**
@@ -133,7 +137,7 @@ public class TrueFalseTest {
     @Test
     public void testIsCorrectWithNull() {
         assertThrows(NullPointerException.class, () -> {
-            trueTrivia.isCorrect(NULL_STRING);
+            myTrueTrivia.isCorrect(NULL_STRING);
         });
     }
 
@@ -142,7 +146,7 @@ public class TrueFalseTest {
      */
     @Test
     public void testIsAnsweredNotAnswered() {
-        assertFalse(trueTrivia.isAnswered());
+        assertFalse(myTrueTrivia.isAnswered());
     }
 
     /**
@@ -150,8 +154,8 @@ public class TrueFalseTest {
      */
     @Test
     public void testIsAnsweredWhenAnswered() {
-        trueTrivia.isCorrect(ANSWERS[0]);
-        assertTrue(trueTrivia.isAnswered());
+        myTrueTrivia.isCorrect(ANSWERS[0]);
+        assertTrue(myTrueTrivia.isAnswered());
     }
 
     /**
@@ -160,7 +164,7 @@ public class TrueFalseTest {
      */
     @Test
     public void testCopyCorrect() {
-        assertEquals(ANSWERS[0], trueTrivia.copy().getCorrectValue());
+        assertEquals(ANSWERS[0], myTrueTrivia.copy().getCorrectValue());
     }
 
     /**
@@ -169,7 +173,7 @@ public class TrueFalseTest {
      */
     @Test
     public void testCopyQuestion() {
-        assertEquals(QUESTION, trueTrivia.copy().getQuestion());
+        assertEquals(QUESTION, myTrueTrivia.copy().getQuestion());
     }
 
     /**

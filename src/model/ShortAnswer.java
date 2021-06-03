@@ -29,7 +29,7 @@ public class ShortAnswer extends AbstractTrivia {
      * @throws IllegalArgumentException if "true" or "false" is supplied as a correct response
      *         or theCorrectResponse is empty or theQuestion is empty
      */
-	public ShortAnswer(final String theCorrectResponse, final String theQuestion) {
+	ShortAnswer(final String theCorrectResponse, final String theQuestion) {
         super(theCorrectResponse, theQuestion, TriviaType.SHORTANSWER);
         Objects.requireNonNull(theCorrectResponse, "Correct responses must be non-null!");
         Objects.requireNonNull(theQuestion, "Questions must be non-null!");
