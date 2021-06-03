@@ -30,7 +30,7 @@ public class Tavern implements Serializable {
 	 * @param theTrivia the trivia to be assigned to this tavern
 	 * @throws NullPointerException if theTrivia is null
 	 */
-	Tavern(final Trivia theTrivia) {
+	public Tavern(final Trivia theTrivia) {
 		Objects.requireNonNull(theTrivia, "Trivias must be non-null!");
 		myTrivia = theTrivia;
 	}
@@ -40,7 +40,7 @@ public class Tavern implements Serializable {
 	 * 
 	 * @return the trivia
 	 */
-	Trivia getTrivia() {
+	public Trivia getTrivia() {
 		return myTrivia;
 	}
 }

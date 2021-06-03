@@ -16,9 +16,9 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
-import model.Maze;
 import model.MazeTile;
 import model.Movement;
+import tests.MazeForTests;
 
 /**
  * MazeSolver is a class for evaluating whether or not a maze can be solved.
@@ -35,7 +35,7 @@ public class MazeSolver {
 	 * @param theMaze the maze to be checked
 	 * @return true if theMaze can be solved, false otherwise
 	 */
-	public static boolean isMazeSolveable(final Maze theMaze) {
+	public static boolean isMazeSolveable(final MazeForTests theMaze) {
 		Objects.requireNonNull(theMaze, "Mazes must be non-null!");
 		final Map<Point, MazeTile> tileMap = theMaze.getTileMap();
 		boolean solveable = true;
