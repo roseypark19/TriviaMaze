@@ -45,7 +45,7 @@ public class ShortAnswerTest {
     private static final String EMPTY = "";
 
     /** A trivia question. */
-    private static ShortAnswerForTests myTrivia;
+    private ShortAnswerForTests myTrivia;
 
     /**
      * Initializes new trivia.

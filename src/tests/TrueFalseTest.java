@@ -50,7 +50,7 @@ public class TrueFalseTest {
     private static TrueFalseForTests myTrueTrivia;
 
     /** A trivia whose correct answer is 'false'. */
-    private static TrueFalseForTests myFalseTrivia;
+    private TrueFalseForTests myFalseTrivia;
 
     /**
      * Initializes new trivia.

@@ -63,7 +63,7 @@ public class MultipleChoiceTest {
     private static final String ANSWERS_FORMAT = "A. test\nB. test\nC. test\nD. test";
 
     /** Trivia question. */
-    private static MultipleChoiceForTests myTrivia;
+    private MultipleChoiceForTests myTrivia;
 
     /**
      * Initializes new trivia.
