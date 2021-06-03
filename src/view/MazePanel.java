@@ -15,6 +15,8 @@ import java.awt.image.BufferedImage;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -89,6 +91,9 @@ public class MazePanel extends JPanel implements PropertyChangeListener {
 	/** This maze panel's maze */
 	private final Maze myMaze;
 	
+	/** The list of indices in FADES to be displayed */
+	private final List<Integer> myFadeIndices;
+	
 	/** This maze panel's fade index for determining which fade sprite image to display */
 	private int myFadeIndex;
 	
@@ -113,6 +118,7 @@ public class MazePanel extends JPanel implements PropertyChangeListener {
 		setBackground(Color.BLACK);
 		myPlayer = thePlayer;
 		myMaze = theMaze;
+		myFadeIndices = new ArrayList<>();
 		myPcs = new PropertyChangeSupport(this);
 		myPlayerTimer = new Timer(90, theEvent -> advancePlayer());
 		myFadeTimer = new Timer(75, theEvent -> executeFade()); 
@@ -161,10 +167,8 @@ public class MazePanel extends JPanel implements PropertyChangeListener {
 		for (final Point pt : myMaze.getTavernPoints()) {
 			g2d.drawImage(TAVERN, null, (int) pt.getX(), (int) pt.getY());
 		}
-		if (myFadeTimer.isRunning()) {
-			for (int index = 0; index <= myFadeIndex; index++) {
-				g2d.drawImage(FADES[index], null, 0, 0);
-			}
+		for (final Integer index : myFadeIndices) {
+			g2d.drawImage(FADES[index], null, 0, 0);
 		}
 	}
 	
@@ -182,6 +186,7 @@ public class MazePanel extends JPanel implements PropertyChangeListener {
 	 * the desired movement direction results in a legal tile position on this maze panel's maze.
 	 * 
 	 * @param theMove the desired movement direction
+	 * @throws NullPointerException if theMove is null
 	 */
 	public void initializeAdvancement(final Movement theMove) {
 		Objects.requireNonNull(theMove, "Movements must be non-null!");
@@ -237,14 +242,14 @@ public class MazePanel extends JPanel implements PropertyChangeListener {
 	 * Performs a fade in/out on this maze panel to transition between answering tavern trivia.
 	 */
 	private void executeFade() {
-		final Graphics2D g2d = (Graphics2D) getGraphics();
-		if (myFaded) {
-			repaint();
+		if (!myFaded) {
+			myFadeIndices.add(myFadeIndex);
 		} else {
-			g2d.drawImage(FADES[myFadeIndex], null, 0, 0);
+			myFadeIndices.remove(myFadeIndices.size() - 1);
 		}
+		repaint();
 		myFadeIndex = myFaded ? myFadeIndex - 1 : myFadeIndex + 1;
-		if (myFadeIndex < 0 || myFadeIndex > FADES.length - 1) {
+		if (myFadeIndex < 0 || myFadeIndex == FADES.length) {
 			myFadeTimer.stop();
 			myFaded = !myFaded;
 			myFadeIndex = myFaded ? FADES.length - 1 : 0;
