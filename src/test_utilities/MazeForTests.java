@@ -44,7 +44,7 @@ public class MazeForTests implements Serializable {
 	/** The bound property indicating the end of the maze being reached */
 	public static final String END_REACHED = "end reached";
 	
-	/** The random object used for tavern and water placings */
+	/** The random object used for tavern and water placing */
 	private static final Random RAND = new Random();
 	
 	/** The property change support which notifies listeners of changes in bound properties */
