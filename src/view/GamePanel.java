@@ -81,6 +81,15 @@ public class GamePanel extends JPanel implements PropertyChangeListener {
 		return myGameOver;
 	}
 	
+	/**
+	 * Indicates whether or not any of this game panel's components are being animated.
+	 * 
+	 * @return true if animation is in process, false otherwise
+	 */
+	boolean isAnimating() {
+		return myMazePanel.isAnimating() || myPlayPanel.isAnimating();
+	}
+	
 	/** Restores all listeners associated with this game panel and its child panels. */
 	void restoreListeners() {
 		myMazePanel.restoreListeners();

@@ -60,7 +60,7 @@ public class ShortAnswerField extends JTextField implements TriviaComponent {
 	public void addActionListener(final TriviaPanel theTrivPan) {
 		Objects.requireNonNull(theTrivPan, "Triva panels must be non-null!");
 		super.addActionListener(theEvent -> {
-			theTrivPan.processResponse(getText());
+			theTrivPan.processResponse(getText().trim());
 			setText(null);
 		});
 	}

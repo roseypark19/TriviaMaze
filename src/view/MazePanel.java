@@ -114,7 +114,7 @@ public class MazePanel extends JPanel implements PropertyChangeListener {
 		Objects.requireNonNull(thePlayer, "Players must be non-null!");
 		Objects.requireNonNull(theMaze, "Mazes must be non-null!");
 		setPreferredSize(new Dimension(WIDTH, HEIGHT));
-		setFocusable(true);
+		setFocusable(false);
 		setBackground(Color.BLACK);
 		myPlayer = thePlayer;
 		myMaze = theMaze;
@@ -125,7 +125,6 @@ public class MazePanel extends JPanel implements PropertyChangeListener {
 		myInsideTavern = false;
 		myFaded = false;
 		myFadeIndex = 0;
-		setFocusable(false);
 	}
 	
 	/**
@@ -197,6 +196,15 @@ public class MazePanel extends JPanel implements PropertyChangeListener {
 			myMaze.advanceCurrentTile(theMove);
 			myPlayerTimer.start();
 		}
+	}
+	
+	/**
+	 * Indicates whether or not this play panel is currently animating its components.
+	 * 
+	 * @return true if animation is in process, false otherwise
+	 */
+	boolean isAnimating() {
+		return myPlayerTimer.isRunning() || myFadeTimer.isRunning();
 	}
 	
 	/** 

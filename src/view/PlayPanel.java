@@ -167,6 +167,15 @@ public class PlayPanel extends JPanel implements PropertyChangeListener {
 	}
 	
 	/**
+	 * Indicates whether or not this play panel is currently animating its components.
+	 * 
+	 * @return true if animation is in process, false otherwise
+	 */
+	boolean isAnimating() {
+		return myTriviaPanel.mySetupTimer.isRunning() || myTriviaPanel.myTeardownTimer.isRunning();
+	}
+	
+	/**
 	 * Adds a property change listener to this play panel which listens for changes in bound
 	 * properties.
 	 * 
@@ -464,7 +473,7 @@ public class PlayPanel extends JPanel implements PropertyChangeListener {
 		private static final int HEIGHT_NOT_ASKING = 695;
 		
 		/** A trivia display panel's border width */
-		private static final int BORDER_WIDTH = 4;
+		private static final int BORDER_WIDTH = 5;
 		
 		/** A trivia display panel's text area for printing trivia questions */
 		private final JTextArea myTriviaArea;
@@ -485,7 +494,7 @@ public class PlayPanel extends JPanel implements PropertyChangeListener {
 			super.paintComponent(theGraphics);
 			final Graphics2D g2d = (Graphics2D) theGraphics;
 			final BufferedImage image = myDisplayingTrivia ? TRIVIA_IMAGE : HOW_TO_PLAY;
-			g2d.drawImage(image, null, 1, 1);
+			g2d.drawImage(image, null, 0, 1);
 		}
 		
 		/** 

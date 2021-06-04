@@ -6,10 +6,12 @@
 
 package view;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FileDialog;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -120,13 +122,15 @@ public class GameFrame extends JFrame implements PropertyChangeListener {
 	}
 	
 	/**
-	 * Sets up the menu bar for the GameFrame constructor.
-	 * @param theMenuBar passes the JMenuBar to setup.
+	 * Sets up the menu bar for this game frame.
+	 * 
+	 * @param theMenuBar the menu bar to be configured
 	 */
 	private void setupMenuBar(final JMenuBar theMenuBar) {
+		
 		final JMenu fileMenu = new JMenu("File");
 		theMenuBar.add(fileMenu);
-		
+
 		final JMenu aboutMenu = new JMenu("About");
 		theMenuBar.add(aboutMenu);
 		
@@ -227,7 +231,8 @@ public class GameFrame extends JFrame implements PropertyChangeListener {
 		final FileDialog fd = new FileDialog(this, "Save Game", FileDialog.SAVE);
 		fd.setVisible(true);
 		if (fd.getFile() != null) {
-			final String fileName = fd.getFile(); 
+			final String fileName = fd.getFile().trim().endsWith(".bin") ? 
+					                               fd.getFile().trim() : fd.getFile() + ".bin"; 
 			try {
 				final File f = new File(fd.getDirectory(), fileName);
 				final FileOutputStream file = new FileOutputStream(f);
@@ -407,7 +412,7 @@ public class GameFrame extends JFrame implements PropertyChangeListener {
 
 		@Override
 		public void menuSelected(final MenuEvent theEvent) {
-			mySaveItem.setEnabled(myGamePanel != null);
+			mySaveItem.setEnabled(myGamePanel != null && !myGamePanel.isAnimating());
 		}
 
 		@Override
