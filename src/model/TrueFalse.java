@@ -23,6 +23,7 @@ public class TrueFalse extends AbstractTrivia {
 	private static final String[] ANSWERS = {Boolean.TRUE.toString(), 
 			                                 Boolean.FALSE.toString()};
 
+
 	/**
      * Constructs a new TrueFalse trivia with the provided correct boolean string response 
      * and question.
@@ -33,7 +34,7 @@ public class TrueFalse extends AbstractTrivia {
      * @throws IllegalArgumentException if "true" or "false" is not supplied as a correct 
      *         response or theQuestion is empty
      */
-    public TrueFalse(final String theCorrectBool, final String theQuestion) {
+    TrueFalse(final String theCorrectBool, final String theQuestion) {
         super(theCorrectBool, theQuestion, TriviaType.TRUEFALSE);
         Objects.requireNonNull(theCorrectBool, "Correct boolean strings must be non-null!");
         Objects.requireNonNull(theQuestion, "Questions must be non-null!");

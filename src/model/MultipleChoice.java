@@ -26,6 +26,7 @@ public class MultipleChoice extends AbstractTrivia {
 	/** The answers for this MultipleChoice */
 	private final String[] myAnswers;
 
+
     /**
      * Constructs a new MultipleChoice trivia with the provided correct letter value, array
      * of answers, and question.
@@ -39,7 +40,7 @@ public class MultipleChoice extends AbstractTrivia {
      *         is not equal to NUM_ANSWERS, if theQuestion is empty, or if any answers
      *         within theAnswers are empty
      */
-    public MultipleChoice(final String theCorrectLetter, final String[] theAnswers, final String theQuestion) {
+    MultipleChoice(final String theCorrectLetter, final String[] theAnswers, final String theQuestion) {
         super(theCorrectLetter, theQuestion, TriviaType.MULTICHOICE);
         Objects.requireNonNull(theCorrectLetter, "Correct letters must be non-null!");
         Objects.requireNonNull(theAnswers, "Answer arrays must be non-null!");
