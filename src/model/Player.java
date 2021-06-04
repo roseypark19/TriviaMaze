@@ -33,6 +33,18 @@ public class Player implements Serializable {
 	/** A player's maximum health */
 	public static final int MAX_HEALTH = 3;
 	
+	/** A player's velocity */
+	public static final int VELOCITY = 8;
+	
+	/** 
+	 * A player's centering offset value - this ensures the player is centered on each
+	 * maze tile.
+	 */
+	public static final int CENTER_OFFSET = 5;
+	
+	/** The distance a player moves with each advancement */
+	public static final int ADVANCE_DISTANCE = 48;
+	
 	/** The bound property indicating that the player has no health remaining */
 	public static final String NO_HP = "no hp";
 	
@@ -41,18 +53,6 @@ public class Player implements Serializable {
 	
 	/** The bound property indicating that the player has lost one health */
 	public static final String HEALTH_LOST = "health lost";
-	
-	/** A player's velocity */
-	private static final int VELOCITY = 8;
-	
-	/** 
-	 * A player's centering offset value - this ensures the player is centered on each
-	 * maze tile.
-	 */
-	private static final int CENTER_OFFSET = 5;
-	
-	/** The distance a player moves with each advancement */
-	private static final int MOVE_DISTANCE = 48;
 	
 	/** A timer which delays event firings for the NO_HP bound property */
 	private final Timer myNotificationTimer;
@@ -143,7 +143,7 @@ public class Player implements Serializable {
 		myX += myVelX;
 		myY += myVelY;
 		myDistance += Math.max(Math.abs(myVelX), Math.abs(myVelY));
-		if (myDistance >= MOVE_DISTANCE) {
+		if (myDistance == ADVANCE_DISTANCE) {
 			myDistance = 0;
 		}
 	}

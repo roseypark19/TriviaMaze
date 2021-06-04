@@ -38,7 +38,7 @@ public class UnionFinder {
 	 * 
 	 * @param theSize the size of the UnionFinder to be constructed
 	 */
-	public UnionFinder(final int theSize) {
+	UnionFinder(final int theSize) {
 		if (theSize < 0) {
 			throw new IllegalArgumentException("Sizes must be non-negative!");
 		}
@@ -57,7 +57,7 @@ public class UnionFinder {
 	 * @param theP the ID number for a specific vertex
 	 * @return the group number for which theP belongs to
 	 */
-	public int find(final int theP) {
+	int find(final int theP) {
 		int p = theP;
 		int root = p;
 		// find the group number
@@ -80,7 +80,7 @@ public class UnionFinder {
 	 * @param theQ theID number of the second vertex
 	 * @return true if theP and theQ are in the same group, false otherwise
 	 */
-	public boolean isConnected(final int theP, final int theQ) {
+	boolean isConnected(final int theP, final int theQ) {
 		return find(theP) == find(theQ);
 	}
 	
@@ -90,7 +90,7 @@ public class UnionFinder {
 	 * @param theP the ID number of a specific vertex
 	 * @return the group size
 	 */
-	public int getComponentSize(final int theP) {
+	int getComponentSize(final int theP) {
 		return mySizes[find(theP)];
 	}
 
@@ -99,7 +99,7 @@ public class UnionFinder {
 	 * 
 	 * @return the number of elements
 	 */
-	public int getSize() {
+	int getSize() {
 		return mySize;
 	}
 	
@@ -108,7 +108,7 @@ public class UnionFinder {
 	 * 
 	 * @return the number of groups
 	 */
-	public int getComponentCount() {
+	int getComponentCount() {
 		return myComponentCount;
 	}
 	
@@ -118,7 +118,7 @@ public class UnionFinder {
 	 * @param theP the ID number of the first vertex
 	 * @param theQ the ID number of the second vertex
 	 */
-	public void unify(final int theP, final int theQ) {
+	void unify(final int theP, final int theQ) {
 		final int root1 = find(theP);
 		final int root2 = find(theQ);	
 		if (root1 != root2) { // if the elements are already in the same group, we are done

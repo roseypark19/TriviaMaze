@@ -6,6 +6,7 @@
 
 package test_utilities;
 
+import model.AbstractTrivia;
 import model.Trivia;
 import model.TriviaType;
 
@@ -20,7 +21,7 @@ import java.util.Objects;
  * @author Parker Rosengreen, Rebekah Parkhurst, Artem Potafiy
  * @version 31 May 2021
  */
-public class ShortAnswerForTests extends AbstractTriviaForTests {
+public class ShortAnswerForTests extends AbstractTrivia {
 
     /** The serial version UID */
     private static final long serialVersionUID = 1993985826483549999L;

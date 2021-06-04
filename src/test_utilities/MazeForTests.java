@@ -1,10 +1,10 @@
 /*
- * Maze.java
+ * MazeForTests.java
  * TCSS360 - Trivia Maze
  * Spring 2021
  */
 
-package model;
+package test_utilities;
 
 import java.awt.Point;
 import java.beans.PropertyChangeListener;
@@ -22,16 +22,21 @@ import java.util.Set;
 
 import javax.swing.Timer;
 
+import model.MazeTile;
+import model.Movement;
+import model.Tavern;
+import model.Trivia;
 import utilities.MazeGenerator;
 import utilities.TriviaUtilities;
 
 /**
- * Maze is a class that implements maze attributes and behaviors used by the Maze Hops game.
+ * MazeForTests is a duplicate version of the Maze class with increased modifier visibility
+ * for testing.
  * 
  * @author Parker Rosengreen, Rebekah Parkhurst, Artem Potafiy
  * @version 31 May 2021
  */
-public class Maze implements Serializable {
+public class MazeForTests implements Serializable {
 	
 	/** The serial version UID */
 	private static final long serialVersionUID = 309169416134584707L;
@@ -46,24 +51,24 @@ public class Maze implements Serializable {
 	private final PropertyChangeSupport myPcs;
 	
 	/** A point-based mapping of all maze tiles for this maze */
-	private final Map<Point, MazeTile> myTiles;
+	public final Map<Point, MazeTile> myTiles;
 	
 	/** A point-based mapping of all taverns for this maze */
-	private final Map<Point, Tavern> myTaverns;
+	public final Map<Point, Tavern> myTaverns;
 	
 	/** A point-based mapping of all maze waters for this maze */
-	private final Set<Point> myWaters;
+	public final Set<Point> myWaters;
 	
 	/** A timer which delays event firings for changes in bound properties */
 	private final Timer myNotificationTimer;
 	
 	/** The current maze tile being visited for this maze */
-	private MazeTile myCurrTile;
+	public MazeTile myCurrTile;
 	
 	/**
 	 * Constructs a new maze with a random layout.
 	 */
-	public Maze() {
+	public MazeForTests() {
 		myTiles = MazeGenerator.generateTileMap();
 		myTaverns = generateTavernMap();
 		myWaters = generateWaterSet();
@@ -232,7 +237,7 @@ public class Maze implements Serializable {
 	 * @param thePointSet the set of points to be copied
 	 * @return the copied set of points
 	 */
-	private Set<Point> copyPointSet(final Set<Point> thePointSet) {
+	public Set<Point> copyPointSet(final Set<Point> thePointSet) {
 		final Set<Point> copySet = new HashSet<>();
 		for (final Point pt : thePointSet) {
 			copySet.add(new Point((int) pt.getX(), (int) pt.getY()));

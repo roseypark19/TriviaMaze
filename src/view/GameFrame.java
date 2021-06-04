@@ -10,6 +10,7 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FileDialog;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -35,6 +36,9 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
+import javax.swing.event.MenuEvent;
+import javax.swing.event.MenuListener;
+
 import model.Maze;
 import model.Player;
 import model.SoundType;
@@ -80,6 +84,15 @@ public class GameFrame extends JFrame implements PropertyChangeListener {
 	/** The beer icon used for the frame and about icons */
 	private static final ImageIcon BEER = new ImageIcon("frame_icon/beerIcon.png");
 	
+	/** The font used for menu components and pop-ups */
+	private static final Font MENU_FONT = new Font(Font.MONOSPACED, Font.BOLD, 17);
+	
+	/** The message displayed on the about option pane */
+	private static final String ABOUT_MESSAGE = "Maze Hops, University of Washington Tacoma\n" +
+		                                        "TCSS 360, Spring 2021\n" +
+		                                        "Designed by Parker Rosengreen, Rebekah Parkhurst," +
+		                                        " and Artem Potafiy";
+	
 	/** The maximum audio volume */
 	private static final int MAX_VOLUME = 100;
 	
@@ -117,46 +130,55 @@ public class GameFrame extends JFrame implements PropertyChangeListener {
 	}
 	
 	/**
-	 * Sets up the menu bar for the GameFrame constructor.
-	 * @param theMenuBar passes the JMenuBar to setup.
+	 * Sets up the menu bar for this game frame.
+	 * 
+	 * @param theMenuBar the menu bar to be configured
 	 */
 	private void setupMenuBar(final JMenuBar theMenuBar) {
 		final JMenu fileMenu = new JMenu("File");
+		fileMenu.setFont(MENU_FONT);
 		theMenuBar.add(fileMenu);
-		
+
 		final JMenu aboutMenu = new JMenu("About");
+		aboutMenu.setFont(MENU_FONT);
 		theMenuBar.add(aboutMenu);
 		
 		final JMenu optionsMenu = new JMenu("Options");
+		optionsMenu.setFont(MENU_FONT);
 		theMenuBar.add(optionsMenu);
 			
 		// File Menu
-		final JMenuItem newGame = new JMenuItem("New Game");
-		final JMenuItem saveGame = new JMenuItem("Save Game");
-		final JMenuItem loadGame = new JMenuItem("Load Game");
-		final JMenuItem exitGame = new JMenuItem("Exit");
+		final JMenuItem newGame = new JMenuItem("New Game", new ImageIcon("menu_icons/new.png"));
+		newGame.setFont(MENU_FONT);
+		final JMenuItem saveGame = new JMenuItem("Save Game", new ImageIcon("menu_icons/save.png"));
+		saveGame.setFont(MENU_FONT);
+		final JMenuItem loadGame = new JMenuItem("Load Game", new ImageIcon("menu_icons/load.png"));
+		loadGame.setFont(MENU_FONT);
+		final JMenuItem exitGame = new JMenuItem("Exit", new ImageIcon("menu_icons/exit.png"));
+		exitGame.setFont(MENU_FONT);
+		
 		fileMenu.add(newGame);
 		fileMenu.add(saveGame);
 		fileMenu.add(loadGame);
 		fileMenu.addSeparator();
 		fileMenu.add(exitGame);
+		fileMenu.addMenuListener(new FileMenuListener(saveGame));
 		newGame.addActionListener(theEvent -> newGame());
 		saveGame.addActionListener(theEvent -> saveGame());
 		loadGame.addActionListener(theEvent -> loadGame());
 		exitGame.addActionListener(theEvent -> System.exit(0));
 		
 		// About Menu
-		final JMenuItem aboutGame = new JMenuItem("About");
+		final JMenuItem aboutGame = new JMenuItem("About", new ImageIcon("menu_icons/about.png"));
+		aboutGame.setFont(MENU_FONT);
 		aboutMenu.add(aboutGame);
-		aboutGame.addActionListener(theEvent -> JOptionPane.showMessageDialog(this,
-			    "Maze Hops, University of Washington Tacoma \n"
-			    + "TCSS 360, Spring 2021 \n"
-			    + "Designed by Parker Rosengreen, Rebekah Parkhurst, and Artem Potafiy",
-			    "About Maze Hops",
-			    JOptionPane.PLAIN_MESSAGE, BEER));
+		aboutGame.addActionListener(theEvent -> JOptionPane.showMessageDialog(this, ABOUT_MESSAGE,
+			                                 "About Maze Hops", JOptionPane.PLAIN_MESSAGE, BEER));
 		
 		// Options Menu 
 		final JMenu volumeMenu = new JMenu("Adjust Volume");
+		volumeMenu.setFont(MENU_FONT);
+		volumeMenu.setIcon(new ImageIcon("menu_icons/volume.png"));
 		final JSlider volumeSlider = new JSlider(0, MAX_VOLUME, DEFAULT_VOLUME);
 		volumeSlider.setPaintTrack(true);
 		volumeSlider.setMajorTickSpacing(25);
@@ -206,7 +228,7 @@ public class GameFrame extends JFrame implements PropertyChangeListener {
 		mySelectorPanel.updateButtonIcons();
 		mySelectorPanel.repaint();
 		myLayeredPane.add(mySelectorPanel, JLayeredPane.DEFAULT_LAYER);
-		myLayeredPane.revalidate();
+		myLayeredPane.repaint();
 		if (myGamePanel.isGameWon()) {
 			SoundUtilities.play(SoundType.WIN);
 		} else {
@@ -223,7 +245,8 @@ public class GameFrame extends JFrame implements PropertyChangeListener {
 		final FileDialog fd = new FileDialog(this, "Save Game", FileDialog.SAVE);
 		fd.setVisible(true);
 		if (fd.getFile() != null) {
-			final String fileName = fd.getFile(); 
+			final String fileName = fd.getFile().trim().endsWith(".bin") ? 
+					                               fd.getFile().trim() : fd.getFile() + ".bin"; 
 			try {
 				final File f = new File(fd.getDirectory(), fileName);
 				final FileOutputStream file = new FileOutputStream(f);
@@ -240,7 +263,7 @@ public class GameFrame extends JFrame implements PropertyChangeListener {
 				out.writeObject(myGamePanel);
 				if (removed) {
 					myLayeredPane.add(myGamePanel, JLayeredPane.DEFAULT_LAYER);
-					myLayeredPane.revalidate();
+					myLayeredPane.repaint();
 				}
 				out.close();
 				file.close();
@@ -281,14 +304,13 @@ public class GameFrame extends JFrame implements PropertyChangeListener {
 					myGamePanel.addPropertyChangeListener(this);
 					myGamePanel.restoreListeners();
 					myLayeredPane.add(myGamePanel, JLayeredPane.DEFAULT_LAYER);
-					myLayeredPane.revalidate();
+					myLayeredPane.repaint();
 					myGamePanel.requestFocus();
 					setLoopingMusic(SoundType.BACKGROUND);
 				}
 				in.close();
 				file.close();
 			} catch (final Exception ex) {
-				ex.printStackTrace();
 				showLoadError(ex.getClass().getSimpleName(), fd.getFile());
 			}
 		}
@@ -384,8 +406,37 @@ public class GameFrame extends JFrame implements PropertyChangeListener {
 		
 		@Override
 		public void componentMoved(final ComponentEvent theEvent) {
-			repaint();
+			myLayeredPane.repaint();
 		}
+	}
+	
+	/**
+	 * FileMenuListener is a menu listener which controls when saving a game is enabled.
+	 * 
+	 * @author Parker Rosengreen, Rebekah Parkhurst, Artem Potafiy
+	 * @version 31 May 2021
+	 */
+	private class FileMenuListener implements MenuListener {
+		
+		private final JMenuItem mySaveItem;
+		
+		private FileMenuListener(final JMenuItem theSaveItem) {
+			mySaveItem = theSaveItem;
+		}
+
+		@Override
+		public void menuSelected(final MenuEvent theEvent) {
+			mySaveItem.setEnabled(myGamePanel != null && !myGamePanel.isAnimating());
+		}
+
+		@Override
+		public void menuDeselected(final MenuEvent theEvent) {
+			mySaveItem.setEnabled(myGamePanel != null);
+		}
+
+		@Override
+		public void menuCanceled(final MenuEvent theEvent) {}
+		
 	}
 
 }
