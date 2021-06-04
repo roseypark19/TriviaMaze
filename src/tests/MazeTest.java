@@ -22,6 +22,7 @@ import org.junit.Test;
 
 import model.MazeTile;
 import model.Movement;
+import test_utilities.MazeForTests;
 import utilities.MazeSolver;
 
 /**

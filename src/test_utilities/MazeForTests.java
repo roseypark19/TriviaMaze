@@ -4,7 +4,7 @@
  * Spring 2021
  */
 
-package tests;
+package test_utilities;
 
 import java.awt.Point;
 import java.beans.PropertyChangeListener;

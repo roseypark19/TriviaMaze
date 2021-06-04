@@ -18,7 +18,7 @@ import java.util.Set;
 
 import model.MazeTile;
 import model.Movement;
-import tests.MazeForTests;
+import test_utilities.MazeForTests;
 
 /**
  * MazeSolver is a class for evaluating whether or not a maze can be solved.
