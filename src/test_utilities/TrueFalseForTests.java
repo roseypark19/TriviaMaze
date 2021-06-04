@@ -6,6 +6,7 @@
 
 package test_utilities;
 
+import model.AbstractTrivia;
 import model.Trivia;
 import model.TriviaType;
 
@@ -14,12 +15,12 @@ import java.util.Objects;
 /**
  * {@link TrueFalseForTests} is the exact same as the {@link TrueFalse} class.
  * The only difference is that the constructor in this class is public. This is
- * Done to maintain encapsulation in {@link TrueFalse} while testing said class.
+ * done to maintain encapsulation in {@link TrueFalse} while testing said class.
  * 
  * @author Parker Rosengreen, Rebekah Parkhurst, Artem Potafiy
  * @version 31 May 2021
  */
-public class TrueFalseForTests extends AbstractTriviaForTests {
+public class TrueFalseForTests extends AbstractTrivia {
 
     /** The serial version UID */
     private static final long serialVersionUID = -2292036415291204613L;
