@@ -10,6 +10,7 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FileDialog;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -83,6 +84,15 @@ public class GameFrame extends JFrame implements PropertyChangeListener {
 	/** The beer icon used for the frame and about icons */
 	private static final ImageIcon BEER = new ImageIcon("frame_icon/beerIcon.png");
 	
+	/** The font used for menu components and pop-ups */
+	private static final Font MENU_FONT = new Font(Font.MONOSPACED, Font.BOLD, 17);
+	
+	/** The message displayed on the about option pane */
+	private static final String ABOUT_MESSAGE = "Maze Hops, University of Washington Tacoma\n" +
+		                                        "TCSS 360, Spring 2021\n" +
+		                                        "Designed by Parker Rosengreen, Rebekah Parkhurst," +
+		                                        " and Artem Potafiy";
+	
 	/** The maximum audio volume */
 	private static final int MAX_VOLUME = 100;
 	
@@ -125,21 +135,28 @@ public class GameFrame extends JFrame implements PropertyChangeListener {
 	 * @param theMenuBar the menu bar to be configured
 	 */
 	private void setupMenuBar(final JMenuBar theMenuBar) {
-		
 		final JMenu fileMenu = new JMenu("File");
+		fileMenu.setFont(MENU_FONT);
 		theMenuBar.add(fileMenu);
 
 		final JMenu aboutMenu = new JMenu("About");
+		aboutMenu.setFont(MENU_FONT);
 		theMenuBar.add(aboutMenu);
 		
 		final JMenu optionsMenu = new JMenu("Options");
+		optionsMenu.setFont(MENU_FONT);
 		theMenuBar.add(optionsMenu);
 			
 		// File Menu
-		final JMenuItem newGame = new JMenuItem("New Game");
-		final JMenuItem saveGame = new JMenuItem("Save Game");
-		final JMenuItem loadGame = new JMenuItem("Load Game");
-		final JMenuItem exitGame = new JMenuItem("Exit");
+		final JMenuItem newGame = new JMenuItem("New Game", new ImageIcon("menu_icons/new.png"));
+		newGame.setFont(MENU_FONT);
+		final JMenuItem saveGame = new JMenuItem("Save Game", new ImageIcon("menu_icons/save.png"));
+		saveGame.setFont(MENU_FONT);
+		final JMenuItem loadGame = new JMenuItem("Load Game", new ImageIcon("menu_icons/load.png"));
+		loadGame.setFont(MENU_FONT);
+		final JMenuItem exitGame = new JMenuItem("Exit", new ImageIcon("menu_icons/exit.png"));
+		exitGame.setFont(MENU_FONT);
+		
 		fileMenu.add(newGame);
 		fileMenu.add(saveGame);
 		fileMenu.add(loadGame);
@@ -152,17 +169,16 @@ public class GameFrame extends JFrame implements PropertyChangeListener {
 		exitGame.addActionListener(theEvent -> System.exit(0));
 		
 		// About Menu
-		final JMenuItem aboutGame = new JMenuItem("About");
+		final JMenuItem aboutGame = new JMenuItem("About", new ImageIcon("menu_icons/about.png"));
+		aboutGame.setFont(MENU_FONT);
 		aboutMenu.add(aboutGame);
-		aboutGame.addActionListener(theEvent -> JOptionPane.showMessageDialog(this,
-			    "Maze Hops, University of Washington Tacoma \n"
-			    + "TCSS 360, Spring 2021 \n"
-			    + "Designed by Parker Rosengreen, Rebekah Parkhurst, and Artem Potafiy",
-			    "About Maze Hops",
-			    JOptionPane.PLAIN_MESSAGE, BEER));
+		aboutGame.addActionListener(theEvent -> JOptionPane.showMessageDialog(this, ABOUT_MESSAGE,
+			                                 "About Maze Hops", JOptionPane.PLAIN_MESSAGE, BEER));
 		
 		// Options Menu 
 		final JMenu volumeMenu = new JMenu("Adjust Volume");
+		volumeMenu.setFont(MENU_FONT);
+		volumeMenu.setIcon(new ImageIcon("menu_icons/volume.png"));
 		final JSlider volumeSlider = new JSlider(0, MAX_VOLUME, DEFAULT_VOLUME);
 		volumeSlider.setPaintTrack(true);
 		volumeSlider.setMajorTickSpacing(25);
