@@ -47,7 +47,6 @@ public class GamePanel extends JPanel implements PropertyChangeListener {
 		myGameOver = false;
 		myGameWon = false;
 		setLayout(new BorderLayout());
-		setBounds(0, 0, MazePanel.WIDTH + PlayPanel.WIDTH, MazePanel.HEIGHT);
 		final Player player = new Player();
 		final Maze maze = new Maze();
 		myMazePanel = new MazePanel(player, maze);

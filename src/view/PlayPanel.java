@@ -494,7 +494,7 @@ public class PlayPanel extends JPanel implements PropertyChangeListener {
 			super.paintComponent(theGraphics);
 			final Graphics2D g2d = (Graphics2D) theGraphics;
 			final BufferedImage image = myDisplayingTrivia ? TRIVIA_IMAGE : HOW_TO_PLAY;
-			g2d.drawImage(image, null, 0, 1);
+			g2d.drawImage(image, null, 0, 0);
 		}
 		
 		/** 
