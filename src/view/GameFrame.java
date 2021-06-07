@@ -122,10 +122,10 @@ public class GameFrame extends JFrame implements PropertyChangeListener {
 		add(myContentPanel);
 		addComponentListener(new FrameComponentListener());
 		pack();
+		setLoopingMusic(SoundType.TITLE);
 		setLocationRelativeTo(null);
 		setResizable(false);
 		setVisible(true);
-		setLoopingMusic(SoundType.TITLE);
 	}
 	
 	/**
