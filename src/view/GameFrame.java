@@ -13,6 +13,7 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.GridBagLayout;
 import java.awt.Image;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
@@ -29,7 +30,6 @@ import javax.swing.Box;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JLayeredPane;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -99,11 +99,11 @@ public class GameFrame extends JFrame implements PropertyChangeListener {
 	/** The default audio volume */
 	private static final int DEFAULT_VOLUME = 50;
 	
+	/** This game frame's content panel */
+	private final JPanel myContentPanel;
+	
 	/** This game frame's selector panel */
 	private final SelectorPanel mySelectorPanel;
-	
-	/** This game frame's layered pane */
-	private final JLayeredPane myLayeredPane;
 	
 	/** This game frame's game panel */
 	private GamePanel myGamePanel;
@@ -117,13 +117,12 @@ public class GameFrame extends JFrame implements PropertyChangeListener {
 		setupMenuBar(menuBar);
 		setJMenuBar(menuBar);
 		mySelectorPanel = new SelectorPanel();
-		myLayeredPane = new JLayeredPane();
-		myLayeredPane.setPreferredSize(new Dimension(MazePanel.WIDTH + PlayPanel.WIDTH, MazePanel.HEIGHT));
-		myLayeredPane.add(mySelectorPanel, JLayeredPane.DEFAULT_LAYER);
-		add(myLayeredPane);
+		myContentPanel = new JPanel(new GridBagLayout());
+		myContentPanel.add(mySelectorPanel);
+		add(myContentPanel);
 		addComponentListener(new FrameComponentListener());
-		setLoopingMusic(SoundType.TITLE);
 		pack();
+		setLoopingMusic(SoundType.TITLE);
 		setLocationRelativeTo(null);
 		setResizable(false);
 		setVisible(true);
@@ -186,6 +185,7 @@ public class GameFrame extends JFrame implements PropertyChangeListener {
 		volumeSlider.addChangeListener(theEvent -> SoundUtilities.changeVolume(volumeSlider.getValue()));
 		volumeMenu.add(volumeSlider);
 		optionsMenu.add(volumeMenu);
+		SoundUtilities.changeVolume(DEFAULT_VOLUME);
 	}
 
 	@Override
@@ -215,20 +215,19 @@ public class GameFrame extends JFrame implements PropertyChangeListener {
 		myGamePanel = new GamePanel();
 		myGamePanel.addPropertyChangeListener(Player.NO_HP, this);
 		myGamePanel.addPropertyChangeListener(Maze.END_REACHED, this);
-		myLayeredPane.removeAll();
-		myLayeredPane.add(myGamePanel, JLayeredPane.DEFAULT_LAYER);
-		myLayeredPane.revalidate();
+		myContentPanel.removeAll();
+		myContentPanel.add(myGamePanel);
+		myContentPanel.revalidate();
 		myGamePanel.requestFocus();
 		setLoopingMusic(SoundType.BACKGROUND);
 	}
 	
 	/** Displays this game frame's selector panel. */
 	private void displaySelectorPanel() {
-		myLayeredPane.removeAll();
 		mySelectorPanel.updateButtonIcons();
-		mySelectorPanel.repaint();
-		myLayeredPane.add(mySelectorPanel, JLayeredPane.DEFAULT_LAYER);
-		myLayeredPane.repaint();
+		myContentPanel.removeAll();
+		myContentPanel.add(mySelectorPanel);
+		myContentPanel.repaint();
 		if (myGamePanel.isGameWon()) {
 			SoundUtilities.play(SoundType.WIN);
 		} else {
@@ -252,18 +251,17 @@ public class GameFrame extends JFrame implements PropertyChangeListener {
 				final FileOutputStream file = new FileOutputStream(f);
 				final ObjectOutputStream out = new ObjectOutputStream(file);
 				boolean removed = false;
-				for (final Component comp : 
-					 myLayeredPane.getComponentsInLayer(JLayeredPane.DEFAULT_LAYER)) {
+				for (final Component comp : myContentPanel.getComponents()) {
 					if (comp == myGamePanel) {
 						removed = true;
-						myLayeredPane.remove(myGamePanel);
+						myContentPanel.remove(myGamePanel);
 						break;
 					}
 				}
 				out.writeObject(myGamePanel);
 				if (removed) {
-					myLayeredPane.add(myGamePanel, JLayeredPane.DEFAULT_LAYER);
-					myLayeredPane.repaint();
+					myContentPanel.add(myGamePanel);
+					myContentPanel.repaint();
 				}
 				out.close();
 				file.close();
@@ -300,11 +298,11 @@ public class GameFrame extends JFrame implements PropertyChangeListener {
 				if (myGamePanel.isGameOver() || myGamePanel.isGameWon()) {
 					displaySelectorPanel();
 				} else {
-					myLayeredPane.removeAll();
+					myContentPanel.removeAll();
 					myGamePanel.addPropertyChangeListener(this);
 					myGamePanel.restoreListeners();
-					myLayeredPane.add(myGamePanel, JLayeredPane.DEFAULT_LAYER);
-					myLayeredPane.repaint();
+					myContentPanel.add(myGamePanel);
+					myContentPanel.repaint();
 					myGamePanel.requestFocus();
 					setLoopingMusic(SoundType.BACKGROUND);
 				}
@@ -351,7 +349,7 @@ public class GameFrame extends JFrame implements PropertyChangeListener {
 		
 		/** Creates a new SelectorPanel and configures new/load game buttons. */
 		private SelectorPanel() {
-			setBounds(0, 0, MazePanel.WIDTH + PlayPanel.WIDTH, MazePanel.HEIGHT);
+			setPreferredSize(new Dimension(MazePanel.WIDTH + PlayPanel.WIDTH, MazePanel.HEIGHT));
 			setLayout(new FlowLayout(FlowLayout.CENTER, 75, 0));
 			add(Box.createRigidArea(new Dimension(1487, 620)));
 			myNewButton = new JButton(NEW_GRASS);
@@ -406,7 +404,7 @@ public class GameFrame extends JFrame implements PropertyChangeListener {
 		
 		@Override
 		public void componentMoved(final ComponentEvent theEvent) {
-			myLayeredPane.repaint();
+			myContentPanel.repaint();
 		}
 	}
 	
