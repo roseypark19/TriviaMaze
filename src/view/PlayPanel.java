@@ -131,6 +131,7 @@ public class PlayPanel extends JPanel implements PropertyChangeListener {
 		Objects.requireNonNull(thePlayer, "Players must be non-null!");
 		Objects.requireNonNull(theMaze, "Mazes must be non-null!");
 		setPreferredSize(new Dimension(WIDTH, MazePanel.HEIGHT));
+		setFocusable(false);
 		setLayout(new BorderLayout());
 		myPlayer = thePlayer;
 		myMaze = theMaze;
@@ -229,6 +230,7 @@ public class PlayPanel extends JPanel implements PropertyChangeListener {
 	private void setupSouthPanel() {
 		final JPanel southPanel = new JPanel(new GridBagLayout());
 		southPanel.setPreferredSize(new Dimension(WIDTH, 200));
+		southPanel.setFocusable(false);
 		southPanel.setBackground(TRANSPARENT);
 		southPanel.add(getKeyPanel());
 		southPanel.add(Box.createHorizontalStrut(50));
@@ -254,6 +256,7 @@ public class PlayPanel extends JPanel implements PropertyChangeListener {
 	private JPanel getKeyPanel() {
 		final JPanel buttonPanel = new JPanel(new GridBagLayout());
 		buttonPanel.setBackground(TRANSPARENT);
+		buttonPanel.setFocusable(false);
 		final int[] gridXs = new int[] {1, 0, 1, 2};
 		final int[] gridYs = new int[] {0, 1, 1, 1};
 		GB_CONSTRAINTS.insets = new Insets(3, 3, 3, 3);
@@ -313,6 +316,7 @@ public class PlayPanel extends JPanel implements PropertyChangeListener {
 			setLayout(new GridBagLayout());
 			setPreferredSize(new Dimension(PlayPanel.WIDTH, HEIGHT));
 			setBackground(TRANSPARENT);
+			setFocusable(false);
 			mySetupTimer = new Timer(0, theEvent -> showTrivia());
 			mySetupTimer.setInitialDelay(800);
 			mySetupTimer.setRepeats(false);
@@ -384,6 +388,7 @@ public class PlayPanel extends JPanel implements PropertyChangeListener {
 		private void populateAnswerMap() {
 			final JPanel multiChoice = new JPanel(new GridBagLayout());
 			multiChoice.setBackground(TRANSPARENT);
+			multiChoice.setFocusable(false);
 			for (char letter = 'A'; letter <= 'D'; letter++) {
 				final MultiChoiceButton mC = new MultiChoiceButton(letter, this);
 				myTriviaComponents.add(mC);
@@ -395,6 +400,7 @@ public class PlayPanel extends JPanel implements PropertyChangeListener {
 			myAnswerPanels.put(TriviaType.MULTICHOICE, multiChoice);
 			final JPanel trueFalse = new JPanel(new GridBagLayout());
 			trueFalse.setBackground(TRANSPARENT);
+			trueFalse.setFocusable(false);
 			final TrueFalseButton trueButton = new TrueFalseButton(true, this);
 			myTriviaComponents.add(trueButton);
 			trueFalse.add(trueButton);
@@ -404,6 +410,8 @@ public class PlayPanel extends JPanel implements PropertyChangeListener {
 			trueFalse.add(falseButton);
 			myAnswerPanels.put(TriviaType.TRUEFALSE, trueFalse);
 			final JPanel shortAns = new JPanel(new GridBagLayout());
+			shortAns.setBackground(TRANSPARENT);
+			shortAns.setFocusable(false);
 			final ShortAnswerField sA = new ShortAnswerField(this);
 			myTriviaComponents.add(sA);
 			shortAns.add(sA);
