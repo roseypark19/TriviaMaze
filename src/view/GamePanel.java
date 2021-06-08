@@ -7,6 +7,8 @@
 package view;
 
 import java.awt.BorderLayout;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.beans.PropertyChangeEvent;
@@ -58,6 +60,7 @@ public class GamePanel extends JPanel implements PropertyChangeListener {
 		player.addPropertyChangeListener(this);
 		player.addPropertyChangeListener(myPlayPanel);
 		addKeyListener(new KeyboardListener());
+		addFocusListener(new GameFocusListener());
 		add(myMazePanel, BorderLayout.WEST);
 		add(myPlayPanel, BorderLayout.EAST);
 	}
@@ -94,6 +97,7 @@ public class GamePanel extends JPanel implements PropertyChangeListener {
 		myMazePanel.restoreListeners();
 		myPlayPanel.restoreListeners();
 		addKeyListener(new KeyboardListener());
+		addFocusListener(new GameFocusListener());
 	}
 
 	@Override
@@ -141,6 +145,21 @@ public class GamePanel extends JPanel implements PropertyChangeListener {
 		@Override
 		public void keyReleased(final KeyEvent theEvent) {
 			myReleased = true;
+		}
+	}
+	
+	/**
+	 * GameFocusListener is a class which listens for focus events associated with this
+	 * game panel and repaints necessary child components accordingly.
+	 * 
+	 * @author Parker Rosengreen, Rebekah Parkhurst, Artem Potafiy
+	 * @version 31 May 2021
+	 */
+	private class GameFocusListener extends FocusAdapter {
+		
+		@Override
+		public void focusGained(final FocusEvent theEvent) {
+			myPlayPanel.repaint();
 		}
 	}
 }
