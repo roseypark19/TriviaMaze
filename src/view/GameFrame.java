@@ -185,6 +185,7 @@ public class GameFrame extends JFrame implements PropertyChangeListener {
 		volumeSlider.addChangeListener(theEvent -> SoundUtilities.changeVolume(volumeSlider.getValue()));
 		volumeMenu.add(volumeSlider);
 		optionsMenu.add(volumeMenu);
+		SoundUtilities.changeVolume(DEFAULT_VOLUME);
 	}
 
 	@Override
